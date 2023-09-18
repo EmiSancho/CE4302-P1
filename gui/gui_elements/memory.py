@@ -1,4 +1,4 @@
-from figure import Figure
+from .figure import Figure
 
 class Memory(Figure):
     def __init__(self, canvas, x1, y1):
@@ -23,7 +23,7 @@ class Memory(Figure):
 
     def paint_cell(self, cellNum, color):
         cell = self.memory_cell_positions[cellNum]
-        self.canvas.create_rectangle(cell[0], cell[1], cell[2], cell[3], fill=color)
+        self.canvas.create_rectangle(cell[0], cell[1], cell[2], cell[3], fill="#C0FFC0")
         # Dibujar el texto en la celda
         center_x = (cell[0] + cell[2]) / 2
         center_y = (cell[1] + cell[3]) / 2

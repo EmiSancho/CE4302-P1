@@ -1,4 +1,4 @@
-from figure import Figure
+from .figure import Figure
 
 class Cache(Figure):
     def __init__(self, canvas, x1, y1, cache_name):

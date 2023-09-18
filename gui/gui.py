@@ -1,5 +1,7 @@
 import tkinter as tk
-from gui_elements.figures import Memory, ProcessingElement, Cache
+from gui_elements.cache import Cache
+from gui_elements.memory import Memory
+from gui_elements.processing_element import ProcessingElement
 
 def main():
     # Crear la ventana principal
@@ -19,11 +21,11 @@ def main():
     memory = Memory(canvas, 600,50)
     memory.draw()
     #Dibujar las PUs
-    PE1 = ProcessingElement(canvas, 200,600, "PE1")
+    PE1 = ProcessingElement(canvas, 200,700, "PE1")
     PE1.draw()
-    PE2 = ProcessingElement(canvas, 600,600, "PE2")
+    PE2 = ProcessingElement(canvas, 600,700, "PE2")
     PE2.draw()
-    PE3 = ProcessingElement(canvas, 1000,600, "PE3")
+    PE3 = ProcessingElement(canvas, 1000,700, "PE3")
     PE3.draw()
     #Dibujar las Caches
     Cache1 = Cache(canvas, 200,400, "Cache 1")
