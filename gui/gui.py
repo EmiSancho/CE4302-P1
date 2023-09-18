@@ -18,7 +18,7 @@ def main():
     canvas.pack()
 
     #Dibujar la memoria compartida
-    memory = Memory(canvas, 600,50)
+    memory = Memory(canvas, 390,50)
     memory.draw()
     #Dibujar las PUs
     PE1 = ProcessingElement(canvas, 200,700, "PE1")
@@ -34,6 +34,7 @@ def main():
     Cache2.draw()
     Cache3 = Cache(canvas, 1000,400, "Cache 3")
     Cache3.draw()
+    memory.paint_cell(3, "red")
     #Iniciar la aplicación
     window.mainloop()
 
