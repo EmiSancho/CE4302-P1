@@ -1,4 +1,5 @@
 import tkinter as tk
+import constants
 from gui_elements.cache import Cache
 from gui_elements.memory import Memory
 from gui_elements.processing_element import ProcessingElement
@@ -34,7 +35,6 @@ def main():
     Cache2.draw()
     Cache3 = Cache(canvas, 1000,500, "Cache 3")
     Cache3.draw()
-    memory.paint_cell(3, "red")
     #Iniciar la aplicación
     window.mainloop()
 
