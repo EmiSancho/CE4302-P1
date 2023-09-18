@@ -14,4 +14,4 @@ class Cache(Figure):
         self.canvas.create_rectangle(self.x1, self.y1, self.x1 + section_width, y2, fill="white")
         center_x = (self.x1 + self.x1 + section_width) // 2
         center_y = (self.y1 + y2) // 2
-        self.canvas.create_text(center_x, center_y, text=self.cache_name)
+        self.canvas.create_text(center_x, center_y, text=self.cache_name, font=self.font)
