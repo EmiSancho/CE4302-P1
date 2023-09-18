@@ -42,7 +42,6 @@ class Cache(Figure):
         cell = self.cell_positions[cellNum]
         x1 = cell[0]
         y1 = cell[1]
-        x2 = cell[2]
         y2 = cell[3]
         
         center_y = (y1 + y2) // 2
