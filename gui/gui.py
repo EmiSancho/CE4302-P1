@@ -28,11 +28,11 @@ def main():
     PE3 = ProcessingElement(canvas, 1000,700, "PE3")
     PE3.draw()
     #Dibujar las Caches
-    Cache1 = Cache(canvas, 200,400, "Cache 1")
+    Cache1 = Cache(canvas, 200,500, "Cache 1")
     Cache1.draw()
-    Cache2 = Cache(canvas, 600,400, "Cache 2")
+    Cache2 = Cache(canvas, 600,500, "Cache 2")
     Cache2.draw()
-    Cache3 = Cache(canvas, 1000,400, "Cache 3")
+    Cache3 = Cache(canvas, 1000,500, "Cache 3")
     Cache3.draw()
     memory.paint_cell(3, "red")
     #Iniciar la aplicación
