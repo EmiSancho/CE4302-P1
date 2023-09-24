@@ -1,7 +1,7 @@
 #include <iostream>
 #include <bitset>
 
-class entry{
+class Entry{
 private: 
     std::string status;
     std::string addrs;
@@ -9,7 +9,7 @@ private:
 
 public:
     // Constructor to initialize an Entry
-    entry(const std::string& status, const std::string& addrs, const int data)
+    Entry(const std::string& status, const std::string& addrs, const int data)
         : status(status), addrs(addrs), data(data) {
     }   
 
@@ -46,11 +46,11 @@ public:
     }
 };
 
-class cache{
+class Cache{
 public:
-    entry e1, e2, e3, e4;
+    Entry e1, e2, e3, e4;
 
-    cache()
+    Cache()
         : e1("N","0",0), e2("N","0",0), e3("N","0",0), e4("N","0",0) {
     }
 
