@@ -1,57 +1,13 @@
 #include <iostream>
-#include <bitset>
-
-class Entry{
-private: 
-    std::string status;
-    std::string addrs;
-    int data; 
-
-public:
-    // Constructor to initialize an Entry
-    Entry(const std::string& status, const std::string& addrs, const int data)
-        : status(status), addrs(addrs), data(data) {
-    }   
-
-
-    bool isEmpty() const { return (status == "N") ? true : false; }
-    bool exist(std::string addr) const { return (addrs == addr) ? true : false; }
-
-    void setStatus(const std::string& newStatus) {
-        status = newStatus;
-    }
-
-    void setAddrs(const std::string& newAddrs) {
-        addrs = newAddrs;
-    }
-
-    void setData(const int newData) {
-        data = newData;
-    }
-
-    std::string getStatus() const {
-        return status;
-    }
-
-    std::string getAddrs() const {
-        return addrs;
-    }
-
-    int getData() const {
-        return data;
-    }
-
-    void print(){
-        std::cout <<  status << " | " << "0x" <<addrs << " | " << data << std::endl;
-    }
-};
+#include "../state_enum.cpp"
+#include "cache_entry.cpp"
 
 class Cache{
 public:
     Entry e1, e2, e3, e4;
 
     Cache()
-        : e1("N","0",0), e2("N","0",0), e3("N","0",0), e4("N","0",0) {
+        : e1(StateEnum::Null,"0",0), e2(StateEnum::Null,"0",0), e3(StateEnum::Null,"0",0), e4(StateEnum::Null,"0",0) {
     }
 
     void print(){
@@ -84,7 +40,7 @@ public:
         }
     }
 
-    void loadValue(int entryNumber, const std::string& status, const std::string& addr, int data) {
+    void loadValue(int entryNumber, const StateEnum& status, const std::string& addr, int data) {
         switch (entryNumber) {
             case 1:
                 e1.setStatus(status);

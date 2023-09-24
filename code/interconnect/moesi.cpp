@@ -1,27 +1,25 @@
 #include <iostream>
-#include <unordered_map>
-#include <vector>
+#include "../pe+mem/cache-mem.cpp"
+#include "../mem/main_mem.cpp"
+#include "../pe+mem/pe.cpp"
 
 // Estados del MOESI
 enum CacheState { Modified, Owned, Exclusive, Shared, Invalid };
 // Acciones de la cache
 enum CacheEvent { WriteHit, ReadHit, WriteMiss, ReadMiss};
 
-class CacheLine {
-public:
-    int data;
-    CacheState state;
-    // Constructor vacio
-    CacheLine() : state(CacheState::Invalid), data(0) {}
-};
 
-class Cache {
+
+class Moesi{
 public:
-    std::unordered_map<int, CacheLine> lines;
-    CacheEvent cache_event;
+    Cache cache;
+
+    Moesi(MainMemory memory, PE pe1, PE pe2, PE pe3){
+    }
 
     // Método para leer un dato de la caché
-    int read(int address) {
+    /*
+    void read(int address) {
         if (lines.find(address) == lines.end() || lines[address].state == CacheState::Invalid) {
             // Cache read miss
             cache_event = CacheEvent::ReadMiss;
@@ -50,13 +48,8 @@ public:
             cache_event = CacheEvent::WriteHit;
         }
     }
-};
 
-class Moesi{
-public:
-    Cache cache;
-
-    void protocol(int processor_id, int address){
+    void changeState(int processor_id, int address){
 
         if (cache.lines[address].state == CacheState::Modified){
             switch (cache.cache_event){
@@ -158,16 +151,6 @@ public:
         }
 
     }
+    */
 
 };
-
-int main() {
-
-    int processor_id = 0;
-    int address = 42;
-    Moesi bus;
-
-    bus.protocol(processor_id, address);
-
-    return 0;
-}

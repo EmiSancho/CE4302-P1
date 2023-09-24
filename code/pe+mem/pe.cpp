@@ -3,15 +3,15 @@
 #include "random-code-generator.cpp"
 #include "instruc-mem.cpp"
 
-class pe{
+class PE{
 private:
     int PC = 0;
     generateRandomCode codeGenerator;
     instrucctionMemory INSTRUCTION_MEMORY;
-    cache CACHE;
+    Cache CACHE;
 
 public: 
-    pe(){
+    PE(){
         std::cout << "Step 1. Generate random code" << std::endl;
         std::vector<std::string> code = codeGenerator.getRandomCode(); 
 
@@ -32,7 +32,7 @@ public:
         //gets a response (estado, addrs, data)
 
         int entry = CACHE.getNextEmptyEntry();
-        CACHE.loadValue(entry,"M",instruction.substr(5), data);
+        CACHE.loadValue(entry,StateEnum::Modified,instruction.substr(5), data);
 
         PC++;
         data++; 
