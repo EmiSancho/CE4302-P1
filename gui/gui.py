@@ -26,6 +26,7 @@ def main():
     #Dibujar la memoria compartida
     memory = Memory(canvas, 390,30)
     memory.draw()
+    memory.paint_cell(2, constants.PALE_BLUE)
     #Dibujar las PEs
     PE1 = ProcessingElement(canvas, 200,750, "PE1")
     PE1.draw()
@@ -38,6 +39,8 @@ def main():
     Cache1.draw()
     Cache2 = Cache(canvas, 600,550, "Cache 2")
     Cache2.draw()
+    Cache2.paint_cell(2, constants.PALE_RED, "val1", "val2", "val3")
+    Cache1.paint_cell(3, constants.PALE_GREEN, "val1", "val2", "val3")
     Cache3 = Cache(canvas, 1000,550, "Cache 3")
     Cache3.draw()
     #Dibujar Data Bus
