@@ -8,10 +8,12 @@ private:
     int PC = 0;
     generateRandomCode codeGenerator;
     instrucctionMemory INSTRUCTION_MEMORY;
-    Cache CACHE;
 
-public: 
-    PE(){
+public:
+    int processor_id;
+    Cache CACHE;
+    PE(int processor_id){
+        this->processor_id = processor_id;
         std::cout << "Step 1. Generate random code" << std::endl;
         std::vector<std::string> code = codeGenerator.getRandomCode(); 
 

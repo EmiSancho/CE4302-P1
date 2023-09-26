@@ -6,8 +6,7 @@ enum StateEnum {
     Owned, 
     Exclusive, 
     Shared, 
-    Invalid,
-    Null
+    Invalid
 };
 
 #endif

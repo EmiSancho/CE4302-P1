@@ -3,6 +3,7 @@
 
 class Entry{
 private: 
+    int ID;
     StateEnum status;
     std::string addrs;
     int data; 
@@ -14,7 +15,7 @@ public:
     }   
 
 
-    bool isEmpty() const { return (status == StateEnum::Null) ? true : false; }
+    bool isEmpty() const { return (data == -1) ? true : false; }
     bool exist(std::string addr) const { return (addrs == addr) ? true : false; }
 
     void setStatus(const StateEnum& newStatus) {
@@ -39,6 +40,10 @@ public:
 
     int getData() const {
         return data;
+    }
+
+    int getID(){
+        return ID;
     }
 
     void print(){

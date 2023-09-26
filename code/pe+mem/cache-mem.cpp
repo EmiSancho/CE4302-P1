@@ -7,7 +7,7 @@ public:
     Entry e1, e2, e3, e4;
 
     Cache()
-        : e1(StateEnum::Null,"0",0), e2(StateEnum::Null,"0",0), e3(StateEnum::Null,"0",0), e4(StateEnum::Null,"0",0) {
+        : e1(StateEnum::Invalid,"0",-1), e2(StateEnum::Invalid,"0",-1), e3(StateEnum::Invalid,"0",0), e4(StateEnum::Invalid,"0",-1) {
     }
 
     void print(){
@@ -26,6 +26,22 @@ public:
         return (e1.exist(addr) || e2.exist(addr) || e3.exist(addr) || e4.exist(addr));
     }
 
+    Entry getEntry(std::string addr){
+        if (exists(addr)){
+            if (e1.getAddrs() == addr){
+                return e1;
+            }else if (e2.getAddrs() == addr){
+                return e2;
+            }else if (e3.getAddrs() == addr){
+                return e3;
+            }else if (e4.getAddrs() == addr){
+                return e4;
+            }else {
+                std::cout << "Invalid address direction." << std::endl;
+            }
+        }
+    }
+
     int getNextEmptyEntry() const {
         if (e1.isEmpty()) {
             return 1;
@@ -40,8 +56,8 @@ public:
         }
     }
 
-    void loadValue(int entryNumber, const StateEnum& status, const std::string& addr, int data) {
-        switch (entryNumber) {
+    void loadValue(int entryID, const StateEnum& status, const std::string& addr, int data) {
+        switch (entryID) {
             case 1:
                 e1.setStatus(status);
                 e1.setAddrs(addr);
@@ -63,7 +79,7 @@ public:
                 e4.setData(data);
                 break;
             default:
-                std::cout << "Invalid entry number." << std::endl;
+                std::cout << "Invalid entry ID." << std::endl;
         }
     }
 

@@ -11,42 +11,107 @@ enum CacheEvent { WriteHit, ReadHit, WriteMiss, ReadMiss};
 
 
 class Moesi{
-public:
-    Cache cache;
+private:
 
-    Moesi(MainMemory memory, PE pe1, PE pe2, PE pe3){
+    MainMemory memory;
+    PE pe1, pe2, pe3;
+    PE peLocal, peExternal1, peExternal2;
+
+    void assignCacheID(int processor_id){
+        if (processor_id == pe1.processor_id){
+            peLocal = pe1;
+            peExternal1 = pe2;
+            peExternal2 = pe3;
+        }else if(processor_id == pe2.processor_id){
+            peLocal = pe2;
+            peExternal1 = pe1;
+            peExternal2 = pe3;
+        }else if(processor_id == pe3.processor_id){
+            peLocal = pe3;
+            peExternal1 = pe1;
+            peExternal2 = pe2;
+        }else{
+            std::cout << "Invalid processor id" << std::endl;
+        }
+
     }
 
-    // Método para leer un dato de la caché
-    /*
-    void read(int address) {
-        if (lines.find(address) == lines.end() || lines[address].state == CacheState::Invalid) {
-            // Cache read miss
-            cache_event = CacheEvent::ReadMiss;
-            return -1;  // Indica que no se encuentra en la caché
-        } else {
-            // Cache read hit
-            cache_event = CacheEvent::ReadHit;
-            return lines[address].data;
+public:
+
+    //Verificar que los cambios se mantengan en el interconnect
+    Moesi(MainMemory memory, PE pe1, PE pe2, PE pe3){
+        this->memory = memory;
+        this->pe1 = pe1;
+        this->pe2 = pe2;
+        this->pe3 = pe3;
+    }
+
+    // Método para leer un dato de la cach
+    void read(int origen_id, std::string address) {
+        //Asignamos los id de las caches
+        assignCacheID(origen_id);
+
+        //verifico si existe en el cache local
+            // Si devuelve true, verificar estado
+                // Obtener cual entry tiene el address
+                // Obtener estado entry
+                    //Si esta en M, E, S entonces devuelvo el valor local
+
+                    //Si esta en I, tengo que buscar el valor en las otras caches
+                        //Alguna de las caches externas tiene que tener el address con estado M o E
+                            //Si esta en estado E, paso los estados de las caches a S y tomo el dato de memoria
+                            //Si esta en estado M, escribo en memoria en el address y luego paso los estados de las caches a S y tomo el dato de memoria
+            // Si devuelve false
+                //Verifico si la direccion existe en las caches externas
+                    //Si existe, verifico el estado
+                        //Si el estado esta en E
+                            //Cambio el estado a S en ambas caches y leo el dato de memoria
+                        //Si el estado enta en M
+                            //Escribo en memoria en el address y luego paso los estados de ambas caches a S y tomo el dato de memoria
+                        //Si el estado esta en S
+                            //Leo el dato address directamente de memoria
+                //Si la direccion no existe en las caches externas
+                    // Leo el dato en memoria y paso al estado E
+        
+        if (peLocal.CACHE.exists(address)){
+            switch (peLocal.CACHE.getEntry(address).getStatus()) {
+                case StateEnum::Modified:
+                case StateEnum::Exclusive: 
+                case StateEnum::Shared:
+                // Devolver valor local
+                    peLocal.CACHE.getEntry(address).getData();
+                    break;
+                case StateEnum::Invalid:
+                    if (peExternal1.CACHE.exists(address)){
+                        switch (peExternal1.CACHE.getEntry(address).getStatus()) {
+                            case StateEnum::Exclusive:
+                                peLocal.CACHE.loadValue(peLocal.CACHE.getEntry(address).getID(), StateEnum::Shared, address, memory.read(address));
+                                peExternal1.CACHE.getEntry(address).setStatus(StateEnum::Shared);
+                                
+                                break;
+                            case StateEnum::Modified:
+
+                                break;
+                        }   
+                    }else if(peExternal2.CACHE.exists(address)){
+
+                    }else{
+
+                    }
+                    break;
+            }
+           
+
         }
+        // Caso cache externo
+        // Caso Memoria
+         
+        
     }
 
     // Método para escribir un dato en la caché
-    void write(int address, int data, CacheState new_state) {
-        if (lines.find(address) == lines.end()) {
-            // La línea no existe en la cache, la creamos
-            // Cache write miss
-            cache_event = CacheEvent::WriteMiss;
-            lines[address] = CacheLine();
-            lines[address].data = data;
-            lines[address].state = new_state;
-        }else{
-            // La linea existe en la cache y se puede actualizar
-            // Cache write hit
-            lines[address].data = data;
-            lines[address].state = new_state;
-            cache_event = CacheEvent::WriteHit;
-        }
+    void write(int origen_id, std::string address, ) {
+
     }
 
     void changeState(int processor_id, int address){
@@ -151,6 +216,5 @@ public:
         }
 
     }
-    */
 
 };
