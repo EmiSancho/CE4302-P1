@@ -15,11 +15,14 @@ void ModifyVariable(int id) {
         std::unique_lock<std::mutex> lock(mtx);
 
         // Esperar hasta que haya una solicitud en la cola
+        // cv.wait(lock, predicate): cv.wait
         cv.wait(lock, []{ return !modificationRequests.empty(); });
 
         // Procesar la solicitud
+
         // Obtiene el primer elemento de la cola
         int request = modificationRequests.front();
+        // Lo saca de la cola
         modificationRequests.pop();
 
         // Realizar la modificación en la variable compartida
