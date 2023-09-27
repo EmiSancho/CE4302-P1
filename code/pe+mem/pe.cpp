@@ -33,8 +33,7 @@ public:
         //sents a mgs to the interconect (instr, addrs)
         //gets a response (estado, addrs, data)
 
-        int entry = CACHE.getNextEmptyEntry();
-        CACHE.loadValue(entry,StateEnum::Modified,instruction.substr(5), data);
+        CACHE.loadValue(StateEnum::Modified,instruction.substr(5), data);
 
         PC++;
         data++; 
