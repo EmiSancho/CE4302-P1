@@ -2,10 +2,11 @@
 #include "../pe+mem/cache-mem.cpp"
 #include "../mem/main_mem.cpp"
 #include "../pe+mem/pe.cpp"
+#include <type_traits>
 
 class Moesi{
 private:
-    // Invalida los estados de los caches externos cuando el local hace write de una direccion que comparten
+    // Invalida los estados de los caches externos cuando el local hace writeMESI de una direccion que comparten
     void invalidateCaches(std::string address, PE peExternal1, PE peExternal2){
         if (peExternal1.CACHE.exists(address) && peExternal1.CACHE.getEntry(address).getStatus() == StateEnum::Shared){
             peExternal1.CACHE.getEntry(address).setStatus(StateEnum::Invalid);
@@ -43,7 +44,7 @@ public:
     }
 
     // Metodo para leer un dato de la cache
-    int read(int origen_id, std::string address, MainMemory memory, PE peLocal, PE peExternal1, PE peExternal2) {
+    int readMESI(int origen_id, std::string address, MainMemory memory, PE peLocal, PE peExternal1, PE peExternal2) {
         // Try catch para verificar que address es valido
         //Asignamos los id de las caches
         //assignCacheID(origen_id);
@@ -184,7 +185,7 @@ public:
     }
 
     // Metodo para escribir un dato en la cache
-    void write(std::string address, int data, MainMemory memory, PE peLocal, PE peExternal1, PE peExternal2) {
+    void writeMESI(std::string address, int data, MainMemory memory, PE peLocal, PE peExternal1, PE peExternal2) {
         // Si existe el address en el cache local
         if(peLocal.CACHE.exists(address)){
             // Verifico el estado del entry
@@ -359,6 +360,5 @@ public:
             }
         }
     }
-    // Metodo de response cada vez que escribe o no y lee o no
 
 };
