@@ -1,0 +1,2 @@
+Para compilar: g++ pe.cpp -o pe
+Para ejecutar: ./pe

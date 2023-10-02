@@ -90,17 +90,36 @@ void ConsumerThread(RequestManager& requestManager) {
     }
 }
 
-// Selección de caché del PE de la request y de las otras cachés para el protocolo MESI
-void CacheSelection(int processorId, int address, MESI mesi, MESI2 mesi2) {
+    // Metodo de response cada vez que escribe o no y lee o no
+    void ejecutarMetodos() {
+        bool readExecuted = false;
+        bool writeExecuted = false;
 
-    for (int i = 0; i < 3; ++i) {
-        if (i != processorId) {
-            MESI2(processorId, address, CacheLine.state);
+        try {
+            readMESI();
+            readExecuted = true;
+        } catch (...) {
+            readExecuted = false;
         }
-        else {
-            MESI(processorId, address, CacheLine.state);
+
+        try {
+            writeMESI();
+            writeExecuted = true;
+        } catch (...) {
+            writeExecuted = false;
         }
-    }
+
+        if (readExecuted) {
+            std::cout << "Se hizo lectura" << std::endl;
+        } else {
+            std::cout << "No se pudo leer." << std::endl;
+        }
+
+        if (writeExecuted) {
+            std::cout << "Se hizo una escritura." << std::endl;
+        } else {
+            std::cout << "No se pudo escribir." << std::endl;
+        }
 }
 
 int main() {
