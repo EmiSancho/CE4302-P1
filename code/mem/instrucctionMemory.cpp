@@ -29,7 +29,7 @@ public:
 
     // Prints memory's content
     void printMemory() {
-        std::cout << "Memory Content:" << std::endl;
+        std::cout << "\nMemory Content:" << std::endl;
         for (int i = 0; i < 8; i++) {
             std::cout << memory[i] << std::endl;
         }

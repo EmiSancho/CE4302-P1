@@ -2,6 +2,7 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include <bitset>
 
 class generateRandomCode {
 public:

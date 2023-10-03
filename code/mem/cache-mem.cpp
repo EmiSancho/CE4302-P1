@@ -1,13 +1,13 @@
 #include <iostream>
 #include "../state_enum.cpp"
-#include "cache_entry.cpp"
+#include "cache-entry.cpp"
 
 class Cache{
 public:
     CacheEntry e1, e2, e3, e4;
 
     Cache()
-        : e1(1,StateEnum::Invalid,"0",-1), e2(2, StateEnum::Invalid,"0",-1), e3(3, StateEnum::Invalid,"0",0), e4(4, StateEnum::Invalid,"0",-1) {
+        : e1(1,StateEnum::Invalid,"0",-1), e2(2, StateEnum::Invalid,"0",-1), e3(3, StateEnum::Invalid,"0",-1), e4(4, StateEnum::Invalid,"0",-1) {
     }
 
     void print(){
