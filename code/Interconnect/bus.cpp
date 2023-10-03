@@ -4,52 +4,28 @@
 #include <queue>
 #include <condition_variable>
 #include <thread>
-#include "utils.hpp"
+#include "../utils.hpp"
+#include "../packet_enum.cpp"
 //#include "MESI.cpp"
-
-//Writeback policy!!!!!!!!!!!
-
-// Variable global modo para cuando es moesi o mesi
-// Prueba 3 pe con hilos distintos con request
-
-// Estados MESI
-enum MESIState {
-    Modified,
-    Exclusive,
-    Shared,
-    Invalid
-};
 
 class CacheLine {
 public:
     int data;
-    MESIState state;
+    StateEnum state;
     // Inicialización de una caché vacía
     CacheLine() : data(0), state(Invalid) {}
-};
-
-// Estructura para los requests de los PE
-class RequestPacket {
-public:
-    int processor_id;
-    int address;
-    int request;
-    int state;
-
-    RequestPacket(int pid, int addr, int req, int st)
-        : processor_id(pid), address(addr), request(req), state(st) {}
 };
 
 // Cola de solicitudes de los PE
 class RequestManager {
 private:
-    std::queue<RequestPacket> requestQueue;
+    PacketEnum requestQueue;
     std::mutex mutex;
 
 public:
-    void AddRequest(int processor_id, int address, int request, int state) {
+
+    void AddRequest(RequestPacket& packet) {
         std::lock_guard<std::mutex> lock(mutex);
-        RequestPacket packet(processor_id, address, request, state);
         requestQueue.push(packet);
     }
 
@@ -65,15 +41,15 @@ public:
     }
 };
 
-void ProducerThread(RequestManager& requestManager, int processor_id, int address, int request, int state) {
+void ProducerThread(RequestManager& requestManager, RequestPacket& packet) {
 
-    requestManager.AddRequest(processor_id, address, request, state);
+    requestManager.AddRequest(packet);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 void ConsumerThread(RequestManager& requestManager) {
     while (true) {
-        RequestPacket* packet = new RequestPacket(-1, -1, -1, -1);
+        RequestPacket* packet;
 
         if (requestManager.GetRequest(*packet)) {
             // Procesa el request

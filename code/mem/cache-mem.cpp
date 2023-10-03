@@ -1,6 +1,6 @@
 #include <iostream>
 #include "../state_enum.cpp"
-#include "cache-entry.cpp"
+#include "../mem/cache-entry.cpp"
 
 class Cache{
 public:

@@ -1,7 +1,7 @@
 #include <iostream>
-#include "../pe+mem/cache-mem.cpp"
+#include "../mem/cache-mem.cpp"
 #include "../mem/main_mem.cpp"
-#include "../pe+mem/pe.cpp"
+#include "../pe/pe.cpp"
 #include <type_traits>
 
 class Mesi{

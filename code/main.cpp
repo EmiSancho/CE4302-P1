@@ -1,7 +1,8 @@
 #include <iostream>
-#include "./code/pe+mem/random-code-generator.cpp"
-#include "./code/pe+mem/pe.cpp"
-#include "busInterconnect.cpp"
+//#include "./pe/random-code-generator.cpp"
+#include "./pe/pe.cpp"
+//#include "./interconnect/bus.cpp"
+
 
 int main() {
     const int PES = 3;
@@ -20,13 +21,13 @@ int main() {
     PE PE1(1, instMemPE1); 
 
     //Initializing busInterconnect 
-    BusInterconnect bus;
-    std::vector<std::thread> threads;
+    //BusInterconnect bus;
+    //std::vector<std::thread> threads;
 
     // Thread per PE
-    for (int i = 0; i < PES; ++i) {
-        threads.emplace_back(PEThread, i, std::ref(bus), 5);
-    }
+    // for (int i = 0; i < PES; ++i) {
+    //     threads.emplace_back(PEThread, i, std::ref(bus), 5);
+    // }
 
     return 0;
 }
