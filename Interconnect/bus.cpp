@@ -35,9 +35,11 @@ public:
     int address;
     int request;
     int state;
+    // Protocol: 1 MESi, 2 MOESi
+    int protocol;
 
-    RequestPacket(int pid, int addr, int req, int st)
-        : processor_id(pid), address(addr), request(req), state(st) {}
+    RequestPacket(int pid, int addr, int req, int st, int prt)
+        : processor_id(pid), address(addr), request(req), state(st), protocol(prt) {}
 };
 
 // Cola de solicitudes de los PE
@@ -47,9 +49,9 @@ private:
     std::mutex mutex;
 
 public:
-    void AddRequest(int processor_id, int address, int request, int state) {
+
+    void AddRequest(RequestPacket& packet) {
         std::lock_guard<std::mutex> lock(mutex);
-        RequestPacket packet(processor_id, address, request, state);
         requestQueue.push(packet);
     }
 
@@ -65,15 +67,15 @@ public:
     }
 };
 
-void ProducerThread(RequestManager& requestManager, int processor_id, int address, int request, int state) {
+void ProducerThread(RequestManager& requestManager, RequestPacket& packet) {
 
-    requestManager.AddRequest(processor_id, address, request, state);
+    requestManager.AddRequest(packet);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 void ConsumerThread(RequestManager& requestManager) {
     while (true) {
-        RequestPacket* packet = new RequestPacket(-1, -1, -1, -1);
+        RequestPacket* packet;
 
         if (requestManager.GetRequest(*packet)) {
             // Procesa el request
