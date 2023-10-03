@@ -10,8 +10,8 @@ public:
         : e1(1,StateEnum::Invalid,"0",-1), e2(2, StateEnum::Invalid,"0",-1), e3(3, StateEnum::Invalid,"0",-1), e4(4, StateEnum::Invalid,"0",-1) {
     }
 
-    void print(){
-        std::cout << "Cache Content:" << std::endl;
+    void print(int pe_id){
+        std::cout << "PE"<< pe_id << ", cache content:" << std::endl;
         e1.print();
         e2.print();
         e3.print();

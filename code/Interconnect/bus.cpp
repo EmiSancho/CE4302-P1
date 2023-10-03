@@ -6,30 +6,23 @@
 #include <thread>
 #include "../utils.hpp"
 #include "../packet_enum.cpp"
+#include "../state_enum.cpp"
 //#include "MESI.cpp"
-
-class CacheLine {
-public:
-    int data;
-    StateEnum state;
-    // Inicialización de una caché vacía
-    CacheLine() : data(0), state(Invalid) {}
-};
 
 // Cola de solicitudes de los PE
 class RequestManager {
 private:
-    PacketEnum requestQueue;
+    std::queue<PacketEnum>  requestQueue;
     std::mutex mutex;
 
 public:
 
-    void AddRequest(RequestPacket& packet) {
+    void AddRequest(PacketEnum packet) {
         std::lock_guard<std::mutex> lock(mutex);
         requestQueue.push(packet);
     }
 
-    bool GetRequest(RequestPacket& packet) {
+    bool GetRequest(PacketEnum packet) {
         std::lock_guard<std::mutex> lock(mutex);
         if (requestQueue.empty()) {
             return false;
@@ -41,7 +34,7 @@ public:
     }
 };
 
-void ProducerThread(RequestManager& requestManager, RequestPacket& packet) {
+void ProducerThread(RequestManager& requestManager, PacketEnum packet) {
 
     requestManager.AddRequest(packet);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -49,18 +42,18 @@ void ProducerThread(RequestManager& requestManager, RequestPacket& packet) {
 
 void ConsumerThread(RequestManager& requestManager) {
     while (true) {
-        RequestPacket* packet;
+       PacketEnum packet;
 
-        if (requestManager.GetRequest(*packet)) {
+        if (requestManager.GetRequest(packet)) {
             // Procesa el request
-            std::cout << "Received: Processor ID " << packet->processor_id
-                      << ", Address " << packet->address
-                      << ", Request " << packet->request
-                      << ", State " << packet->state << std::endl;
+            // std::cout << "Received: Processor ID " << packet->processor_id
+            //           << ", Address " << packet->address
+            //           << ", Request " << packet->request
+            //           << ", State " << packet->state << std::endl;
         }
 
-        // Liberar memoria
-        delete packet;
+        // // Liberar memoria
+        // delete packet;
 
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
@@ -72,14 +65,14 @@ void ConsumerThread(RequestManager& requestManager) {
         bool writeExecuted = false;
 
         try {
-            readMESI();
+            //readMESI();
             readExecuted = true;
         } catch (...) {
             readExecuted = false;
         }
 
         try {
-            writeMESI();
+            //writeMESI();
             writeExecuted = true;
         } catch (...) {
             writeExecuted = false;
@@ -98,23 +91,23 @@ void ConsumerThread(RequestManager& requestManager) {
         }
 }
 
-int main() {
+// int main() {
 
-    RequestManager requestManager;
+//     RequestManager requestManager;
 
-    /*
-    std::thread thread1(ThreadFunction, 1);
-    std::thread thread2(ThreadFunction, 2);
-    std::thread thread3(ThreadFunction, 3);
-    */
+//     /*
+//     std::thread thread1(ThreadFunction, 1);
+//     std::thread thread2(ThreadFunction, 2);
+//     std::thread thread3(ThreadFunction, 3);
+//     */
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));
-    MESI mesi;
-    MESI2 mesi2;
-    int processor_id = 0;
-    int address = 42;
-    //Bus bus;
-    //bus.ReadRequest(processor_id, address);
+//     std::this_thread::sleep_for(std::chrono::milliseconds(50));
+//     MESI mesi;
+//     MESI2 mesi2;
+//     int processor_id = 0;
+//     int address = 42;
+//     //Bus bus;
+//     //bus.ReadRequest(processor_id, address);
 
-    return 0;
-}
+//     return 0;
+// }

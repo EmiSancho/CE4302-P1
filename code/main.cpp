@@ -1,7 +1,7 @@
 #include <iostream>
 //#include "./pe/random-code-generator.cpp"
 #include "./pe/pe.cpp"
-//#include "./interconnect/bus.cpp"
+#include "./interconnect/bus.cpp"
 
 
 int main() {
@@ -21,7 +21,7 @@ int main() {
     PE PE1(1, instMemPE1); 
 
     //Initializing busInterconnect 
-    //BusInterconnect bus;
+    RequestManager bus;
     //std::vector<std::thread> threads;
 
     // Thread per PE
