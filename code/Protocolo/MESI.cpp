@@ -44,7 +44,7 @@ public:
     }
 
     // Metodo para leer un dato de la cache
-    int readMESI(int origen_id, std::string address, MainMemory memory, PE peLocal, PE peExternal1, PE peExternal2) {
+    int readMESI(std::string address, MainMemory memory, PE peLocal, PE peExternal1, PE peExternal2) {
         // Try catch para verificar que address es valido
         //Asignamos los id de las caches
         //assignCacheID(origen_id);
