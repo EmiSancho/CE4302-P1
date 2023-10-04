@@ -45,6 +45,8 @@ class DataBus(Figure):
         self.draw_data_bus_to_cache_arrow(2, -1, "black")
         self.draw_data_bus_to_cache_arrow(3, -1, "black")
 
+        self.canvas.create_text(260, 350, text="Data Bus", font=self.figure_name_font)
+
     def draw_data_bus_to_cache_arrow(self, cache_number, selector, color):
         if selector == 0:
             self.canvas.create_polygon(self.data_bus_to_cache[cache_number-1][0], fill="white", outline="white")

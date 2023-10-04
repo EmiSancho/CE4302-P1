@@ -3,6 +3,7 @@ import constants
 from gui_elements.address_bus import AddressBus
 from gui_elements.data_bus import DataBus
 from gui_elements.cache import Cache
+from gui_elements.shared import Shared
 from gui_elements.memory import Memory
 from gui_elements.processing_element import ProcessingElement
 
@@ -49,7 +50,12 @@ def main():
 
     #Dibujar Address Bus
     add = AddressBus(canvas)
-    add.draw("black")
+    add.draw()
+
+    #Dibujar Data Bus
+    shared = Shared(canvas)
+    shared.draw()
+
     #Iniciar la aplicación
     window.mainloop()
 
