@@ -28,13 +28,7 @@ def main():
     memory = Memory(canvas, 390,30)
     memory.draw()
     memory.paint_cell(2, constants.PALE_BLUE)
-    #Dibujar las PEs
-    PE1 = ProcessingElement(canvas, 200,750, "PE1")
-    PE1.draw()
-    PE2 = ProcessingElement(canvas, 600,750, "PE2")
-    PE2.draw()
-    PE3 = ProcessingElement(canvas, 1000,750, "PE3")
-    PE3.draw()
+
     #Dibujar las Caches
     Cache1 = Cache(canvas, 200,550, "Cache 1")
     Cache1.draw()
@@ -47,6 +41,14 @@ def main():
     #Dibujar Data Bus
     dataBus = DataBus(canvas)
     dataBus.draw()
+
+    #Dibujar las PEs
+    PE1 = ProcessingElement(canvas, 200,780, "PE1")
+    PE1.draw()
+    PE2 = ProcessingElement(canvas, 600,780, "PE2")
+    PE2.draw()
+    PE3 = ProcessingElement(canvas, 1000,780, "PE3")
+    PE3.draw()
 
     #Dibujar Address Bus
     add = AddressBus(canvas)
