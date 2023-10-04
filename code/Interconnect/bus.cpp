@@ -5,24 +5,26 @@
 #include <condition_variable>
 #include <thread>
 #include "../utils.hpp"
-#include "../packet_enum.cpp"
+#include "../package.h"
 #include "../state_enum.cpp"
+
 //#include "MESI.cpp"
 
 // Cola de solicitudes de los PE
 class RequestManager {
 private:
-    std::queue<PacketEnum>  requestQueue;
+    std::queue<Package>  requestQueue;
     std::mutex mutex;
 
 public:
 
-    void AddRequest(PacketEnum packet) {
+    void AddRequest(Package& packet) {
         std::lock_guard<std::mutex> lock(mutex);
         requestQueue.push(packet);
+        packet.print();
     }
 
-    bool GetRequest(PacketEnum packet) {
+    bool GetRequest(Package& packet) {
         std::lock_guard<std::mutex> lock(mutex);
         if (requestQueue.empty()) {
             return false;
@@ -34,7 +36,7 @@ public:
     }
 };
 
-void ProducerThread(RequestManager& requestManager, PacketEnum packet) {
+void ProducerThread(RequestManager& requestManager, Package& packet) {
 
     requestManager.AddRequest(packet);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -42,15 +44,15 @@ void ProducerThread(RequestManager& requestManager, PacketEnum packet) {
 
 void ConsumerThread(RequestManager& requestManager) {
     while (true) {
-       PacketEnum packet;
+    //    RequestPacket& packet;
 
-        if (requestManager.GetRequest(packet)) {
-            // Procesa el request
-            // std::cout << "Received: Processor ID " << packet->processor_id
-            //           << ", Address " << packet->address
-            //           << ", Request " << packet->request
-            //           << ", State " << packet->state << std::endl;
-        }
+    //     if (requestManager.GetRequest(packet)) {
+    //         // Procesa el request
+    //         // std::cout << "Received: Processor ID " << packet->processor_id
+    //         //           << ", Address " << packet->address
+    //         //           << ", Request " << packet->request
+    //         //           << ", State " << packet->state << std::endl;
+    //     }
 
         // // Liberar memoria
         // delete packet;

@@ -6,7 +6,7 @@
 class instrucctionMemory {
 private:
     std::string memory[8] = {"000000000000"};
-
+    //<xx><2 bits instruccion><8 address>
 public:
     instrucctionMemory() {}
 
@@ -28,8 +28,8 @@ public:
     }
 
     // Prints memory's content
-    void printMemory() {
-        std::cout << "\nMemory Content:" << std::endl;
+    void printMemory(int id) {
+        std::cout << "\nPE"<< id << ", instruccion memory content:" << std::endl;
         for (int i = 0; i < 8; i++) {
             std::cout << memory[i] << std::endl;
         }
