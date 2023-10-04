@@ -17,7 +17,7 @@ def main():
     canvas_height = 900
 
     #Canvas en la ventana
-    canvas = tk.Canvas(window, width=canvas_width, height=canvas_height)
+    canvas = tk.Canvas(window, width=canvas_width, height=canvas_height, bg="white")
     canvas.pack()
 
     # Etiqueta con el título llamativo    
@@ -46,9 +46,10 @@ def main():
     #Dibujar Data Bus
     dataBus = DataBus(canvas)
     dataBus.draw()
+
     #Dibujar Address Bus
     add = AddressBus(canvas)
-    add.draw()
+    add.draw("black")
     #Iniciar la aplicación
     window.mainloop()
 
