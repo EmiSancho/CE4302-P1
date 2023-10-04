@@ -32,7 +32,7 @@ int main() {
     PE PE2(2, instMemPE2);
     // PE PE3(3, instMemPE3); 
 
-    int max = 8;
+    int max = 2;
     std::thread thread1([&PE1, max]() {
         RequestManager bus;
         bool p1_nextInstr = true;
@@ -40,6 +40,7 @@ int main() {
         for (int i = 0; i < max; ++i) {
             package1 = PE1.getNextInstruccion(p1_nextInstr);
             bus.AddRequest(package1);
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
     });
 

@@ -4,9 +4,10 @@
 #include <queue>
 #include <condition_variable>
 #include <thread>
-#include "../utils.hpp"
+//#include "../utils.hpp"
 #include "../package.h"
 #include "../state_enum.cpp"
+#include "../protocolo/MESI.cpp"
 
 //#include "MESI.cpp"
 
@@ -24,42 +25,69 @@ public:
         packet.print();
     }
 
-    bool GetRequest(Package& packet) {
+    Package GetRequest() {
+        std::lock_guard<std::mutex> lock(mutex);
+        Package packet = requestQueue.front();
+        requestQueue.pop();
+        return packet;
+    }
+
+    bool existRequest(){
         std::lock_guard<std::mutex> lock(mutex);
         if (requestQueue.empty()) {
             return false;
         }
-
-        packet = requestQueue.front();
-        requestQueue.pop();
         return true;
     }
-};
 
-void ProducerThread(RequestManager& requestManager, Package& packet) {
+    void ConsumerThread(RequestManager& requestManager) {
+    
+    //instancio MESI
 
-    requestManager.AddRequest(packet);
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-}
+    // dependiendo del request del paquete 
+    // 1 readMesi 2 WriteMesi 
+    
+        while (existRequest()) {
+            Package packet = GetRequest();
+            switch(packet.protocol){
+                case 1: // MESI
+                    Mesi mesi; 
+                    switch (packet.request)
+                    {
+                    case 1: // readMesi
+                    
+                        // instanciar la main memory en el main de forma global  
+                        // PElocal el pe que hacer el request
 
-void ConsumerThread(RequestManager& requestManager) {
-    while (true) {
-    //    RequestPacket& packet;
+                        mesi.readMESI();
+                        break;
+                    
+                    case 2: //writeMesi
+                        mesi.WriteRequest(packet.processor_id, packet.address, 7);
+                        break;
 
-    //     if (requestManager.GetRequest(packet)) {
-    //         // Procesa el request
-    //         // std::cout << "Received: Processor ID " << packet->processor_id
-    //         //           << ", Address " << packet->address
-    //         //           << ", Request " << packet->request
-    //         //           << ", State " << packet->state << std::endl;
-    //     }
+                    default:
+                        std::cout << "Invalid request choice." << std::endl;
+                        break;
+                    }   
+                    break; 
 
-        // // Liberar memoria
-        // delete packet;
+                case 2: //MOESI
+                    break;
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+                default:
+                    std::cout << "Invalid protocol choice." << std::endl;
+                    break;
+            }
+
+            
+
+                
+            //std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        }
     }
-}
+
+};
 
     // Metodo de response cada vez que escribe o no y lee o no
     void ejecutarMetodos() {
