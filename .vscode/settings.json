@@ -47,6 +47,14 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "thread": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "cstring": "cpp",
+        "map": "cpp",
+        "optional": "cpp",
+        "regex": "cpp",
+        "set": "cpp",
+        "string_view": "cpp",
+        "future": "cpp",
+        "iomanip": "cpp"
     }
 }
