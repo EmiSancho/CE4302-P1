@@ -1,9 +1,9 @@
 #pragma once
 
 #include <string>
-#include "../pe+mem/cache-mem.cpp"
+#include "../mem/cache-mem.cpp"
 #include "../mem/main_mem.cpp"
-#include "../pe+mem/pe.cpp"
+#include "../pe/pe.cpp"
 
 class Mesi {
 private:
