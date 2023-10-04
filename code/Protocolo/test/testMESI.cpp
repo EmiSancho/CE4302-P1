@@ -1,10 +1,7 @@
 #define CATCH_CONFIG_MAIN  // Esto le dice a Catch proporcionar la función main
 
 #include "../../catch.hpp"
-#include "../../mem/cache-mem.cpp"
-#include "../../mem/main_mem.cpp"
-#include "../../pe/pe.cpp"
-#include "../MESI.h"
+#include "../MESI.cpp"
 
 TEST_CASE("Mesi", "[Mesi]") {
     Mesi mesi;
@@ -57,7 +54,5 @@ TEST_CASE("Mesi", "[Mesi]") {
         REQUIRE(result == 55);
         REQUIRE(peLocal.CACHE.e1.getStatus() == StateEnum::Shared);
     }
-
-
 
 }

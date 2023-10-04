@@ -4,7 +4,7 @@ set(HEADER_FILES
 )
 
 set(SOURCE_FILES	
-	tests.cpp
+	testMESI.cpp
 )
 
 set(LIBRARY_NAME cpplib)
