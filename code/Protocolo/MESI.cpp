@@ -1,5 +1,4 @@
 #include <iostream>
-#include "../mem/cache-mem.cpp"
 #include "../mem/main_mem.cpp"
 #include "../pe/pe.cpp"
 #include <type_traits>
@@ -124,8 +123,7 @@ public:
                         // Tomo el dato de cache local que se ha actualizado
                         return peLocal.CACHE.getEntry(address).getData();
                         break;
-
-                        
+ 
                     //Si el estado esta en E
                     case StateEnum::Exclusive:
                         //Asigno en un entry local el valor en memoria y cambio el estado a S
@@ -180,6 +178,7 @@ public:
             else{
                 // Buscar el dato de la direccion directamente en memoria
                 peLocal.CACHE.loadValue(StateEnum::Exclusive, address, memory.read(address)); 
+                return memory.read(address);
             }
         }
     }

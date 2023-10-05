@@ -48,7 +48,7 @@ TEST_CASE("Mesi", "[Mesi]") {
         peExternal2.CACHE.e3.setData(55);
 
         // peLocal lee en la misma direccion
-        int result = mesi.readMESI(1, "00", memory, peLocal, peExternal1, peExternal2);
+        int result = mesi.readMESI("00", memory, peLocal, peExternal1, peExternal2);
 
         // Verificar que resultado es 55 y que el estado de la cache local es S
         REQUIRE(result == 55);
