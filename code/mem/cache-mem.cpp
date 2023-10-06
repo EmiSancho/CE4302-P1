@@ -1,3 +1,6 @@
+#ifndef CACHE_H
+#define CACHE_H
+
 #include <iostream>
 #include "../state_enum.cpp"
 #include "../mem/cache-entry.cpp"
@@ -107,3 +110,5 @@ public:
     }
 
 };
+
+#endif 

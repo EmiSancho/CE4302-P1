@@ -1,3 +1,7 @@
+#ifndef CACHEENTRY_H
+#define CACHEENTRY_H
+
+
 #include <iostream>
 #include "../state_enum.cpp"
 
@@ -50,3 +54,5 @@ public:
         std::cout <<  status << " | " << "0x" <<addrs << " | " << data << std::endl;
     }
 };
+
+#endif 

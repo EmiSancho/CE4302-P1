@@ -6,13 +6,15 @@
 
 int main() {
     const int PES = 3;
-    
+    MainMemory& memory = MainMemory::getInstance(); //SINGLETON
+    memory.write("04",4);
+    //memory.print();
 
     // Generate random code
     generateRandomCode codeGenerator;
     std::vector<std::string> randomCodePE1 = codeGenerator.getRandomCode();
     std::vector<std::string> randomCodePE2 = codeGenerator.getRandomCode(); 
-    // std::vector<std::string> randomCodePE3 = codeGenerator.getRandomCode();
+    std::vector<std::string> randomCodePE3 = codeGenerator.getRandomCode();
 
     //Populate the instruccionMemories 
     instrucctionMemory instMemPE1;
@@ -23,16 +25,18 @@ int main() {
     instMemPE2.loadProgram(randomCodePE2);
     // instMemPE2.printMemory(2);
 
-    // instrucctionMemory instMemPE3;
-    // instMemPE3.loadProgram(randomCodePE3);
+    instrucctionMemory instMemPE3;
+    instMemPE3.loadProgram(randomCodePE3);
     // instMemPE3.printMemory(3);
 
    //Initialize the PEs
-    PE PE1(1, instMemPE1); 
-    PE PE2(2, instMemPE2);
-    // PE PE3(3, instMemPE3); 
+    PEManager& peManager = PEManager::getInstance();
+    PE PE1(1, instMemPE1); peManager.registerPE1(&PE1);
+    PE PE2(2, instMemPE2); peManager.registerPE2(&PE2);
+    PE PE3(3, instMemPE3); peManager.registerPE3(&PE3);
 
     int max = 2;
+    memory.print();
     std::thread thread1([&PE1, max]() {
         RequestManager bus;
         bool p1_nextInstr = true;
@@ -40,9 +44,13 @@ int main() {
         for (int i = 0; i < max; ++i) {
             package1 = PE1.getNextInstruccion(p1_nextInstr);
             bus.AddRequest(package1);
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            //std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        
         }
+        bus.ConsumerThread();
     });
+
+    
 
     // std::thread thread2([&PE2, max]() {
     //     RequestManager bus;

@@ -1,3 +1,6 @@
+#ifndef INSTRUCCTIONMEMORY_H
+#define INSTRUCCTIONMEMORY_H
+
 #include <iostream>
 #include <bitset>
 #include <vector>
@@ -37,3 +40,4 @@ public:
 };
 
 
+#endif 

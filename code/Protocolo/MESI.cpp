@@ -4,7 +4,9 @@
 #include <type_traits>
 
 class Mesi{
+
 private:
+    
     // Invalida los estados de los caches externos cuando el local hace writeMESI de una direccion que comparten
     void invalidateCaches(std::string address, PE peExternal1, PE peExternal2){
         if (peExternal1.CACHE.exists(address) && peExternal1.CACHE.getEntry(address).getStatus() == StateEnum::Shared){
