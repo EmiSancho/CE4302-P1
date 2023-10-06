@@ -1,3 +1,7 @@
+#ifndef GENERATERANDOMCODE_H
+#define GENERATERANDOMCODE_H
+
+
 #include <iostream>
 #include <vector>
 #include <cstdlib>
@@ -7,7 +11,7 @@
 class generateRandomCode {
 public:
     int INSTRUC_AMOUNT = 8; // N
-    int INSTRUC_MAX = 3;    // M
+    int INSTRUC_MAX = 2;    // M Read / Write
     int REGISTER_MAX = 16;  // R
     
 
@@ -55,7 +59,7 @@ private:
         for (int i = 0; i < INSTRUC_AMOUNT; ++i) {
             randomAddress[i] = std::rand() % REGISTER_MAX * 4 ;
         }
-        printVector("Random Address:", randomAddress );
+        //printVector("Random Address:", randomAddress );
         return randomAddress;
     }
 
@@ -86,9 +90,10 @@ private:
             }
         }
 
-        printVector("Random Instructions:", randomInstructions );
+        //printVector("Random Instructions:", randomInstructions );
         return randomInstructions;
     }
 };
 
 
+#endif 

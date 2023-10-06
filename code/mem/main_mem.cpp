@@ -3,12 +3,20 @@
 
 
 class MainMemory{
-public:
+private:
     MemoryEntry e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15, e16;
 
     MainMemory():
         e1("00",0), e2("04",0), e3("08",0), e4("0C",0), e5("10",0), e6("14",0), e7("18",0), e8("1C",0),
         e9("20",0), e10("24",0), e11("28",0), e12("2C",0), e13("30",0), e14("34",0), e15("38",0), e16("3C",0){
+    }
+    
+public:
+    
+
+    static MainMemory& getInstance() {
+        static MainMemory instance; // Static instance created only once
+        return instance;
     }
 
 

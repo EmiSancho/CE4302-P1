@@ -9,11 +9,14 @@
 #include "../state_enum.cpp"
 #include "../protocolo/MESI.cpp"
 
-//#include "MESI.cpp"
 
 // Cola de solicitudes de los PE
 class RequestManager {
 private:
+    PE& pe1 = PEManager::getInstance().getPE1();
+    PE& pe2 = PEManager::getInstance().getPE2();
+    PE& pe3 = PEManager::getInstance().getPE3();
+    MainMemory& memory = MainMemory::getInstance(); //SINGLETON
     std::queue<Package>  requestQueue;
     std::mutex mutex;
 
@@ -22,6 +25,7 @@ public:
     void AddRequest(Package& packet) {
         std::lock_guard<std::mutex> lock(mutex);
         requestQueue.push(packet);
+        //std::cerr << "Packet Added" << std::endl;
         packet.print();
     }
 
@@ -33,37 +37,55 @@ public:
     }
 
     bool existRequest(){
+        
         std::lock_guard<std::mutex> lock(mutex);
         if (requestQueue.empty()) {
+            //std::cerr << "existRequest() NO"<< std::endl;
             return false;
         }
+        //std::cerr << "existRequest() YES"<< std::endl;
         return true;
     }
 
-    void ConsumerThread(RequestManager& requestManager) {
-    
-    //instancio MESI
-
-    // dependiendo del request del paquete 
-    // 1 readMesi 2 WriteMesi 
-    
-        while (existRequest()) {
+    //void ConsumerThread(RequestManager& requestManager) {
+    void ConsumerThread() {
+        //std::cerr << "ConsumerThread Started"<< std::endl;
+        // 1 readMesi 2 WriteMesi 
+        Mesi mesi; // It has to be outside of the loop
+        
+        if (existRequest()) {
+        //while (existRequest()) {
             Package packet = GetRequest();
+            packet.print();
+         
             switch(packet.protocol){
-                case 1: // MESI
-                    Mesi mesi; 
+                case 1: // MESI                                           
                     switch (packet.request)
                     {
                     case 1: // readMesi
-                    
-                        // instanciar la main memory en el main de forma global  
-                        // PElocal el pe que hacer el request
-
-                        mesi.readMESI();
+                        std::cerr << "readMESI"<< std::endl;
+                        if(packet.processor_id == 1){
+                            mesi.readMESI(std::to_string(packet.address), memory, pe1,pe2,pe3);
+                        }
+                        if(packet.processor_id == 2){
+                            mesi.readMESI(std::to_string(packet.address), memory, pe2,pe1,pe3);
+                        }
+                        if(packet.processor_id == 3){
+                            mesi.readMESI(std::to_string(packet.address), memory, pe3,pe1,pe2);
+                        }
                         break;
                     
                     case 2: //writeMesi
-                        mesi.WriteRequest(packet.processor_id, packet.address, 7);
+                        std::cerr << "writeMESI"<< std::endl;
+                        if(packet.processor_id == 1){
+                            mesi.writeMESI(std::to_string(packet.address), 7, memory, pe1,pe2,pe3);
+                        }
+                        if(packet.processor_id == 2){
+                            mesi.writeMESI(std::to_string(packet.address), 8, memory, pe2,pe1,pe3);
+                        }
+                        if(packet.processor_id == 3){
+                            mesi.writeMESI(std::to_string(packet.address), 9, memory, pe3,pe1,pe2);
+                        }
                         break;
 
                     default:
@@ -72,8 +94,8 @@ public:
                     }   
                     break; 
 
-                case 2: //MOESI
-                    break;
+                // case 2: //MOESI
+                //     break;
 
                 default:
                     std::cout << "Invalid protocol choice." << std::endl;
@@ -85,6 +107,8 @@ public:
                 
             //std::this_thread::sleep_for(std::chrono::milliseconds(200));
         }
+
+        memory.print();
     }
 
 };
