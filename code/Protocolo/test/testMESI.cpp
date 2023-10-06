@@ -4,7 +4,6 @@
 #include "../MESI.cpp"
 
 TEST_CASE("Mesi", "[Mesi]") {
-    Mesi mesi;
     MainMemory& memory = MainMemory::getInstance(); //SINGLETON
     generateRandomCode codeGenerator;
 
@@ -31,15 +30,17 @@ TEST_CASE("Mesi", "[Mesi]") {
     PE pe2(2, instMemPE2); peManager.registerPE2(&pe2);
     PE pe3(3, instMemPE3); peManager.registerPE3(&pe3);
 
+    Mesi mesi;
+
+    pe1.CACHE.print(pe1.processor_id);
+    
     SECTION("1. Test writeMESI with data 55 on address 00") {
         // peLocal escribe en la direccion 00 con valor 55
-        //memory.write("00", 60);
         pe1.CACHE.print(pe1.processor_id);
         pe2.CACHE.print(pe2.processor_id);
         pe3.CACHE.print(pe3.processor_id);
-        printf("Soy un print: %d\n");
-        mesi.writeMESI(pe1.processor_id, "00", 60, pe1, pe2, pe3);
-        pe1.CACHE.print(pe1.processor_id);
+        printf("Soy un print: \n");
+        mesi.writeMESI(pe1.processor_id, "04", 80, pe1, pe2, pe3);
 
         // Verificar que el dato en e1 es 55 y que el estado de la cache local es M
         REQUIRE(pe1.CACHE.e1.getData() == 60);

@@ -1,14 +1,16 @@
 #include <iostream>
 #include "./pe/pe.cpp"
 #include "./interconnect/bus.cpp"
+//#include "./mem/main_mem.cpp"
 #include <thread>
+
 
 
 int main() {
     const int PES = 3;
     MainMemory& memory = MainMemory::getInstance(); //SINGLETON
     memory.write("04",4);
-    //memory.print();
+    memory.print();
 
     // Generate random code
     generateRandomCode codeGenerator;
@@ -36,7 +38,7 @@ int main() {
     PE PE3(3, instMemPE3); peManager.registerPE3(&PE3);
 
     int max = 2;
-    memory.print();
+    
     std::thread thread1([&PE1, max]() {
         RequestManager bus;
         bool p1_nextInstr = true;
@@ -69,7 +71,7 @@ int main() {
     // });
 
     // // Join the threads to wait for them to complete
-    thread1.join();
+    // thread1.join();
     //thread2.join();
     // thread3.join();
 

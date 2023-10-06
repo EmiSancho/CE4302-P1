@@ -25,8 +25,8 @@ public:
     void AddRequest(Package& packet) {
         std::lock_guard<std::mutex> lock(mutex);
         requestQueue.push(packet);
-        //std::cerr << "Packet Added" << std::endl;
-        //packet.print();
+        std::cerr << "Packet Added" << std::endl;
+        packet.print();
     }
 
     Package GetRequest() {
@@ -65,26 +65,26 @@ public:
                     case 1: // readMesi
                         std::cerr << "readMESI"<< std::endl;
                         if(packet.processor_id == 1){
-                            mesi.readMESI(std::to_string(packet.address), memory, pe1,pe2,pe3);
+                            mesi.readMESI(1,std::to_string(packet.address), pe1,pe2,pe3);
                         }
                         if(packet.processor_id == 2){
-                            mesi.readMESI(std::to_string(packet.address), memory, pe2,pe1,pe3);
+                            mesi.readMESI(2, std::to_string(packet.address),pe2,pe1,pe3);
                         }
                         if(packet.processor_id == 3){
-                            mesi.readMESI(std::to_string(packet.address), memory, pe3,pe1,pe2);
+                            mesi.readMESI(3, std::to_string(packet.address), pe3,pe1,pe2);
                         }
                         break;
                     
                     case 2: //writeMesi
                         std::cerr << "writeMESI"<< std::endl;
                         if(packet.processor_id == 1){
-                            mesi.writeMESI(std::to_string(packet.address), 7, memory, pe1,pe2,pe3);
+                            mesi.writeMESI(1, std::to_string(packet.address), 7, pe1,pe2,pe3);
                         }
                         if(packet.processor_id == 2){
-                            mesi.writeMESI(std::to_string(packet.address), 8, memory, pe2,pe1,pe3);
+                            mesi.writeMESI(2,std::to_string(packet.address), 8, pe2,pe1,pe3);
                         }
                         if(packet.processor_id == 3){
-                            mesi.writeMESI(std::to_string(packet.address), 9, memory, pe3,pe1,pe2);
+                            mesi.writeMESI(3,std::to_string(packet.address), 9, pe3,pe1,pe2);
                         }
                         break;
 
