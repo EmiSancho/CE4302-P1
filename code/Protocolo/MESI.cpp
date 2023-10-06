@@ -210,6 +210,7 @@ public:
                 return peLocal.CACHE.getEntry(address).getData();
             }
         }
+        return 0;
     }
 
     // Metodo para escribir un dato en la cache

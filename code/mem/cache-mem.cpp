@@ -43,6 +43,7 @@ public:
                 std::cout << "Invalid address direction." << std::endl;
             }
         }
+        return e1;  // Not a good practice
     }
 
     int getNextEmptyEntry(){
