@@ -6,7 +6,34 @@
 class Mesi{
 
 private:
+    MainMemory& memory = MainMemory::getInstance(); //SINGLETON
+
+    PE& pe1 = PEManager::getInstance().getPE1(); //SINGLETON
+    PE& pe2 = PEManager::getInstance().getPE2(); //SINGLETON
+    PE& pe3 = PEManager::getInstance().getPE3(); //SINGLETON
+
+    PE& peLocal = pe1;
+    PE& peExternal1 = pe2;
+    PE& peExternal2 = pe3;
     
+    void assignCacheID(int processor_id){
+        if (processor_id == pe1.processor_id){
+            peLocal = pe1;
+            peExternal1 = pe2;
+            peExternal2 = pe3;
+        }else if(processor_id == pe2.processor_id){
+            peLocal = pe2;
+            peExternal1 = pe1;
+            peExternal2 = pe3;
+        }else if(processor_id == pe3.processor_id){
+            peLocal = pe3;
+            peExternal1 = pe1;
+            peExternal2 = pe2;
+        }else{
+            std::cout << "Invalid processor id" << std::endl;
+        }
+    }
+
     // Invalida los estados de los caches externos cuando el local hace writeMESI de una direccion que comparten
     void invalidateCaches(std::string address, PE peExternal1, PE peExternal2){
         if (peExternal1.CACHE.exists(address) && peExternal1.CACHE.getEntry(address).getStatus() == StateEnum::Shared){
@@ -18,7 +45,7 @@ private:
     }
 
     //Escribo en cache y memoria y estoy en E
-    void writeThrough(std::string address, int data, MainMemory memory, PE peLocal, PE peExternal1, PE peExternal2){
+    void writeThrough(std::string address, int data, PE peLocal, PE peExternal1, PE peExternal2){
         //Paso al estado E
         peLocal.CACHE.getEntry(address).setStatus(StateEnum::Exclusive);
         //Escribo el valor de data en la cache local
@@ -30,7 +57,7 @@ private:
     }
     
     //Escribo en memoria cuando estoy en M
-    void writeBack(PE peWB, std::string address, MainMemory memory){
+    void writeBack(PE peWB, std::string address){
         //Escribo el valor del cache en memoria
         memory.write(address, peWB.CACHE.getEntry(address).getData());
         //Paso al estado S        
@@ -40,15 +67,15 @@ private:
 public:
 
     //Verificar que los cambios se mantengan en el interconnect
-    Mesi(){
+    Mesi() {
 
     }
 
     // Metodo para leer un dato de la cache
-    int readMESI(std::string address, MainMemory memory, PE peLocal, PE peExternal1, PE peExternal2) {
+    int readMESI(int origen_id, std::string address, PE peLocal, PE peExternal1, PE peExternal2) {
         // Try catch para verificar que address es valido
         //Asignamos los id de las caches
-        //assignCacheID(origen_id);
+        assignCacheID(origen_id);
         
         //verifico si existe en el cache local
         if (peLocal.CACHE.exists(address)){
@@ -78,7 +105,7 @@ public:
                             //Si esta en estado M
                             case StateEnum::Modified:
                                 // Escribo en memoria en el address y paso el estado de Cache External a S
-                                writeBack(peExternal1, address, memory);
+                                writeBack(peExternal1, address);
                                 // Escribir en cache local el valor actualizado y cambiar su estado a S
                                 peLocal.CACHE.updateValue(peLocal.CACHE.getEntry(address).getID(), StateEnum::Shared, address, memory.read(address));
                                 // Tomo el dato de cache local que se ha actualizado
@@ -101,7 +128,7 @@ public:
                             //Si esta en estado M
                             case StateEnum::Modified:
                                 // Escribo en memoria en el address y paso el estado de Cache External a S
-                                writeBack(peExternal2, address, memory);
+                                writeBack(peExternal2, address);
                                 // Escribir en cache local el valor actualizado y cambiar su estado a S
                                 peLocal.CACHE.updateValue(peLocal.CACHE.getEntry(address).getID(), StateEnum::Shared, address, memory.read(address));
                                 // Tomo el dato de cache local que se ha actualizado
@@ -119,7 +146,7 @@ public:
                 switch (peExternal1.CACHE.getEntry(address).getStatus()) {
                     case StateEnum::Modified:
                         // Escribo en memoria en el address y paso el estado de Cache External a S
-                        writeBack(peExternal1, address, memory);
+                        writeBack(peExternal1, address);
                         // Escribir en cache local el valor actualizado y cambiar su estado a S
                         peLocal.CACHE.loadValue(StateEnum::Shared, address, memory.read(address));
                         // Tomo el dato de cache local que se ha actualizado
@@ -150,7 +177,7 @@ public:
                 switch (peExternal2.CACHE.getEntry(address).getStatus()) {
                     case StateEnum::Modified:
                         // Escribo en memoria en el address y paso el estado de Cache External a S
-                        writeBack(peExternal2, address, memory);
+                        writeBack(peExternal2, address);
                         // Escribir en cache local el valor actualizado y cambiar su estado a S
                         peLocal.CACHE.loadValue(StateEnum::Shared, address, memory.read(address));
                         // Tomo el dato de cache local que se ha actualizado
@@ -180,13 +207,16 @@ public:
             else{
                 // Buscar el dato de la direccion directamente en memoria
                 peLocal.CACHE.loadValue(StateEnum::Exclusive, address, memory.read(address)); 
-                return memory.read(address);
+                return peLocal.CACHE.getEntry(address).getData();
             }
         }
     }
 
     // Metodo para escribir un dato en la cache
-    void writeMESI(std::string address, int data, MainMemory memory, PE peLocal, PE peExternal1, PE peExternal2) {
+    void writeMESI(int origen_id, std::string address, int data, PE peLocal, PE peExternal1, PE peExternal2) {
+        //Asignamos los id de las caches
+        assignCacheID(origen_id);
+        
         // Si existe el address en el cache local
         if(peLocal.CACHE.exists(address)){
             // Verifico el estado del entry
@@ -204,7 +234,7 @@ public:
                 //Si el estado es S
                 case StateEnum::Shared:
                     //Escribo directamente a memoria (WriteThrough), invalido los demas caches que tengan esa direccion y me asigno estado E
-                    writeThrough(address, data, memory, peLocal, peExternal1, peExternal2);
+                    writeThrough(address, data, peLocal, peExternal1, peExternal2);
                     break;
                 case StateEnum::Invalid:
                     if (peExternal1.CACHE.exists(address)){
@@ -213,12 +243,12 @@ public:
                             //Si el estado es M
                             case StateEnum::Modified:
                                 //La cache externa debe escribir en memoria (WriteBack) y paso al estado S
-                                writeBack(peExternal1, address, memory);
+                                writeBack(peExternal1, address);
                                 //Leo el dato desde memoria y paso estado del cache local S
                                 peLocal.CACHE.updateValue(peLocal.CACHE.getEntry(address).getID(), StateEnum::Shared, address, memory.read(address));
                                 //Escribo el valor de la cache local directamente a memoria (WriteThrough) e invalido los caches que tenian la direccion...
                                 //...Paso el entry del cache local a estado E
-                                writeThrough(address, data, memory, peLocal, peExternal1, peExternal2);
+                                writeThrough(address, data, peLocal, peExternal1, peExternal2);
                                 break;
                                 
                             //Si el estado esta en E
@@ -229,7 +259,7 @@ public:
                                 peLocal.CACHE.updateValue(peLocal.CACHE.getEntry(address).getID(), StateEnum::Shared, address, memory.read(address));
                                 //Escribo el valor de la cache local directamente a memoria (WriteThrough) e invalido los caches que tenian la direccion...
                                 //...Paso el entry del cache local a estado E
-                                writeThrough(address, data, memory, peLocal, peExternal1, peExternal2);
+                                writeThrough(address, data, peLocal, peExternal1, peExternal2);
                                 break;
 
                             //Si el estado esta en S
@@ -238,7 +268,7 @@ public:
                                 peLocal.CACHE.updateValue(peLocal.CACHE.getEntry(address).getID(), StateEnum::Shared, address, memory.read(address));
                                 //Escribo el valor de la cache local directamente a memoria (WriteThrough) e invalido los caches que tenian la direccion...
                                 //...Paso el entry del cache local a estado E
-                                writeThrough(address, data, memory, peLocal, peExternal1, peExternal2);
+                                writeThrough(address, data, peLocal, peExternal1, peExternal2);
                                 break;
                         }
                     }
@@ -248,12 +278,12 @@ public:
                             //Si el estado es M
                             case StateEnum::Modified:
                                 //La cache externa debe escribir en memoria (WriteBack) y paso al estado S
-                                writeBack(peExternal2, address, memory);
+                                writeBack(peExternal2, address);
                                 //Leo el dato desde memoria y paso estado del cache local S
                                 peLocal.CACHE.updateValue(peLocal.CACHE.getEntry(address).getID(), StateEnum::Shared, address, memory.read(address));
                                 //Escribo el valor de la cache local directamente a memoria (WriteThrough) e invalido los caches que tenian la direccion...
                                 //...Paso el entry del cache local a estado E
-                                writeThrough(address, data, memory, peLocal, peExternal1, peExternal2);
+                                writeThrough(address, data, peLocal, peExternal1, peExternal2);
                                 break;
                                 
                             //Si el estado esta en E
@@ -264,7 +294,7 @@ public:
                                 peLocal.CACHE.updateValue(peLocal.CACHE.getEntry(address).getID(), StateEnum::Shared, address, memory.read(address));
                                 //Escribo el valor de la cache local directamente a memoria (WriteThrough) e invalido los caches que tenian la direccion...
                                 //...Paso el entry del cache local a estado E
-                                writeThrough(address, data, memory, peLocal, peExternal1, peExternal2);
+                                writeThrough(address, data, peLocal, peExternal1, peExternal2);
                                 break;
 
                             //Si el estado esta en S
@@ -273,7 +303,7 @@ public:
                                 peLocal.CACHE.updateValue(peLocal.CACHE.getEntry(address).getID(), StateEnum::Shared, address, memory.read(address));
                                 //Escribo el valor de la cache local directamente a memoria (WriteThrough) e invalido los caches que tenian la direccion...
                                 //...Paso el entry del cache local a estado E
-                                writeThrough(address, data, memory, peLocal, peExternal1, peExternal2);
+                                writeThrough(address, data, peLocal, peExternal1, peExternal2);
                                 break;
                         }
                     }
@@ -288,12 +318,12 @@ public:
                     //Si el estado es M
                     case StateEnum::Modified:
                         //La cache externa debe escribir en memoria (WriteBack) y paso al estado S
-                        writeBack(peExternal1, address, memory);
+                        writeBack(peExternal1, address);
                         //Leo el dato desde memoria y paso estado del cache local S
                         peLocal.CACHE.loadValue(StateEnum::Shared, address, memory.read(address));
                         //Escribo el valor de la cache local directamente a memoria (WriteThrough) e invalido los caches que tenian la direccion...
                         //...Paso el entry del cache local a estado E
-                        writeThrough(address, data, memory, peLocal, peExternal1, peExternal2);
+                        writeThrough(address, data, peLocal, peExternal1, peExternal2);
                         break;
                         
                     //Si el estado esta en E
@@ -304,7 +334,7 @@ public:
                         peLocal.CACHE.loadValue(StateEnum::Shared, address, memory.read(address));
                         //Escribo el valor de la cache local directamente a memoria (WriteThrough) e invalido los caches que tenian la direccion...
                         //...Paso el entry del cache local a estado E
-                        writeThrough(address, data, memory, peLocal, peExternal1, peExternal2);
+                        writeThrough(address, data, peLocal, peExternal1, peExternal2);
                         break;
 
                     //Si el estado esta en S
@@ -313,7 +343,7 @@ public:
                         peLocal.CACHE.loadValue(StateEnum::Shared, address, memory.read(address));
                         //Escribo el valor de la cache local directamente a memoria (WriteThrough) e invalido los caches que tenian la direccion...
                         //...Paso el entry del cache local a estado E
-                        writeThrough(address, data, memory, peLocal, peExternal1, peExternal2);
+                        writeThrough(address, data, peLocal, peExternal1, peExternal2);
                         break;
                 }
             }
@@ -324,12 +354,12 @@ public:
                     //Si el estado es M
                     case StateEnum::Modified:
                         //La cache externa debe escribir en memoria (WriteBack) y paso al estado S
-                        writeBack(peExternal2, address, memory);
+                        writeBack(peExternal2, address);
                         //Leo el dato desde memoria y paso estado del cache local S
                         peLocal.CACHE.loadValue(StateEnum::Shared, address, memory.read(address));
                         //Escribo el valor de la cache local directamente a memoria (WriteThrough) e invalido los caches que tenian la direccion...
                         //...Paso el entry del cache local a estado E
-                        writeThrough(address, data, memory, peLocal, peExternal1, peExternal2);
+                        writeThrough(address, data, peLocal, peExternal1, peExternal2);
                         break;
                         
                     //Si el estado esta en E
@@ -340,7 +370,7 @@ public:
                         peLocal.CACHE.loadValue(StateEnum::Shared, address, memory.read(address));
                         //Escribo el valor de la cache local directamente a memoria (WriteThrough) e invalido los caches que tenian la direccion...
                         //...Paso el entry del cache local a estado E
-                        writeThrough(address, data, memory, peLocal, peExternal1, peExternal2);
+                        writeThrough(address, data, peLocal, peExternal1, peExternal2);
                         break;
 
                     //Si el estado esta en S
@@ -349,7 +379,7 @@ public:
                         peLocal.CACHE.loadValue(StateEnum::Shared, address, memory.read(address));
                         //Escribo el valor de la cache local directamente a memoria (WriteThrough) e invalido los caches que tenian la direccion...
                         //...Paso el entry del cache local a estado E
-                        writeThrough(address, data, memory, peLocal, peExternal1, peExternal2);
+                        writeThrough(address, data, peLocal, peExternal1, peExternal2);
                         break;
                 }
             }
@@ -365,7 +395,6 @@ public:
                 printf("Cache luego de update\n");
                 peLocal.CACHE.print(peLocal.processor_id);
             }
-            memory.print();
         }
     }
 

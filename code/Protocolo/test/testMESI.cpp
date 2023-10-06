@@ -5,42 +5,46 @@
 
 TEST_CASE("Mesi", "[Mesi]") {
     Mesi mesi;
-    MainMemory memory;
+    MainMemory& memory = MainMemory::getInstance(); //SINGLETON
     generateRandomCode codeGenerator;
 
-    // peLocal
-    std::vector<std::string> randomCodePeLocal = codeGenerator.getRandomCode();
-    instrucctionMemory instMemPeLocal;
-    instMemPeLocal.loadProgram(randomCodePeLocal);
-    PE peLocal(1, instMemPeLocal);
+    // Generate random code
+    std::vector<std::string> randomCodePE1 = codeGenerator.getRandomCode();
+    std::vector<std::string> randomCodePE2 = codeGenerator.getRandomCode(); 
+    std::vector<std::string> randomCodePE3 = codeGenerator.getRandomCode();
 
-    // peExternal1
-    std::vector<std::string> randomCodePeExternal1 = codeGenerator.getRandomCode();
-    instrucctionMemory instMemPeExternal1;
-    instMemPeExternal1.loadProgram(randomCodePeExternal1);
-    PE peExternal1(2, instMemPeExternal1);
+    //Populate the instruccionMemories 
+    instrucctionMemory instMemPE1;
+    instMemPE1.loadProgram(randomCodePE1);
+    //instMemPE1.printMemory(1);
 
-    // peExternal2
-    std::vector<std::string> randomCodePeExternal2 = codeGenerator.getRandomCode();
-    instrucctionMemory instMemPeExternal2;
-    instMemPeExternal2.loadProgram(randomCodePeExternal2);
-    PE peExternal2(3, instMemPeExternal2);
+    instrucctionMemory instMemPE2;
+    instMemPE2.loadProgram(randomCodePE2);
+    // instMemPE2.printMemory(2);
+
+    instrucctionMemory instMemPE3;
+    instMemPE3.loadProgram(randomCodePE3);
+    // instMemPE3.printMemory(3);
+
+    PEManager& peManager = PEManager::getInstance();
+    PE pe1(1, instMemPE1); peManager.registerPE1(&pe1);
+    PE pe2(2, instMemPE2); peManager.registerPE2(&pe2);
+    PE pe3(3, instMemPE3); peManager.registerPE3(&pe3);
 
     SECTION("1. Test writeMESI with data 55 on address 00") {
         // peLocal escribe en la direccion 00 con valor 55
         //memory.write("00", 60);
-        peLocal.CACHE.print(peLocal.processor_id);
-        peExternal1.CACHE.print(peExternal1.processor_id);
-        peExternal2.CACHE.print(peExternal2.processor_id);
-        memory.print();
-        std::cout << "Dato de memoria" << memory.read("00") << std::endl;
-        mesi.writeMESI("00", 60, memory, peLocal, peExternal1, peExternal2);
-        peLocal.CACHE.print(peLocal.processor_id);
+        pe1.CACHE.print(pe1.processor_id);
+        pe2.CACHE.print(pe2.processor_id);
+        pe3.CACHE.print(pe3.processor_id);
+        printf("Soy un print: %d\n");
+        mesi.writeMESI(pe1.processor_id, "00", 60, pe1, pe2, pe3);
+        pe1.CACHE.print(pe1.processor_id);
 
         // Verificar que el dato en e1 es 55 y que el estado de la cache local es M
-        REQUIRE(peLocal.CACHE.e1.getData() == 60);
-        printf("Estado de la cache local: %d\n", peLocal.CACHE.e1.getStatus());
-        REQUIRE(peLocal.CACHE.e1.getStatus() == StateEnum::Modified);
+        REQUIRE(pe1.CACHE.e1.getData() == 60);
+        printf("Estado de la cache local: %d\n", pe1.CACHE.e1.getStatus());
+        REQUIRE(pe1.CACHE.e1.getStatus() == StateEnum::Modified);
     }
     /*
     SECTION("2. Test readMESI with shared state on both external PE") {
