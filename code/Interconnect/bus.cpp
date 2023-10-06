@@ -4,10 +4,9 @@
 #include <queue>
 #include <condition_variable>
 #include <thread>
-//#include "../utils.hpp"
 #include "../package.h"
 #include "../state_enum.cpp"
-#include "../protocolo/MESI.cpp"
+#include "../Protocolo/MESI.cpp"
 
 
 // Cola de solicitudes de los PE
@@ -23,6 +22,11 @@ private:
 
 public:
     Mesi mesi; 
+
+    RequestManager(){
+        
+    }
+
     void AddRequest(Package& packet) {
         std::lock_guard<std::mutex> lock(mutex);
         requestQueue.push(packet);

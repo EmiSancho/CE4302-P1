@@ -1,6 +1,6 @@
 #include <iostream>
 #include "./pe/pe.cpp"
-#include "./interconnect/bus.cpp"
+#include "./Interconnect/bus.cpp"
 //#include "./mem/main_mem.cpp"
 #include <thread>
 
@@ -9,7 +9,6 @@
 int main() {
     const int PES = 3;
     MainMemory& memory = MainMemory::getInstance(); //SINGLETON
-    memory.write("04",4);
     //memory.print();
 
     // Generate random code
@@ -37,73 +36,74 @@ int main() {
     PE PE2(2, instMemPE2); peManager.registerPE2(&PE2);
     PE PE3(3, instMemPE3); peManager.registerPE3(&PE3);
 
-    int max = 2;
-
     RequestManager bus;
 
-    Package package1(0,0,0,0);
-    package1 = PE1.getNextInstruccion(true);
-    bus.AddRequest(package1);
+    int max = 2;
 
-    int result = bus.mesi.readMESI(1,"04");
-    std::cerr << "result:" << result << std::endl;
+    // Package package1(0,0,0,0);
+    // package1 = PE1.getNextInstruccion(true);
+    // bus.AddRequest(package1);
 
-    // std::thread thread1([&PE1, max]() {
-    //     RequestManager bus;
-    //     bool p1_nextInstr = true;
-    //     Package package1(0,0,0,0);
-    //     for (int i = 0; i < max; ++i) {
-    //         package1 = PE1.getNextInstruccion(p1_nextInstr);
-    //         bus.AddRequest(package1);
-    //         //std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        
-    //     }
-    //     bus.ConsumerThread();
-    // });
-    // thread1.join();
+    // bus.mesi.writeMESI(1,"04", 10);
+    // memory.print();
 
-    // std::thread thread2([&PE2, max]() {
-    //     RequestManager bus;
-    //     bool p1_nextInstr = true;
-    //     Package package2(0,0,0,0);
-    //     for (int i = 0; i < max; ++i) {
-    //         package2 = PE2.getNextInstruccion(p1_nextInstr);
-    //         bus.AddRequest(package2);
-    //     }
-    // });
+    // int result = bus.mesi.readMESI(1,"04");
+    // std::cerr << "result:" << result << std::endl;
+    // memory.print();
 
-    // std::thread thread3([&PE3, max]() {
-    //     for (int i = 0; i < max; ++i) {
-    //         PE3.executeProgram(true);
-    //     }
-    // });
+    std::thread thread1([&PE1, max, &bus]() {
+        bool p1_nextInstr = true;
+        Package package(0,0,0,0);
+        for (int i = 0; i < max; ++i) {
+            package = PE1.getNextInstruccion(p1_nextInstr);
+            bus.AddRequest(package);
+            //std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
+        bus.ConsumerThread();
+    });
+    thread1.join();
+    /* 
+    std::thread thread2([&PE2, max]() {
+        bool p1_nextInstr = true;
+        Package package2(0,0,0,0);
+        for (int i = 0; i < max; ++i) {
+            package2 = PE2.getNextInstruccion(p1_nextInstr);
+            bus.AddRequest(package2);
+        }
+    });
 
-    // // Join the threads to wait for them to complete
+    std::thread thread3([&PE3, max]() {
+        for (int i = 0; i < max; ++i) {
+            PE3.executeProgram(true);
+        }
+    });
+
+    // Join the threads to wait for them to complete
     
 
-    //thread2.join();
-    // thread3.join();
+    thread2.join();
+    thread3.join();
+    
+    int max = 0;
+    Package package(0,0,0,0);
+    package = PE1.getNextInstruccion(p1_nextInstr);
+    package.print();
+    
+    while (max < 2){
+        package = PE1.getNextInstruccion(p1_nextInstr);
+        package.print();
+        //PE2.executeProgram(p1_nextInstr);
+        max++; 
+    }
+    
 
-    //int max = 0;
-    // Package package(0,0,0,0);
-    // package = PE1.getNextInstruccion(p1_nextInstr);
-    //package.print();
-    
-    // while (max < 2){
-    //     package = PE1.getNextInstruccion(p1_nextInstr);
-    //     package.print();
-    //     //PE2.executeProgram(p1_nextInstr);
-    //     max++; 
-    // }
-    
-    //Initializing busInterconnect 
-    //RequestManager bus;
-    //std::vector<std::thread> threads;
-    //bus.AddRequest(package);
-    // Thread per PE
-    // for (int i = 0; i < PES; ++i) {
-    //     threads.emplace_back(PEThread, i, std::ref(bus), 5);
-    // }
+    std::vector<std::thread> threads;
+    bus.AddRequest(package);
+    //Thread per PE
+    for (int i = 0; i < PES; ++i) {
+        threads.emplace_back(PEThread, i, std::ref(bus), 5);
+    }\
+    */
 
     return 0;
 }
