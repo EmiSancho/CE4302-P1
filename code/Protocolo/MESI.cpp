@@ -183,6 +183,7 @@ public:
                 return memory.read(address);
             }
         }
+        return 0;
     }
 
     // Metodo para escribir un dato en la cache

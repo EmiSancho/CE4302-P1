@@ -26,7 +26,7 @@ public:
         std::lock_guard<std::mutex> lock(mutex);
         requestQueue.push(packet);
         //std::cerr << "Packet Added" << std::endl;
-        packet.print();
+        //packet.print();
     }
 
     Package GetRequest() {
