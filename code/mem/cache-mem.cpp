@@ -7,14 +7,15 @@
 
 class Cache{
 public:
+    int processor_id;
     CacheEntry e1, e2, e3, e4;
 
     Cache()
-        : e1(1,StateEnum::Invalid,"0",-1), e2(2, StateEnum::Invalid,"0",-1), e3(3, StateEnum::Invalid,"0",-1), e4(4, StateEnum::Invalid,"0",-1) {
+        : e1(1,StateEnum::Invalid,"0",-1), e2(2, StateEnum::Invalid,"0",-1), e3(3, StateEnum::Invalid,"0",-1), e4(4, StateEnum::Invalid,"0",-1), processor_id (0){
     }
 
-    void print(int pe_id){
-        std::cout << "PE"<< pe_id << ", cache content:" << std::endl;
+    void print(){
+        std::cout << "PE "<< processor_id << ", cache content:" << std::endl;
         e1.print();
         e2.print();
         e3.print();
