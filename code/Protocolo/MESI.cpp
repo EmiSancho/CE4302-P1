@@ -353,10 +353,17 @@ public:
             }
             //Existe solo en memoria
             else{
+                printf("Cache antes de load\n");
+                peLocal.CACHE.print(peLocal.processor_id);
                 //Tomar el valor de memoria, paso el estado a E y luego escribo en cache local el valor y paso al estado M
                 peLocal.CACHE.loadValue(StateEnum::Exclusive, address, memory.read(address));
+                printf("Cache luego de load\n");
+                peLocal.CACHE.print(peLocal.processor_id);
                 peLocal.CACHE.updateValue(peLocal.CACHE.getEntry(address).getID(), StateEnum::Modified, address, data);
+                printf("Cache luego de update\n");
+                peLocal.CACHE.print(peLocal.processor_id);
             }
+            memory.print();
         }
     }
 
