@@ -19,9 +19,10 @@ private:
     MainMemory& memory = MainMemory::getInstance(); //SINGLETON
     std::queue<Package>  requestQueue;
     std::mutex mutex;
+    
 
 public:
-
+    Mesi mesi; 
     void AddRequest(Package& packet) {
         std::lock_guard<std::mutex> lock(mutex);
         requestQueue.push(packet);
@@ -51,41 +52,55 @@ public:
     void ConsumerThread() {
         //std::cerr << "ConsumerThread Started"<< std::endl;
         // 1 readMesi 2 WriteMesi 
-        Mesi mesi; // It has to be outside of the loop
         
+        int result = -1;
+
         if (existRequest()) {
         //while (existRequest()) {
             Package packet = GetRequest();
             packet.print();
-         
+            
             switch(packet.protocol){
                 case 1: // MESI                                           
                     switch (packet.request)
                     {
                     case 1: // readMesi
                         std::cerr << "readMESI"<< std::endl;
+                        
                         if(packet.processor_id == 1){
-                            mesi.readMESI(1,std::to_string(packet.address), pe1,pe2,pe3);
+                            std::cerr << "result 1: "<< result<< std::endl;
+                            //result = mesi.readMESI(1,std::to_string(packet.address));
+                            result = mesi.readMESI(1,"04");
+                           
+                           
                         }
                         if(packet.processor_id == 2){
-                            mesi.readMESI(2, std::to_string(packet.address),pe2,pe1,pe3);
+                            std::cerr << "result 2: "<< result<< std::endl;
+                            //result = mesi.readMESI(2, std::to_string(packet.address));
+                            result = mesi.readMESI(2,"08");
                         }
                         if(packet.processor_id == 3){
-                            mesi.readMESI(3, std::to_string(packet.address), pe3,pe1,pe2);
+                            std::cerr << "result 3: "<< result<< std::endl;
+                            //result = mesi.readMESI(3, std::to_string(packet.address));
+                            result = mesi.readMESI(3,"12");
                         }
+                        std::cerr << "result: "<< result<< std::endl;
+                        memory.print();
+                        
                         break;
                     
                     case 2: //writeMesi
                         std::cerr << "writeMESI"<< std::endl;
                         if(packet.processor_id == 1){
-                            mesi.writeMESI(1, std::to_string(packet.address), 7, pe1,pe2,pe3);
+                            mesi.writeMESI(1, std::to_string(packet.address), 7);
                         }
                         if(packet.processor_id == 2){
-                            mesi.writeMESI(2,std::to_string(packet.address), 8, pe2,pe1,pe3);
+                            mesi.writeMESI(2,std::to_string(packet.address), 8);
                         }
                         if(packet.processor_id == 3){
-                            mesi.writeMESI(3,std::to_string(packet.address), 9, pe3,pe1,pe2);
+                            mesi.writeMESI(3,std::to_string(packet.address), 9);
                         }
+                        memory.print();
                         break;
 
                     default:
@@ -101,13 +116,8 @@ public:
                     std::cout << "Invalid protocol choice." << std::endl;
                     break;
             }
-
-            
-
-                
             //std::this_thread::sleep_for(std::chrono::milliseconds(200));
         }
-
         memory.print();
     }
 

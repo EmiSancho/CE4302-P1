@@ -59,7 +59,7 @@ public:
     }
 
     void registerPE3(PE* pe) {
-        pe2 = pe;
+        pe3 = pe;
     }
 
     PE& getPE1() {

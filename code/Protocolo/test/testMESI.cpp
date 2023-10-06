@@ -40,7 +40,7 @@ TEST_CASE("Mesi", "[Mesi]") {
         pe2.CACHE.print(pe2.processor_id);
         pe3.CACHE.print(pe3.processor_id);
         printf("Soy un print: \n");
-        mesi.writeMESI(pe1.processor_id, "04", 80, pe1, pe2, pe3);
+        mesi.writeMESI(pe1.processor_id, "04", 80);
 
         // Verificar que el dato en e1 es 55 y que el estado de la cache local es M
         REQUIRE(pe1.CACHE.e1.getData() == 60);

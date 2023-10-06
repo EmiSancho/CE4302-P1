@@ -12,15 +12,16 @@ private:
     PE& pe2 = PEManager::getInstance().getPE2(); //SINGLETON
     PE& pe3 = PEManager::getInstance().getPE3(); //SINGLETON
 
+    
     PE& peLocal = pe1;
     PE& peExternal1 = pe2;
     PE& peExternal2 = pe3;
     
-    void assignCacheID(int processor_id){
+    void assignCacheID(int processor_id){ 
         if (processor_id == pe1.processor_id){
             peLocal = pe1;
             peExternal1 = pe2;
-            peExternal2 = pe3;
+            peExternal2 = pe2;
         }else if(processor_id == pe2.processor_id){
             peLocal = pe2;
             peExternal1 = pe1;
@@ -68,12 +69,10 @@ public:
 
     //Verificar que los cambios se mantengan en el interconnect
     Mesi() {
-
     }
 
     // Metodo para leer un dato de la cache
-    int readMESI(int origen_id, std::string address, PE peLocal, PE peExternal1, PE peExternal2) {
-        // Try catch para verificar que address es valido
+    int readMESI(int origen_id, std::string address) {
         //Asignamos los id de las caches
         assignCacheID(origen_id);
         
@@ -172,6 +171,8 @@ public:
                         break;
                 }
             }
+            bool a = peExternal2.CACHE.exists(address);
+           
             //Verifico si la direccion existe en la cache externa 2
             if (peExternal2.CACHE.exists(address)){
                 switch (peExternal2.CACHE.getEntry(address).getStatus()) {
@@ -214,7 +215,7 @@ public:
     }
 
     // Metodo para escribir un dato en la cache
-    void writeMESI(int origen_id, std::string address, int data, PE peLocal, PE peExternal1, PE peExternal2) {
+    void writeMESI(int origen_id, std::string address, int data) {
         //Asignamos los id de las caches
         assignCacheID(origen_id);
         
