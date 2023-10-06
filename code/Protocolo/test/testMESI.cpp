@@ -1,10 +1,7 @@
 #define CATCH_CONFIG_MAIN  // Esto le dice a Catch proporcionar la función main
 
 #include "../../catch.hpp"
-#include "../../mem/cache-mem.cpp"
-#include "../../mem/main_mem.cpp"
-#include "../../pe/pe.cpp"
-#include "../MESI.h"
+#include "../MESI.cpp"
 
 TEST_CASE("Mesi", "[Mesi]") {
     Mesi mesi;
@@ -51,13 +48,11 @@ TEST_CASE("Mesi", "[Mesi]") {
         peExternal2.CACHE.e3.setData(55);
 
         // peLocal lee en la misma direccion
-        int result = mesi.readMESI(1, "00", memory, peLocal, peExternal1, peExternal2);
+        int result = mesi.readMESI("00", memory, peLocal, peExternal1, peExternal2);
 
         // Verificar que resultado es 55 y que el estado de la cache local es S
         REQUIRE(result == 55);
         REQUIRE(peLocal.CACHE.e1.getStatus() == StateEnum::Shared);
     }
-
-
 
 }
