@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <bitset>
+#include "../logManagement.cpp"
 
 class generateRandomCode {
 public:
@@ -40,10 +41,12 @@ public:
             std::string concatenatedBinary = instructionBinary + addressBinary;
             code.push_back(concatenatedBinary);
         }
+        log.logMessage("RandomCodeGenerated ", code);
         return code; 
     }
 
 private:
+    logger& log = logger::getInstance(); // Create an instance of Logger
     void printVector(const std::string& name, std::vector<int> vector){
         std::cout << name << std::endl;
         for (int value : vector) {

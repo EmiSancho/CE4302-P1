@@ -3,13 +3,19 @@
 #include "./interconnect/bus.cpp"
 //#include "./mem/main_mem.cpp"
 #include <thread>
-
-
+#include "logManagement.cpp"
 
 int main() {
+    logger& log = logger::getInstance(); // Create an instance of Logger
     const int PES = 3;
     MainMemory& memory = MainMemory::getInstance(); //SINGLETON
-    memory.write("04",4);
+    
+    // memory.write("04",4);
+    // memory.read("04");
+    // memory.write("32",8);
+    // memory.read("32");
+    // memory.write("60",12);
+    // memory.read("60");
     //memory.print();
 
     // Generate random code
@@ -17,6 +23,7 @@ int main() {
     std::vector<std::string> randomCodePE1 = codeGenerator.getRandomCode();
     std::vector<std::string> randomCodePE2 = codeGenerator.getRandomCode(); 
     std::vector<std::string> randomCodePE3 = codeGenerator.getRandomCode();
+
 
     //Populate the instruccionMemories 
     instrucctionMemory instMemPE1;
@@ -45,8 +52,8 @@ int main() {
     package1 = PE1.getNextInstruccion(true);
     bus.AddRequest(package1);
 
-    int result = bus.mesi.readMESI(1,"04");
-    std::cerr << "result:" << result << std::endl;
+    // int result = bus.mesi.readMESI(1,"04");
+    // std::cerr << "result:" << result << std::endl;
 
     // std::thread thread1([&PE1, max]() {
     //     RequestManager bus;
@@ -105,6 +112,7 @@ int main() {
     //     threads.emplace_back(PEThread, i, std::ref(bus), 5);
     // }
 
+    log.writeLog();
     return 0;
 }
 
