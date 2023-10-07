@@ -15,7 +15,6 @@ public:
     int INSTRUC_MAX = 3;    // M Read / Write
     int REGISTER_MAX = 16;  // R
     
-
     generateRandomCode() {
         // Seed the random number generator with the current time
         std::srand(static_cast<unsigned int>(std::time(nullptr)));
@@ -41,7 +40,7 @@ public:
             std::string concatenatedBinary = instructionBinary + addressBinary;
             code.push_back(concatenatedBinary);
         }
-        log.logMessage("RandomCodeGenerated ", code);
+        //log.logMessage("RandomCodeGenerated ", code);
         return code; 
     }
 
