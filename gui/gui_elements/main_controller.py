@@ -26,6 +26,7 @@ class MainController:
         self.address_bus = None
         self.shared = None
         self.actual = 0
+        self.actual_log = []
         self.initialize()
 
 
@@ -63,9 +64,25 @@ class MainController:
         #Dibujar Data Bus
         self.shared = Shared(self.canvas)
         self.shared.draw()
+        
+        self.canvas.create_rectangle(50, 20, 250, 120, fill="white", outline="white")
+
+        # Etiqueta con el título   
+        self.canvas.create_text(150, 50, text="----", font=constants.TITLE_FONT)
 
     # Función que se ejecutará cuando se haga clic en el botón "Start"
-    def start_button_click(self):        
-        print("Start button click")
+    def start_button(self, protocol):   
+        self.canvas.create_rectangle(50, 20, 250, 120, fill="white", outline="white")
+        # Etiqueta con el título   
+        self.canvas.create_text(150, 50, text=protocol, font=constants.TITLE_FONT)
+        self.actual = 0
+
+        # Abre el archivo en modo lectura
+        with open('./log.txt', 'r') as archivo:
+            # Lee las líneas del archivo y elimina el carácter de nueva línea
+            self.actual_log = [linea.strip() for linea in archivo.readlines()]
     
+    def step_button(self):
+        print(self.actual_log[self.actual])
+        self.actual+=1
     

@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 import constants
 from gui_elements.main_controller import MainController
 
@@ -19,16 +20,22 @@ def main():
     #Instancia el controlador
     main_controller = MainController(canvas)
 
-    # Etiqueta con el título   
-    canvas.create_text(150, 50, text="MESI", font=constants.TITLE_FONT)
+    combo = ttk.Combobox(
+            state="readonly",
+            values=["MESI", "MOESI"]
+    )
+    combo.place(x=1200, y=50)
+
+    def start_button_click():        
+        main_controller.start_button(combo.get())
 
     # Crear un botón "Start"
-    start_button = tk.Button(canvas, text="Start", command=main_controller.start_button_click, width=6, height=1, font=(12), bg="white")
-    start_button.place(x=1200, y=50)
+    start_button = tk.Button(canvas, text="Start", command=start_button_click, width=6, height=1, font=(12), bg="white")
+    start_button.place(x=1200, y=75)
 
     # Crear un botón "Step"
-    start_button = tk.Button(canvas, text="Step", command=main_controller.start_button_click, width=6, height=1, font=(12), bg="white")
-    start_button.place(x=1275, y=50)
+    start_button = tk.Button(canvas, text="Step", command=main_controller.step_button, width=6, height=1, font=(12), bg="white")
+    start_button.place(x=1275, y=75)
 
     #Iniciar la aplicación
     window.mainloop()
