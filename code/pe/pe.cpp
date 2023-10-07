@@ -18,6 +18,7 @@ class PE{
     public:
         int processor_id;
         Cache CACHE;
+
         PE(int processor_id, instrucctionMemory& instructionMemory){
             this->processor_id = processor_id;
             INSTRUCTION_MEMORY = instructionMemory;

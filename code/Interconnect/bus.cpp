@@ -5,9 +5,9 @@
 #include <condition_variable>
 #include <thread>
 #include "../package.h"
-#include "../state_enum.cpp"
-#include "../protocolo/MESI.cpp"
-#include "../logManagement.cpp"
+// #include "../state_enum.cpp"
+// #include "../protocolo/MESI.cpp"
+// #include "../logManagement.cpp"
 
 // Cola de solicitudes de los PE
 class RequestManager {
@@ -23,6 +23,11 @@ private:
 
 public:
     Mesi mesi; 
+
+    RequestManager(){
+        
+    }
+
     void AddRequest(Package& packet) {
         std::lock_guard<std::mutex> lock(mutex);
         requestQueue.push(packet);
