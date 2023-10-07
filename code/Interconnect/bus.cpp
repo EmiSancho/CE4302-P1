@@ -80,19 +80,17 @@ public:
                         if(packet.processor_id == 1){
                             std::cerr << "result 1: "<< result<< std::endl;
                             //result = mesi.readMESI(1,std::to_string(packet.address));
-                            result = mesi.readMESI(1,"04");
-                           
-                           
+                            result = mesi.readMESI(std::to_string(packet.address), pe1, pe2, pe3);  
                         }
                         if(packet.processor_id == 2){
                             std::cerr << "result 2: "<< result<< std::endl;
                             //result = mesi.readMESI(2, std::to_string(packet.address));
-                            result = mesi.readMESI(2,"08");
+                            result = mesi.readMESI(std::to_string(packet.address), pe2, pe1, pe3);
                         }
                         if(packet.processor_id == 3){
                             std::cerr << "result 3: "<< result<< std::endl;
                             //result = mesi.readMESI(3, std::to_string(packet.address));
-                            result = mesi.readMESI(3,"12");
+                            result = mesi.readMESI(std::to_string(packet.address), pe3, pe1, pe2);
                         }
                         std::cerr << "result: "<< result<< std::endl;
                         memory.print();
@@ -102,13 +100,27 @@ public:
                     case 2: //writeMesi
                         std::cerr << "writeMESI"<< std::endl;
                         if(packet.processor_id == 1){
-                            mesi.writeMESI(1, std::to_string(packet.address), 7);
+                            mesi.writeMESI(std::to_string(packet.address), 7, pe1, pe2, pe3);
                         }
                         if(packet.processor_id == 2){
-                            mesi.writeMESI(2,std::to_string(packet.address), 8);
+                            mesi.writeMESI(std::to_string(packet.address), 8, pe2, pe1, pe3);
                         }
                         if(packet.processor_id == 3){
-                            mesi.writeMESI(3,std::to_string(packet.address), 9);
+                            mesi.writeMESI(std::to_string(packet.address), 9, pe3, pe1, pe2);
+                        }
+                        memory.print();
+                        break;
+
+                    case 3: // Increment
+                        std::cerr << "Increment"<< std::endl;
+                        if(packet.processor_id == 1){
+                            mesi.increment(1, std::to_string(packet.address));
+                        }
+                        if(packet.processor_id == 2){
+                            mesi.increment(2,std::to_string(packet.address));
+                        }
+                        if(packet.processor_id == 3){
+                            mesi.increment(3,std::to_string(packet.address));
                         }
                         memory.print();
                         break;
