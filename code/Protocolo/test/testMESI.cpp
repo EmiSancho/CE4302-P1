@@ -35,7 +35,7 @@ TEST_CASE("Mesi", "[Mesi]") {
     SECTION("1. Escritura en la direccion 04 cuando la no existe ninguna cache") {
         std::cout << "Caso 1 \n" << std::endl;
         // peLocal escribe en la direccion 04 con valor 55
-        mesi.writeMESI(pe1.processor_id, "04", 80, pe1, pe2, pe3);
+        mesi.writeMESI("04", 80, pe1, pe2, pe3);
         pe1.CACHE.print();
         memory.print();
         // Verificar que el dato en e1 es 80 y que el estado de la cache es M
@@ -46,10 +46,10 @@ TEST_CASE("Mesi", "[Mesi]") {
     SECTION("2. Escritura en la direccion 04 cuando la direccion ya existe en mi cache y el estado es Modificado") {
         std::cout << "Caso 2 \n" << std::endl;
         // peLocal escribe en la direccion 04 con valor 80
-        mesi.writeMESI(pe3.processor_id, "04", 74, pe3, pe1, pe2);
+        mesi.writeMESI("04", 74, pe3, pe1, pe2);
         pe3.CACHE.print();
         memory.print();
-        mesi.writeMESI(pe3.processor_id, "04", 80, pe3, pe1, pe2);
+        mesi.writeMESI("04", 80, pe3, pe1, pe2);
         pe3.CACHE.print();
         // Verificar que el dato en e1 es 78 y que el estado de la cache es M
         REQUIRE(pe3.CACHE.e1.getData() == 80);
@@ -59,12 +59,12 @@ TEST_CASE("Mesi", "[Mesi]") {
      SECTION("3. Escritura en la direccion 04 cuando la direccion ya existe en mi cache y el estado es Exclusivo") {
         std::cout << "Caso 3 \n" << std::endl;
         // peLocal escribe en la direccion 04 con valor 80
-        mesi.writeMESI(pe3.processor_id, "04", 70, pe3, pe1, pe2);
+        mesi.writeMESI("04", 70, pe3, pe1, pe2);
         pe3.CACHE.print();
-        mesi.writeMESI(pe2.processor_id, "04", 74, pe2, pe1, pe3);
+        mesi.writeMESI("04", 74, pe2, pe1, pe3);
         pe2.CACHE.print();
         memory.print();
-        mesi.writeMESI(pe2.processor_id, "04", 80, pe2, pe1, pe3);
+        mesi.writeMESI("04", 80, pe2, pe1, pe3);
         pe2.CACHE.print();
         pe3.CACHE.print();
         memory.print();
@@ -78,12 +78,12 @@ TEST_CASE("Mesi", "[Mesi]") {
     SECTION("4. Escritura en la direccion 04 cuando la direccion existe en la cache local y el estado es Compartido") {
        std::cout << "Caso 4 \n" << std::endl;
         // peLocal escribe en la direccion 04 con valor 78
-        mesi.writeMESI(pe3.processor_id, "04", 78, pe3, pe1, pe2);
+        mesi.writeMESI("04", 78, pe3, pe1, pe2);
         pe3.CACHE.print();
-        mesi.readMESI(pe2.processor_id, "04", pe2, pe1, pe3);
+        mesi.readMESI("04", pe2, pe1, pe3);
         pe2.CACHE.print();
         memory.print();
-        mesi.writeMESI(pe3.processor_id, "04", 66, pe3, pe1, pe2);
+        mesi.writeMESI("04", 66, pe3, pe1, pe2);
         pe3.CACHE.print();
         pe2.CACHE.print();
         memory.print();
@@ -100,13 +100,13 @@ TEST_CASE("Mesi", "[Mesi]") {
     SECTION("5. Escritura en la direccion 04 cuando la direccion ya existe en mi cache y el estado es Invalido") {
         // peLocal escribe en la direccion 04 con valor 80
         std::cout << "Caso 5 \n" << std::endl;
-        mesi.writeMESI(pe3.processor_id, "04", 70, pe3, pe1, pe2);
+        mesi.writeMESI("04", 70, pe3, pe1, pe2);
         pe3.CACHE.print();
-        mesi.writeMESI(pe2.processor_id, "04", 74, pe2, pe1, pe3);
+        mesi.writeMESI("04", 74, pe2, pe1, pe3);
         pe2.CACHE.print();
         pe3.CACHE.print();
         memory.print();
-        mesi.writeMESI(pe3.processor_id, "04", 80, pe3, pe1, pe2);
+        mesi.writeMESI("04", 80, pe3, pe1, pe2);
         pe2.CACHE.print();
         pe3.CACHE.print();
         memory.print();
@@ -120,9 +120,9 @@ TEST_CASE("Mesi", "[Mesi]") {
     SECTION("6. Escritura en la direccion 04 cuando la direccion no existe en la cache local y si en una externa con estado Modificado") {
         std::cout << "Caso 6 \n" << std::endl;
         // peLocal escribe en la direccion 04 con valor 78
-        mesi.writeMESI(pe3.processor_id, "04", 78, pe3, pe1, pe2);
+        mesi.writeMESI("04", 78, pe3, pe1, pe2);
         pe3.CACHE.print();
-        mesi.writeMESI(pe2.processor_id, "04",95, pe2, pe1, pe3);
+        mesi.writeMESI("04",95, pe2, pe1, pe3);
         pe2.CACHE.print();
         memory.print();
         // Verificar que el dato del entry e1 del pe2 es 95
@@ -138,12 +138,12 @@ TEST_CASE("Mesi", "[Mesi]") {
     SECTION("7. Escritura en la direccion 04 cuando la direccion no existe en la cache local y si en una externa con estado Exclusivo") {
         std::cout <<  "Caso 7 \n"<< std::endl;
         // peLocal escribe en la direccion 04 con valor 78
-        mesi.writeMESI(pe3.processor_id, "04", 78, pe3, pe1, pe2);
+        mesi.writeMESI("04", 78, pe3, pe1, pe2);
         pe3.CACHE.print();
-        mesi.writeMESI(pe2.processor_id, "04",95, pe2, pe1, pe3);
+        mesi.writeMESI("04",95, pe2, pe1, pe3);
         pe2.CACHE.print();
         memory.print();
-        mesi.writeMESI(pe1.processor_id, "04", 14, pe1, pe2, pe3);
+        mesi.writeMESI("04", 14, pe1, pe2, pe3);
         pe1.CACHE.print();
         memory.print();
         // Verificar que el dato del entry e1 del pe2 es 95
@@ -161,12 +161,12 @@ TEST_CASE("Mesi", "[Mesi]") {
     SECTION("8. Escritura en la direccion 04 cuando la direccion no existe en la cache local y si en una externa con estado Compartido") {
         std::cout <<  "Caso 8 \n"<< std::endl;
         // peLocal escribe en la direccion 04 con valor 78
-        mesi.writeMESI(pe1.processor_id, "04", 78, pe1, pe2, pe3);
+        mesi.writeMESI("04", 78, pe1, pe2, pe3);
         pe1.CACHE.print();
-        mesi.readMESI(pe2.processor_id, "04", pe2, pe1, pe3);
+        mesi.readMESI("04", pe2, pe1, pe3);
         pe2.CACHE.print();
         memory.print();
-        mesi.writeMESI(pe3.processor_id, "04", 14, pe3, pe1, pe2);
+        mesi.writeMESI("04", 14, pe3, pe1, pe2);
         pe3.CACHE.print();
         memory.print();
         // Verificar que el dato del entry e1 del pe2 es 95
@@ -184,12 +184,12 @@ TEST_CASE("Mesi", "[Mesi]") {
     SECTION("9. Escritura en la direccion 04 cuando la direccion no existe en la cache local y la cache local esta llena") {
         std::cout <<  "Caso 9 \n"<< std::endl;
         // peLocal escribe en la direccion 04 con valor 78
-        mesi.writeMESI(pe1.processor_id, "00", 10, pe1, pe2, pe3);
-        mesi.writeMESI(pe1.processor_id, "04", 20, pe1, pe2, pe3);
-        mesi.writeMESI(pe1.processor_id, "08", 30, pe1, pe2, pe3);
-        mesi.writeMESI(pe1.processor_id, "12", 40, pe1, pe2, pe3);
+        mesi.writeMESI("00", 10, pe1, pe2, pe3);
+        mesi.writeMESI("04", 20, pe1, pe2, pe3);
+        mesi.writeMESI("08", 30, pe1, pe2, pe3);
+        mesi.writeMESI("12", 40, pe1, pe2, pe3);
         pe1.CACHE.print();
-        mesi.writeMESI(pe1.processor_id, "16", 50, pe1, pe2, pe3);
+        mesi.writeMESI("16", 50, pe1, pe2, pe3);
         pe1.CACHE.print();
         memory.print();
         // Verificar que el dato del entry e1 del pe2 es 95
@@ -213,17 +213,17 @@ TEST_CASE("Mesi", "[Mesi]") {
     SECTION("10. Escritura en direccion 44 y no existe en la cache local, cache esta llena y direccion 44 esta en S con externo") {
         std::cout << "Caso 10 \n" << std::endl;
         // pe1 se llena de datos en los 4 entrys
-        mesi.writeMESI(pe1.processor_id, "08", 10, pe1, pe2, pe3);
-        mesi.writeMESI(pe1.processor_id, "20", 20, pe1, pe2, pe3);
-        mesi.writeMESI(pe1.processor_id, "28", 30, pe1, pe2, pe3);
-        mesi.writeMESI(pe1.processor_id, "04", 40, pe1, pe2, pe3);
+        mesi.writeMESI("08", 10, pe1, pe2, pe3);
+        mesi.writeMESI("20", 20, pe1, pe2, pe3);
+        mesi.writeMESI("28", 30, pe1, pe2, pe3);
+        mesi.writeMESI("04", 40, pe1, pe2, pe3);
         // pe2 y pe1 tienen la direccion 28 en estado S
-        mesi.readMESI(pe2.processor_id, "08", pe2, pe1, pe3);
+        mesi.readMESI("08", pe2, pe1, pe3);
         pe1.CACHE.print();
         pe2.CACHE.print();
         memory.print();
         // Agregar otro dato y por politica FIFO se elimina el dato en e1
-        mesi.writeMESI(pe1.processor_id, "44", 50, pe1, pe2, pe3);
+        mesi.writeMESI("44", 50, pe1, pe2, pe3);
         pe1.CACHE.print();
         // Verificar que el dato del entry en direccion 44 del pe1 es 50
         REQUIRE(pe1.CACHE.getEntry("44").getData() == 50);
@@ -236,11 +236,11 @@ TEST_CASE("Mesi", "[Mesi]") {
     SECTION("11. Lectura de la direccion 04 cuando la direccion no esta en cache local pero existe en cache externa") {
         std::cout << "Caso 11\n" << std::endl;
         // peLocal escribe en la direccion 04 con valor 78
-        mesi.writeMESI(pe3.processor_id, "04", 78, pe3, pe1, pe2);
+        mesi.writeMESI("04", 78, pe3, pe1, pe2);
         pe3.CACHE.print();
         pe1.CACHE.print();
         pe2.CACHE.print();
-        mesi.readMESI(pe2.processor_id, "04", pe2, pe1, pe3);
+        mesi.readMESI("04", pe2, pe1, pe3);
         pe2.CACHE.print();
         memory.print();
         // Verificar que el dato en e1 es 80 y que el estado de la cache es M
@@ -254,7 +254,7 @@ TEST_CASE("Mesi", "[Mesi]") {
         // Se escribe un dato en memoria en la direccion 60
         memory.write("60", 120);
         // pe3 lee la direccion 60
-        mesi.readMESI(pe3.processor_id, "60", pe3, pe1, pe2);
+        mesi.readMESI("60", pe3, pe1, pe2);
         pe3.CACHE.print();
         memory.print();
         // Verificar que el dato en direccion 60 de memoria es 120
@@ -268,9 +268,9 @@ TEST_CASE("Mesi", "[Mesi]") {
      SECTION("13. Lectura de la dirección cuando la dirección está en caché local con estado M") {
         std::cout << "Caso 13 \n" << std::endl;
         // pe2 escribe en la direccion 52 con valor 78
-        mesi.writeMESI(pe2.processor_id, "52", 78, pe2, pe1, pe3);
+        mesi.writeMESI("52", 78, pe2, pe1, pe3);
         // pe2 lee la direccion 52
-        mesi.readMESI(pe2.processor_id, "52", pe2, pe1, pe3);
+        mesi.readMESI("52", pe2, pe1, pe3);
         pe2.CACHE.print();
         // Verificar que el estado del entry en direccion 52 del pe2 es M
         REQUIRE(pe2.CACHE.getEntry("52").getStatus() == StateEnum::Modified);
@@ -281,15 +281,15 @@ TEST_CASE("Mesi", "[Mesi]") {
      SECTION("14. Lectura de la dirección cuando la dirección está en caché local con estado E") {
         std::cout << "Caso 14 \n" << std::endl;
         // pe2 y pe1 leen la direccion 00, estan en estado S
-        mesi.readMESI(pe2.processor_id, "00", pe2, pe1, pe3);
-        mesi.readMESI(pe1.processor_id, "00", pe1, pe2, pe3);
+        mesi.readMESI("00", pe2, pe1, pe3);
+        mesi.readMESI("00", pe1, pe2, pe3);
         pe2.CACHE.print();
         pe1.CACHE.print();
         // pe2 escribe un 38 en direccion 00, queda como E y pe1 como I
-        mesi.writeMESI(pe2.processor_id, "00", 38, pe2, pe1, pe3);
+        mesi.writeMESI("00", 38, pe2, pe1, pe3);
         pe2.CACHE.print();
         // pe2 lee la direccion 00, pasaria a M
-        mesi.readMESI(pe2.processor_id, "00", pe2, pe1, pe3);
+        mesi.readMESI("00", pe2, pe1, pe3);
         // Verificar que el estado del entry en direccion 00 del pe2 es E
         REQUIRE(pe2.CACHE.getEntry("00").getStatus() == StateEnum::Exclusive);
         // Verificar que el estado del entry en direccion 00 del pe1 es I
@@ -302,12 +302,12 @@ TEST_CASE("Mesi", "[Mesi]") {
         std::cout << "Caso 15 \n" << std::endl;
         // pe2 y pe1 leen la direccion 00, estan en estado S
         memory.print();
-        mesi.readMESI(pe2.processor_id, "00", pe2, pe1, pe3);
-        mesi.readMESI(pe1.processor_id, "00", pe1, pe2, pe3);
+        mesi.readMESI("00", pe2, pe1, pe3);
+        mesi.readMESI("00", pe1, pe2, pe3);
         pe2.CACHE.print();
         pe1.CACHE.print();
         // pe2 lee de nuevo, se mantiene en S
-        mesi.readMESI(pe2.processor_id, "00", pe2, pe1, pe3);
+        mesi.readMESI("00", pe2, pe1, pe3);
         // Verificar que el estado del entry en direccion 00 del pe2 es S
         REQUIRE(pe2.CACHE.getEntry("00").getStatus() == StateEnum::Shared);
         // Verificar que el estado del entry en direccion 00 del pe1 es S
@@ -319,15 +319,15 @@ TEST_CASE("Mesi", "[Mesi]") {
      SECTION("16. Lectura de la dirección cuando la dirección está en cache local con estado I") {
         std::cout << "Caso 16 \n" << std::endl;
         //pe2 y pe1 leen la direccion 00, estan en estado S
-        mesi.readMESI(pe2.processor_id, "00", pe2, pe1, pe3);
-        mesi.readMESI(pe1.processor_id, "00", pe1, pe2, pe3);
+        mesi.readMESI("00", pe2, pe1, pe3);
+        mesi.readMESI("00", pe1, pe2, pe3);
         pe2.CACHE.print();
         pe1.CACHE.print();
         // pe2 escribe un 38 en direccion 00, queda como E y pe1 como I
-        mesi.writeMESI(pe2.processor_id, "00", 38, pe2, pe1, pe3);
+        mesi.writeMESI("00", 38, pe2, pe1, pe3);
         pe2.CACHE.print();
         // pe2 lee la direccion 00, pasaria a M
-        mesi.readMESI(pe1.processor_id, "00", pe1, pe2, pe3);
+        mesi.readMESI("00", pe1, pe2, pe3);
         pe1.CACHE.print();
         // Verificar que el estado del entry en direccion 00 del pe2 es E
         REQUIRE(pe2.CACHE.getEntry("00").getStatus() == StateEnum::Shared);

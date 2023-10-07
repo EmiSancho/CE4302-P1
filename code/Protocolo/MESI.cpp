@@ -1,7 +1,6 @@
 #include <iostream>
 #include "../mem/main_mem.cpp"
 #include "../pe/pe.cpp"
-#include <type_traits>
 
 class Mesi{
 
@@ -49,7 +48,7 @@ public:
     }
 
     // Metodo para leer un dato de la cache
-    int readMESI(int origen_id, std::string address, PE& peLocal, PE& peExternal1, PE& peExternal2) {
+    int readMESI(std::string address, PE& peLocal, PE& peExternal1, PE& peExternal2) {
         //verifico si existe en el cache local
         if (peLocal.CACHE.exists(address)){
             // Si devuelve true, verificar estado del entry que tiene el address
@@ -187,7 +186,7 @@ public:
     }
 
     // Metodo para escribir un dato en la cache
-    void writeMESI(int origen_id, std::string address, int data, PE& peLocal, PE& peExternal1, PE& peExternal2) {
+    void writeMESI(std::string address, int data, PE& peLocal, PE& peExternal1, PE& peExternal2) {
         
         // Si existe el address en el cache local
         if(peLocal.CACHE.exists(address)){
@@ -285,8 +284,11 @@ public:
                                 writeThrough(address, data, peLocal, peExternal1, peExternal2);
                                 break;
                         }
-                    }
-                    break;
+                    }else{
+                        //Tomar el valor de memoria, luego escribo en cache local el valor y paso al estado M
+                        peLocal.CACHE.updateValue(peLocal.CACHE.getEntry(address).getID(), StateEnum::Modified, address, data);
+                        break;
+                    }    
             }
 
         }else {
@@ -370,5 +372,10 @@ public:
             }
         }
     }
+
+    void incrementMESI(std::string address, PE& peLocal, PE& peExternal1, PE& peExternal2) {
+        
+    }
+
 
 };

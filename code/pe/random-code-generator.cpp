@@ -11,7 +11,7 @@
 class generateRandomCode {
 public:
     int INSTRUC_AMOUNT = 8; // N
-    int INSTRUC_MAX = 2;    // M Read / Write
+    int INSTRUC_MAX = 3;    // M Read / Write
     int REGISTER_MAX = 16;  // R
     
 
