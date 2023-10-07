@@ -38,8 +38,6 @@ TEST_CASE("Moesi", "[Moesi]") {
         std::cout << "Caso 1 \n" << std::endl;
         // peLocal escribe en la direccion 04 con valor 55
         moesi.writeMOESI("04", 80, pe1, pe2, pe3);
-        pe1.CACHE.print();
-        memory.print();
         // Verificar que el dato en e1 es 80 y que el estado de la cache es M
         REQUIRE(pe1.CACHE.e1.getData() == 80);
         REQUIRE(pe1.CACHE.e1.getStatus() == StateEnum::Modified);
@@ -49,10 +47,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         std::cout << "Caso 2 \n" << std::endl;
         // peLocal escribe en la direccion 04 con valor 80
         moesi.writeMOESI("04", 74, pe3, pe1, pe2);
-        pe3.CACHE.print();
-        memory.print();
         moesi.writeMOESI("04", 80, pe3, pe1, pe2);
-        pe3.CACHE.print();
         // Verificar que el dato en e1 es 78 y que el estado de la cache es M
         REQUIRE(pe3.CACHE.e1.getData() == 80);
         REQUIRE(pe3.CACHE.e1.getStatus() == StateEnum::Modified);
@@ -62,14 +57,8 @@ TEST_CASE("Moesi", "[Moesi]") {
         std::cout << "Caso 3 \n" << std::endl;
         // peLocal escribe en la direccion 04 con valor 80
         moesi.writeMOESI("04", 70, pe3, pe1, pe2);
-        pe3.CACHE.print();
         moesi.writeMOESI("04", 74, pe2, pe1, pe3);
-        pe2.CACHE.print();
-        memory.print();
         moesi.writeMOESI("04", 80, pe2, pe1, pe3);
-        pe2.CACHE.print();
-        pe3.CACHE.print();
-        memory.print();
         // Verificar que el dato en e1 es 78 y que el estado de la cache es M
         REQUIRE(pe2.CACHE.e1.getData() == 80);
         REQUIRE(memory.read("04") == 74);
@@ -81,14 +70,8 @@ TEST_CASE("Moesi", "[Moesi]") {
        std::cout << "Caso 4 \n" << std::endl;
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("04", 78, pe3, pe1, pe2);
-        pe3.CACHE.print();
         moesi.readMOESI("04", pe2, pe1, pe3);
-        pe2.CACHE.print();
-        memory.print();
         moesi.writeMOESI("04", 66, pe3, pe1, pe2);
-        pe3.CACHE.print();
-        pe2.CACHE.print();
-        memory.print();
         // Verificar que el dato del entry e1 del pe2 es 66
         REQUIRE(pe3.CACHE.e1.getData() == 66);
         // Verificar que el estado del entry e1 del pe3 es Exclusivo
@@ -101,15 +84,8 @@ TEST_CASE("Moesi", "[Moesi]") {
         // peLocal escribe en la direccion 04 con valor 80
         std::cout << "Caso 5 \n" << std::endl;
         moesi.writeMOESI("04", 70, pe3, pe1, pe2);
-        pe3.CACHE.print();
         moesi.writeMOESI("04", 74, pe2, pe1, pe3);
-        pe2.CACHE.print();
-        pe3.CACHE.print();
-        memory.print();
         moesi.writeMOESI("04", 80, pe3, pe1, pe2);
-        pe2.CACHE.print();
-        pe3.CACHE.print();
-        memory.print();
         // Verificar que el dato en e1 es 78 y que el estado de la cache es M
         REQUIRE(pe3.CACHE.e1.getData() == 80);
         REQUIRE(memory.read("04") == 80);
@@ -121,10 +97,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         std::cout << "Caso 6 \n" << std::endl;
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("04", 78, pe3, pe1, pe2);
-        pe3.CACHE.print();
         moesi.writeMOESI("04",95, pe2, pe1, pe3);
-        pe2.CACHE.print();
-        memory.print();
         // Verificar que el dato del entry e1 del pe2 es 95
         REQUIRE(pe2.CACHE.e1.getData() == 95);
         // Verificar que el dato de memoria es 66
@@ -139,13 +112,8 @@ TEST_CASE("Moesi", "[Moesi]") {
         std::cout <<  "Caso 7 \n"<< std::endl;
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("04", 78, pe3, pe1, pe2);
-        pe3.CACHE.print();
         moesi.writeMOESI("04",95, pe2, pe1, pe3);
-        pe2.CACHE.print();
-        memory.print();
         moesi.writeMOESI("04", 14, pe1, pe2, pe3);
-        pe1.CACHE.print();
-        memory.print();
         // Verificar que el dato del entry e1 del pe2 es 95
         REQUIRE(pe1.CACHE.e1.getData() == 14);
         // Verificar que el dato de memoria es 66
@@ -162,13 +130,8 @@ TEST_CASE("Moesi", "[Moesi]") {
         std::cout <<  "Caso 8 \n"<< std::endl;
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("04", 78, pe1, pe2, pe3);
-        pe1.CACHE.print();
         moesi.readMOESI("04", pe2, pe1, pe3);
-        pe2.CACHE.print();
-        memory.print();
         moesi.writeMOESI("04", 14, pe3, pe1, pe2);
-        pe3.CACHE.print();
-        memory.print();
         // Verificar que el dato del entry e1 del pe2 es 95
         REQUIRE(pe3.CACHE.e1.getData() == 14);
         // Verificar que el dato de memoria es 66
@@ -188,10 +151,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         moesi.writeMOESI("04", 20, pe1, pe2, pe3);
         moesi.writeMOESI("08", 30, pe1, pe2, pe3);
         moesi.writeMOESI("12", 40, pe1, pe2, pe3);
-        pe1.CACHE.print();
         moesi.writeMOESI("16", 50, pe1, pe2, pe3);
-        pe1.CACHE.print();
-        memory.print();
         // Verificar que el dato del entry e1 del pe2 es 95
         REQUIRE(pe1.CACHE.e1.getData() == 20);
         // Verificar que el estado del entry e1 del pe2 es exclusivo
@@ -219,12 +179,8 @@ TEST_CASE("Moesi", "[Moesi]") {
         moesi.writeMOESI("04", 40, pe1, pe2, pe3);
         // pe2 y pe1 tienen la direccion 28 en estado S
         moesi.readMOESI("08", pe2, pe1, pe3);
-        pe1.CACHE.print();
-        pe2.CACHE.print();
-        memory.print();
         // Agregar otro dato y por politica FIFO se elimina el dato en e1
         moesi.writeMOESI("44", 50, pe1, pe2, pe3);
-        pe1.CACHE.print();
         // Verificar que el dato del entry en direccion 44 del pe1 es 50
         REQUIRE(pe1.CACHE.getEntry("44").getData() == 50);
         // Verificar que el estado del entry en direccion 44 del pe1 es M
@@ -237,12 +193,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         std::cout << "Caso 11\n" << std::endl;
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("04", 78, pe3, pe1, pe2);
-        pe3.CACHE.print();
-        pe1.CACHE.print();
-        pe2.CACHE.print();
         moesi.readMOESI("04", pe2, pe1, pe3);
-        pe2.CACHE.print();
-        memory.print();
         // Verificar que el dato en e1 es 80 y que el estado de la cache es M
         REQUIRE(pe2.CACHE.e1.getData() == 78);
         REQUIRE(pe3.CACHE.e1.getStatus() == StateEnum::Owned);
@@ -255,8 +206,6 @@ TEST_CASE("Moesi", "[Moesi]") {
         memory.write("60", 120);
         // pe3 lee la direccion 60
         moesi.readMOESI("60", pe3, pe1, pe2);
-        pe3.CACHE.print();
-        memory.print();
         // Verificar que el dato en direccion 60 de memoria es 120
         REQUIRE(memory.read("60") == 120);
         // Verificar que el estado del entry en direccion 60 del pe3 es E
@@ -271,7 +220,6 @@ TEST_CASE("Moesi", "[Moesi]") {
         moesi.writeMOESI("52", 78, pe2, pe1, pe3);
         // pe2 lee la direccion 52
         moesi.readMOESI("52", pe2, pe1, pe3);
-        pe2.CACHE.print();
         // Verificar que el estado del entry en direccion 52 del pe2 es M
         REQUIRE(pe2.CACHE.getEntry("52").getStatus() == StateEnum::Modified);
         // Verificar que el dato que leyo el pe2 es 78
@@ -283,11 +231,8 @@ TEST_CASE("Moesi", "[Moesi]") {
         // pe2 y pe1 leen la direccion 00, estan en estado S
         moesi.readMOESI("00", pe2, pe1, pe3);
         moesi.readMOESI("00", pe1, pe2, pe3);
-        pe2.CACHE.print();
-        pe1.CACHE.print();
         // pe2 escribe un 38 en direccion 00, queda como E y pe1 como I
         moesi.writeMOESI("00", 38, pe2, pe1, pe3);
-        pe2.CACHE.print();
         // pe2 lee la direccion 00, pasaria a M
         moesi.readMOESI("00", pe2, pe1, pe3);
         // Verificar que el estado del entry en direccion 00 del pe2 es E
@@ -301,11 +246,8 @@ TEST_CASE("Moesi", "[Moesi]") {
      SECTION("15. Lectura de la direccion cuando la direccion esta en cache local con estado S") {
         std::cout << "Caso 15 \n" << std::endl;
         // pe2 y pe1 leen la direccion 00, estan en estado S
-        memory.print();
         moesi.readMOESI("00", pe2, pe1, pe3);
         moesi.readMOESI("00", pe1, pe2, pe3);
-        pe2.CACHE.print();
-        pe1.CACHE.print();
         // pe2 lee de nuevo, se mantiene en S
         moesi.readMOESI("00", pe2, pe1, pe3);
         // Verificar que el estado del entry en direccion 00 del pe2 es S
@@ -321,14 +263,10 @@ TEST_CASE("Moesi", "[Moesi]") {
         //pe2 y pe1 leen la direccion 00, estan en estado S
         moesi.readMOESI("00", pe2, pe1, pe3);
         moesi.readMOESI("00", pe1, pe2, pe3);
-        pe2.CACHE.print();
-        pe1.CACHE.print();
         // pe2 escribe un 38 en direccion 00, queda como E y pe1 como I
         moesi.writeMOESI("00", 38, pe2, pe1, pe3);
-        pe2.CACHE.print();
         // pe2 lee la direccion 00, pasaria a M
         moesi.readMOESI("00", pe1, pe2, pe3);
-        pe1.CACHE.print();
         // Verificar que el estado del entry en direccion 00 del pe2 es E
         REQUIRE(pe2.CACHE.getEntry("00").getStatus() == StateEnum::Owned);
         // Verificar que el estado del entry en direccion 00 del pe1 es I
@@ -348,15 +286,10 @@ TEST_CASE("Moesi", "[Moesi]") {
         moesi.writeMOESI("04", 30, pe2, pe1, pe3);
         moesi.writeMOESI("08", 40, pe2, pe1, pe3);
         moesi.writeMOESI("12", 50, pe2, pe1, pe3);
-        pe1.CACHE.print();
-        pe2.CACHE.print();
         // Reemplazo el entry con direccion 00 que ocasiono el estado I en cache 1
         moesi.writeMOESI("16", 60, pe2, pe1, pe3);
         //
         moesi.writeMOESI("00", 70, pe1, pe2, pe3);
-        pe1.CACHE.print();
-        pe2.CACHE.print();
-        memory.print();
         // Verificar que el dato del entry en direccion 00 del pe1 es 20
         REQUIRE(pe1.CACHE.getEntry("00").getData() == 70);
         // Verificar que el estado del entry en direccion 00 del pe1 es M
@@ -372,15 +305,10 @@ TEST_CASE("Moesi", "[Moesi]") {
         moesi.writeMOESI("04", 30, pe2, pe1, pe3);
         moesi.writeMOESI("08", 40, pe2, pe1, pe3);
         moesi.writeMOESI("12", 50, pe2, pe1, pe3);
-        pe1.CACHE.print();
-        pe2.CACHE.print();
         // Reemplazo el entry con direccion 00 que ocasiono el estado I en cache 1
         moesi.writeMOESI("16", 60, pe2, pe1, pe3);
         //
         moesi.readMOESI("00", pe1, pe2, pe3);
-        pe1.CACHE.print();
-        pe2.CACHE.print();
-        memory.print();
         // Verificar que el dato del entry en direccion 00 del pe1 es 20
         REQUIRE(pe1.CACHE.getEntry("00").getData() == 20);
         // Verificar que el estado del entry en direccion 00 del pe1 es M
@@ -393,7 +321,6 @@ TEST_CASE("Moesi", "[Moesi]") {
         moesi.writeMOESI("00", 10, pe1, pe2, pe3);
         // Invalida la direccion 10 de pe1
         moesi.incrementMOESI("00", pe1, pe2, pe3);
-        pe1.CACHE.print();
         // Verificar que el dato del entry en direccion 00 del pe1 es 20
         REQUIRE(pe1.CACHE.getEntry("00").getData() == 11);
         // Verificar que el estado del entry en direccion 00 del pe1 es M
@@ -407,9 +334,6 @@ TEST_CASE("Moesi", "[Moesi]") {
         moesi.readMOESI("36", pe2, pe1, pe3);
         // pe1 incrementa el valor de la direccion 00
         moesi.incrementMOESI("36", pe1, pe2, pe3);
-        pe1.CACHE.print();
-        pe1.CACHE.print();
-        memory.print();
         // Verificar que el dato del entry en direccion 00 del pe1 es 20
         REQUIRE(pe1.CACHE.getEntry("36").getData() == 1);
         // Verificar que el estado del entry en direccion 00 del pe1 es M
@@ -422,15 +346,8 @@ TEST_CASE("Moesi", "[Moesi]") {
         std::cout << "Caso 21 \n" << std::endl;
         //peLocal escribe en la direccion 04 con valor 80
         moesi.writeMOESI("04", 74, pe3, pe1, pe2);
-        pe3.CACHE.print();
-        memory.print();
         moesi.readMOESI("04", pe2, pe1, pe3);
-        pe2.CACHE.print();
-        memory.print();
         moesi.writeMOESI("04", 78, pe3, pe1, pe2);
-        pe3.CACHE.print();
-        memory.print();
-
         // Verificar que el dato en e1 es 78 y que el estado de la cache es M
         REQUIRE(pe3.CACHE.e1.getData() == 78);
         REQUIRE(pe3.CACHE.e1.getStatus() == StateEnum::Modified);
@@ -441,13 +358,8 @@ TEST_CASE("Moesi", "[Moesi]") {
         std::cout <<  "Caso 22 \n"<< std::endl;
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("04", 78, pe3, pe1, pe2);
-        pe3.CACHE.print();
         moesi.readMOESI("04", pe2, pe1, pe3);
-        pe2.CACHE.print();
-        memory.print();
         moesi.writeMOESI("04", 14, pe1, pe2, pe3);
-        pe1.CACHE.print();
-        memory.print();
         // Verificar que el dato del entry e1 del pe2 es 95
         REQUIRE(pe1.CACHE.e1.getData() == 14);
         // Verificar que el dato de memoria es 66
@@ -464,15 +376,8 @@ TEST_CASE("Moesi", "[Moesi]") {
         std::cout << "Caso 23 \n" << std::endl;
         //peLocal escribe en la direccion 04 con valor 80
         moesi.writeMOESI("04", 74, pe3, pe1, pe2);
-        pe3.CACHE.print();
-        memory.print();
         moesi.readMOESI("04", pe2, pe1, pe3);
-        pe2.CACHE.print();
-        memory.print();
         moesi.readMOESI("04", pe3, pe1, pe2);
-        pe3.CACHE.print();
-        memory.print();
-
         // Verificar que el dato en e1 es 74 y que el estado de la cache es M
         REQUIRE(pe3.CACHE.e1.getData() == 74);
         REQUIRE(pe3.CACHE.e1.getStatus() == StateEnum::Owned);
@@ -483,13 +388,8 @@ TEST_CASE("Moesi", "[Moesi]") {
         std::cout <<  "Caso 24 \n"<< std::endl;
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("04", 78, pe3, pe1, pe2);
-        pe3.CACHE.print();
         moesi.readMOESI("04", pe2, pe1, pe3);
-        pe2.CACHE.print();
-        memory.print();
         moesi.readMOESI("04", pe1, pe2, pe3);
-        pe1.CACHE.print();
-        memory.print();
         // Verificar que el dato del entry e1 del pe2 es 95
         REQUIRE(pe1.CACHE.e1.getData() == 78);
         // Verificar que el dato de memoria es 66

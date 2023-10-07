@@ -9,17 +9,12 @@ private:
 
     // Invalida los estados de los caches externos cuando el local hace writeMESI de una direccion que comparten
     void invalidateCaches(std::string address, PE& peExternal1, PE& peExternal2){
-        std::cout <<  "Verifico Cache Externa 1" << std::endl;
         if (peExternal1.CACHE.exists(address)){
-            std::cout <<  "Entre Cache Externa 1" << std::endl;
             peExternal1.CACHE.updateValue(peExternal1.CACHE.getEntry(address).getID(), StateEnum::Invalid, address, peExternal1.CACHE.getEntry(address).getData());
 
-        }
-        std::cout <<  "Verifico Cache Externa 2" << std::endl;        
+        }     
         if (peExternal2.CACHE.exists(address)){
-            std::cout <<  "Estadooo " << peExternal2.CACHE.getEntry(address).getStatus() << std::endl;  
             peExternal2.CACHE.updateValue(peExternal2.CACHE.getEntry(address).getID(), StateEnum::Invalid, address, peExternal2.CACHE.getEntry(address).getData());
-            std::cout <<  "Estadooo final " << peExternal2.CACHE.getEntry(address).getStatus() << std::endl;
         }
     }
 
@@ -216,35 +211,29 @@ public:
             switch (peLocal.CACHE.getEntry(address).getStatus()) {
                 //Si el estado es M
                 case StateEnum::Modified:
-                    std::cout <<  "M\n" << std::endl;
                     //Escribo en cache local
                     peLocal.CACHE.updateValue(peLocal.CACHE.getEntry(address).getID(), StateEnum::Modified, address, data);
                     invalidateCaches(address, peExternal1, peExternal2);
                     break;
                 //Si el estado es O
                 case StateEnum::Owned:
-                    std::cout <<  "O\n" << std::endl;
                     //Escribo en cache local
                     peLocal.CACHE.updateValue(peLocal.CACHE.getEntry(address).getID(), StateEnum::Modified, address, data);
                     invalidateCaches(address, peExternal1, peExternal2);
                     break;
                 //Si el estado es E
                 case StateEnum::Exclusive:
-                    std::cout <<  "E\n" << std::endl;
                     //Escribo en cache local y paso al estado M
                     peLocal.CACHE.updateValue(peLocal.CACHE.getEntry(address).getID(), StateEnum::Modified, address, data);
                     invalidateCaches(address, peExternal1, peExternal2);
                     break;
                 //Si el estado es S
                 case StateEnum::Shared:
-                    std::cout <<  "S\n" << std::endl;
                     //Escribo directamente a memoria (WriteThrough), invalido los demas caches que tengan esa direccion y me asigno estado E
                     writeThrough(address, data, peLocal, peExternal1, peExternal2);
                     break;
                 case StateEnum::Invalid:
-                    std::cout <<  "I\n" << std::endl;
                     if (peExternal1.CACHE.exists(address)){
-                        std::cout <<  "F1\n" << std::endl;
                         //Verifico el estado del cache externo 1
                         switch (peExternal1.CACHE.getEntry(address).getStatus()) {
                             //Si el estado es M
@@ -289,8 +278,6 @@ public:
                     }
                     else if (peExternal2.CACHE.exists(address)){
                         //Verifico el estado del cache externo 2
-                        std::cout <<  "F2\n" << std::endl;
-                        std::cout << "Estado pre invalid "<< peExternal2.CACHE.getEntry(address).getStatus() << std::endl;
                         switch (peExternal2.CACHE.getEntry(address).getStatus()) {
                             //Si el estado es M
                             case StateEnum::Modified:

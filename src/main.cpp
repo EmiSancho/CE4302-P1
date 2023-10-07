@@ -29,30 +29,30 @@ int main() {
     std::vector<std::string> randomCodePE2 = codeGenerator.getRandomCode(); 
     std::vector<std::string> randomCodePE3 = codeGenerator.getRandomCode();
 
-//     // Generate random code
-//     generateRandomCode codeGenerator;
-//     std::vector<std::string> randomCodePE1 = codeGenerator.getRandomCode();
-//     std::vector<std::string> randomCodePE2 = codeGenerator.getRandomCode(); 
-//     std::vector<std::string> randomCodePE3 = codeGenerator.getRandomCode();
+    // Generate random code
+    generateRandomCode codeGenerator;
+    std::vector<std::string> randomCodePE1 = codeGenerator.getRandomCode();
+    std::vector<std::string> randomCodePE2 = codeGenerator.getRandomCode(); 
+    std::vector<std::string> randomCodePE3 = codeGenerator.getRandomCode();
 
-//     //Populate the instruccionMemories 
-//     instrucctionMemory instMemPE1;
-//     instMemPE1.loadProgram(randomCodePE1);
-//     //instMemPE1.printMemory(1);
+    //Populate the instruccionMemories 
+    instrucctionMemory instMemPE1;
+    instMemPE1.loadProgram(randomCodePE1);
+    //instMemPE1.printMemory(1);
 
-//     instrucctionMemory instMemPE2;
-//     instMemPE2.loadProgram(randomCodePE2);
-//     // instMemPE2.printMemory(2);
+    instrucctionMemory instMemPE2;
+    instMemPE2.loadProgram(randomCodePE2);
+    // instMemPE2.printMemory(2);
 
-//     instrucctionMemory instMemPE3;
-//     instMemPE3.loadProgram(randomCodePE3);
-//     // instMemPE3.printMemory(3);
+    instrucctionMemory instMemPE3;
+    instMemPE3.loadProgram(randomCodePE3);
+    // instMemPE3.printMemory(3);
 
-//    //Initialize the PEs
-//     PEManager& peManager = PEManager::getInstance();
-//     PE PE1(1, instMemPE1); peManager.registerPE1(&PE1);
-//     PE PE2(2, instMemPE2); peManager.registerPE2(&PE2);
-//     PE PE3(3, instMemPE3); peManager.registerPE3(&PE3);
+   //Initialize the PEs
+    PEManager& peManager = PEManager::getInstance();
+    PE PE1(1, instMemPE1); peManager.registerPE1(&PE1);
+    PE PE2(2, instMemPE2); peManager.registerPE2(&PE2);
+    PE PE3(3, instMemPE3); peManager.registerPE3(&PE3);
 
     int max = 2;
 

@@ -1,0 +1,9 @@
+Se trabaja en C++ para el backend, por lo que se debe contar con un compilador tal como mingw o wsl
+Adem
+Para compilar cada componente (ejemplo pe): g++ pe.cpp -o pe
+Para ejecutar: ./pe
+
+Para las pruebas unitarias (testMESI.cpp y testMOESI.cpp) se hace uso de la librería Catch2 (https://github.com/catchorg/Catch2.git) que necesita también de CMake para build de la librería (https://cmake.org/cmake/help/latest/command/install.html)
+
+Compilar la clase main y generar el ejecutable main: g++ main.cpp -o main
+El ejecutable generado por medio de este código, se ejecuta mediante ./main
