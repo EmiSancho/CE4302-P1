@@ -21,6 +21,13 @@ public:
         std::cerr << "request: " << request << std::endl;
         std::cerr << "protocol: " << protocol << std::endl;
     };
+
+    std::string toString() const{
+        std::stringstream ss;
+        ss << "PE" << processor_id << " | address: " << address << " | request: " << request << " | protocol: " << protocol << std::endl;
+        return ss.str(); 
+    }
+    
 };
 
 #endif // PACKAGE_H
