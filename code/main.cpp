@@ -1,6 +1,6 @@
 #include <iostream>
 #include "./pe/pe.cpp"
-//#include "./Interconnect/bus.cpp"
+#include "./Interconnect/bus.cpp"
 //#include "./mem/main_mem.cpp"
 #include <thread>
 #include "logManagement.cpp"
@@ -56,11 +56,11 @@ int main() {
 
     int max = 2;
 
-    RequestManager bus;
+    // RequestManager bus;
 
-    Package package1(0,0,0,0);
-    package1 = PE1.getNextInstruccion(true);
-    bus.AddRequest(package1);
+    // Package package1(0,0,0,0);
+    // package1 = PE1.getNextInstruccion(true);
+    // bus.AddRequest(package1);
 
     // int result = bus.mesi.readMESI(1,"04");
     // std::cerr << "result:" << result << std::endl;
@@ -93,39 +93,39 @@ int main() {
     //     bus.ConsumerThread();
     // });
     // thread1.join();
-    /* 
-    std::thread thread2([&PE2, max]() {
-        bool p1_nextInstr = true;
-        Package package2(0,0,0,0);
-        for (int i = 0; i < max; ++i) {
-            package2 = PE2.getNextInstruccion(p1_nextInstr);
-            bus.AddRequest(package2);
-        }
-    });
+    
+    // std::thread thread2([&PE2, max]() {
+    //     bool p1_nextInstr = true;
+    //     Package package2(0,0,0,0);
+    //     for (int i = 0; i < max; ++i) {
+    //         package2 = PE2.getNextInstruccion(p1_nextInstr);
+    //         bus.AddRequest(package2);
+    //     }
+    // });
 
-    std::thread thread3([&PE3, max]() {
-        for (int i = 0; i < max; ++i) {
-            PE3.executeProgram(true);
-        }
-    });
+    // std::thread thread3([&PE3, max]() {
+    //     for (int i = 0; i < max; ++i) {
+    //         PE3.executeProgram(true);
+    //     }
+    // });
 
     // Join the threads to wait for them to complete
     
 
-    thread2.join();
-    thread3.join();
+    // thread2.join();
+    // thread3.join();
     
-    int max = 0;
-    Package package(0,0,0,0);
-    package = PE1.getNextInstruccion(p1_nextInstr);
-    package.print();
+    // int max = 0;
+    // Package package(0,0,0,0);
+    // package = PE1.getNextInstruccion(p1_nextInstr);
+    // package.print();
     
-    while (max < 2){
-        package = PE1.getNextInstruccion(p1_nextInstr);
-        package.print();
-        //PE2.executeProgram(p1_nextInstr);
-        max++; 
-    }
+    // while (max < 2){
+    //     package = PE1.getNextInstruccion(p1_nextInstr);
+    //     package.print();
+    //     //PE2.executeProgram(p1_nextInstr);
+    //     max++; 
+    // }
     
     //Initializing busInterconnect 
     //RequestManager bus;

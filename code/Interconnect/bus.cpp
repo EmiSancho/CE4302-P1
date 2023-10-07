@@ -5,8 +5,11 @@
 #include <condition_variable>
 #include <thread>
 #include "../package.h"
+#include "../mem/main_mem.cpp"
+#include "../protocolo/MESI.cpp"
+
 // #include "../state_enum.cpp"
-// #include "../protocolo/MESI.cpp"
+// 
 // #include "../logManagement.cpp"
 
 // Cola de solicitudes de los PE
