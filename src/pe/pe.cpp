@@ -4,7 +4,6 @@
 #include <iostream>
 #include "../mem/cache-mem.cpp"
 #include "../mem/instrucction_mem.cpp"
-#include "random-code-generator.cpp"
 #include "../package.h"
 #include "../logManagement.cpp"
 
@@ -12,7 +11,6 @@ class PE{
     private:
         logger& log = logger::getInstance();
         int PC = 0;
-        generateRandomCode codeGenerator;
         instrucctionMemory INSTRUCTION_MEMORY;
 
     public:
