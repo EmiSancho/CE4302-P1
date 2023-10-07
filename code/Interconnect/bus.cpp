@@ -5,13 +5,14 @@
 #include <condition_variable>
 #include <thread>
 #include "../package.h"
-#include "../state_enum.cpp"
-#include "../Protocolo/MESI.cpp"
-
+// #include "../state_enum.cpp"
+// #include "../protocolo/MESI.cpp"
+// #include "../logManagement.cpp"
 
 // Cola de solicitudes de los PE
 class RequestManager {
 private:
+    logger& log = logger::getInstance();
     PE& pe1 = PEManager::getInstance().getPE1();
     PE& pe2 = PEManager::getInstance().getPE2();
     PE& pe3 = PEManager::getInstance().getPE3();
@@ -30,8 +31,10 @@ public:
     void AddRequest(Package& packet) {
         std::lock_guard<std::mutex> lock(mutex);
         requestQueue.push(packet);
-        std::cerr << "Packet Added" << std::endl;
-        packet.print();
+        //std::cerr << "Packet Added" << std::endl;
+        //packet.print();
+        log.logPackage("AddRequest", packet);
+
     }
 
     Package GetRequest() {

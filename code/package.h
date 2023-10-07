@@ -4,6 +4,7 @@
 // Class definition and other code go here
 #include "state_enum.cpp"
 #include <iostream>
+#include <sstream>
 
 class Package {
 public:
@@ -27,7 +28,6 @@ public:
         ss << "PE" << processor_id << " | address: " << address << " | request: " << request << " | protocol: " << protocol << std::endl;
         return ss.str(); 
     }
-    
 };
 
 #endif // PACKAGE_H

@@ -6,9 +6,11 @@
 #include "../mem/instrucction_mem.cpp"
 #include "random-code-generator.cpp"
 #include "../package.h"
+#include "../logManagement.cpp"
 
 class PE{
     private:
+        logger& log = logger::getInstance();
         int PC = 0;
         generateRandomCode codeGenerator;
         instrucctionMemory INSTRUCTION_MEMORY;
@@ -20,7 +22,7 @@ class PE{
         PE(int processor_id, instrucctionMemory& instructionMemory){
             this->processor_id = processor_id;
             INSTRUCTION_MEMORY = instructionMemory;
-            CACHE.processor_id = processor_id;
+            log.logMessage("PE" + std::to_string(processor_id) + " started");
             //CACHE.print(processor_id);
         }
 
@@ -28,12 +30,13 @@ class PE{
         Package temp(processor_id, 0, 0, 1);
         if(nextInstr){
             std::string instr = INSTRUCTION_MEMORY.getInstruction(PC);
-            std::cerr << "\nPE"<< processor_id << ", PC="<< PC << ", instr: " << instr << std::endl;
+            //std::cerr << "\nPE"<< processor_id << ", PC="<< PC << ", instr: " << instr << std::endl;
         
             temp.address = static_cast<int>((std::bitset<64>(instr.substr(4, 8)).to_ulong()));
             temp.request = static_cast<int>((std::bitset<64>(instr.substr(2, 2)).to_ulong()));
             PC++;
         }
+        log.logMessage("PE" + std::to_string(processor_id) + " getNextInstruccion" + " | address " + std::to_string(temp.address) + " | request " + std::to_string(temp.request) );
         return temp;
         }
 };
@@ -80,7 +83,7 @@ public:
         return *pe2;
     }
     PE& getPE3() {
-        if (pe2 == nullptr) {
+        if (pe3 == nullptr) {
             std::cerr << "PE3 is not registered." << std::endl;
             // Handle the case where PE2 is not registered (throw an exception or return a default PE)
         }

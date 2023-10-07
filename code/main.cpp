@@ -3,15 +3,31 @@
 //#include "./Interconnect/bus.cpp"
 //#include "./mem/main_mem.cpp"
 #include <thread>
-
-
+#include "logManagement.cpp"
 
 int main() {
+    logger& log = logger::getInstance(); // Create an instance of Logger
+    const int PES = 3;
+    MainMemory& memory = MainMemory::getInstance(); //SINGLETON
+    
+    // memory.write("04",4);
+    // memory.read("04");
+    // memory.write("32",8);
+    // memory.read("32");
+    // memory.write("60",12);
+    // memory.read("60");
+    //memory.print();
     std::cout << "Hell'o" << std::endl;
 
 //     const int PES = 3;
 //     MainMemory& memory = MainMemory::getInstance(); //SINGLETON
 //     //memory.print();
+
+    // Generate random code
+    generateRandomCode codeGenerator;
+    std::vector<std::string> randomCodePE1 = codeGenerator.getRandomCode();
+    std::vector<std::string> randomCodePE2 = codeGenerator.getRandomCode(); 
+    std::vector<std::string> randomCodePE3 = codeGenerator.getRandomCode();
 
 //     // Generate random code
 //     generateRandomCode codeGenerator;
@@ -38,6 +54,19 @@ int main() {
 //     PE PE2(2, instMemPE2); peManager.registerPE2(&PE2);
 //     PE PE3(3, instMemPE3); peManager.registerPE3(&PE3);
 
+    int max = 2;
+
+    RequestManager bus;
+
+    Package package1(0,0,0,0);
+    package1 = PE1.getNextInstruccion(true);
+    bus.AddRequest(package1);
+
+    // int result = bus.mesi.readMESI(1,"04");
+    // std::cerr << "result:" << result << std::endl;
+
+    // std::thread thread1([&PE1, max]() {
+    //     RequestManager bus;
 //     RequestManager bus;
 
 //     int max = 2;
@@ -98,15 +127,16 @@ int main() {
         max++; 
     }
     
+    //Initializing busInterconnect 
+    //RequestManager bus;
+    //std::vector<std::thread> threads;
+    //bus.AddRequest(package);
+    // Thread per PE
+    // for (int i = 0; i < PES; ++i) {
+    //     threads.emplace_back(PEThread, i, std::ref(bus), 5);
+    // }
 
-    std::vector<std::thread> threads;
-    bus.AddRequest(package);
-    //Thread per PE
-    for (int i = 0; i < PES; ++i) {
-        threads.emplace_back(PEThread, i, std::ref(bus), 5);
-    }\
-    */
-
+    log.writeLog();
     return 0;
 }
 

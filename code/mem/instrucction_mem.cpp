@@ -4,7 +4,7 @@
 #include <iostream>
 #include <bitset>
 #include <vector>
-
+#include "../logManagement.cpp"
 
 class instrucctionMemory {
 private:
@@ -18,6 +18,7 @@ public:
         for (int i = 0;  i < program.size(); ++i) {
             memory[i] = program[i];
         }
+        
     }
 
     // Return the instruction at memory[pc]
