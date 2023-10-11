@@ -1,7 +1,6 @@
 #ifndef GENERATERANDOMCODE_H
 #define GENERATERANDOMCODE_H
 
-
 #include <iostream>
 #include <vector>
 #include <cstdlib>

@@ -6,6 +6,7 @@
 #include "./pe/random-code-generator.cpp"
 
 int main() {
+    
     logger& log = logger::getInstance(); // Create an instance of Logger
     const int PES = 3;
     MainMemory& memory = MainMemory::getInstance(); //SINGLETON
@@ -15,11 +16,6 @@ int main() {
     std::vector<std::string> randomCodePE2 = codeGenerator.getRandomCode(); 
     std::vector<std::string> randomCodePE3 = codeGenerator.getRandomCode();
 
-    // Generate random code
-    generateRandomCode codeGenerator;
-    std::vector<std::string> randomCodePE1 = codeGenerator.getRandomCode();
-    std::vector<std::string> randomCodePE2 = codeGenerator.getRandomCode(); 
-    std::vector<std::string> randomCodePE3 = codeGenerator.getRandomCode();
 
     //Populate the instruccionMemories 
     instrucctionMemory instMemPE1;
@@ -28,11 +24,11 @@ int main() {
 
     instrucctionMemory instMemPE2;
     instMemPE2.loadProgram(randomCodePE2);
-    // instMemPE2.printMemory(2);
+    //instMemPE2.printMemory(2);
 
     instrucctionMemory instMemPE3;
     instMemPE3.loadProgram(randomCodePE3);
-    // instMemPE3.printMemory(3);
+    //instMemPE3.printMemory(3);
 
    //Initialize the PEs
     PEManager& peManager = PEManager::getInstance();
@@ -40,7 +36,7 @@ int main() {
     PE PE2(2, instMemPE2); peManager.registerPE2(&PE2);
     PE PE3(3, instMemPE3); peManager.registerPE3(&PE3);
 
-    int max = 2;
+    int max = 8;
 
     RequestManager bus;
 
@@ -51,24 +47,36 @@ int main() {
             package = PE1.getNextInstruccion(p1_nextInstr);
             bus.AddRequest(package);
         }
-        bus.ConsumerThread();
     });
-    thread1.join();
     
-    // std::thread thread2([&PE2, max]() {
-    //     bool p1_nextInstr = true;
-    //     Package package2(0,0,0,0);
-    //     for (int i = 0; i < max; ++i) {
-    //         package2 = PE2.getNextInstruccion(p1_nextInstr);
-    //         bus.AddRequest(package2);
-    //     }
-    // });
+    //bus.printRequestQueue();
+     
 
-    // std::thread thread3([&PE3, max]() {
-    //     for (int i = 0; i < max; ++i) {
-    //         PE3.executeProgram(true);
-    //     }
-    // });
+    std::thread thread2([&PE2, max, &bus]() {
+        bool p1_nextInstr = true;
+        Package package2(0,0,0,0);
+        for (int i = 0; i < max; ++i) {
+            package2 = PE2.getNextInstruccion(p1_nextInstr);
+            bus.AddRequest(package2);
+        }
+    });
+
+    std::thread thread3([&PE3, max, &bus]() {
+        bool p1_nextInstr = true;
+        Package package3(0,0,0,0);
+        for (int i = 0; i < max; ++i) {
+            package3 = PE3.getNextInstruccion(p1_nextInstr);
+            bus.AddRequest(package3);
+        }
+    });
+
+    //bus.printRequestQueue();
+    bus.ConsumerThread();
+
+    thread1.join();
+    thread2.join();
+    thread3.join();
+    
 
     // // Join the threads to wait for them to complete
     

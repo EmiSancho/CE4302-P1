@@ -17,10 +17,7 @@ public:
         : processor_id(pid), address(addr), request(req), protocol(prt) {}
     
     void print(){
-        std::cerr << "PE id: " << processor_id << std::endl;
-        std::cerr << "address: " << address << std::endl;
-        std::cerr << "request: " << request << std::endl;
-        std::cerr << "protocol: " << protocol << std::endl;
+        std::cerr << "PE id: " << processor_id << " | address: " << address << " | request: " << request << " | protocol: " << protocol << std::endl;
     };
 
     std::string toString() const{

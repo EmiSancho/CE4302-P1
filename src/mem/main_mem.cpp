@@ -1,3 +1,7 @@
+#ifndef MAINMEMORY_H
+#define MAINMEMORY_H
+
+
 #include <iostream>
 #include "mem_entry.cpp"
 #include "../logManagement.cpp"
@@ -139,3 +143,6 @@ public:
     }
 
 };
+
+
+#endif 

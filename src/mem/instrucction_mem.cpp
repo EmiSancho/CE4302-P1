@@ -33,10 +33,12 @@ public:
 
     // Prints memory's content
     void printMemory(int id) {
-        std::cout << "\nPE"<< id << ", instruccion memory content:" << std::endl;
+        std::string mem = "\nPE" + std::to_string(id) + ", instruccion memory content: ";
+       
         for (int i = 0; i < 8; i++) {
-            std::cout << memory[i] << std::endl;
+            mem = mem + memory[i] + " ";
         }
+        std::cout << mem << std::endl;
     }
 };
 

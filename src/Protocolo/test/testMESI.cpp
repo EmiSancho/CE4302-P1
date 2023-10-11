@@ -3,6 +3,7 @@
 #include "../../catch.hpp"
 #include "../MESI.cpp"
 #include "../../logManagement.cpp "
+#include "../../pe/random-code-generator.cpp"
 
 TEST_CASE("Mesi", "[Mesi]") {
     logger& log = logger::getInstance();
@@ -36,8 +37,10 @@ TEST_CASE("Mesi", "[Mesi]") {
     
     SECTION("1. Escritura en la direccion 04 cuando la no existe ninguna cache") {
         std::cout << "Caso 1 \n" << std::endl;
+        pe1.CACHE.print();
         // peLocal escribe en la direccion 04 con valor 55
         mesi.writeMESI("04", 80, pe1, pe2, pe3);
+        pe1.CACHE.print();
         // Verificar que el dato en e1 es 80 y que el estado de la cache es M
         REQUIRE(pe1.CACHE.e1.getData() == 80);
         REQUIRE(pe1.CACHE.e1.getStatus() == StateEnum::Modified);

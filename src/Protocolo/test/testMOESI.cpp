@@ -3,6 +3,7 @@
 #include "../../catch.hpp"
 #include "../MOESI.cpp"
 #include "../../logManagement.cpp "
+#include "../../pe/random-code-generator.cpp"
 
 TEST_CASE("Moesi", "[Moesi]") {
     logger& log = logger::getInstance();

@@ -14,8 +14,8 @@ public:
         : e1(1,StateEnum::Invalid,"0",-1), e2(2, StateEnum::Invalid,"0",-1), e3(3, StateEnum::Invalid,"0",-1), e4(4, StateEnum::Invalid,"0",-1), processor_id (0){
     }
 
-    void print(){
-        std::cout << "PE "<< processor_id << ", cache content:" << std::endl;
+    void print(int id){
+        std::cout << "PE "<< id << ", cache content:" << std::endl;
         e1.print();
         e2.print();
         e3.print();

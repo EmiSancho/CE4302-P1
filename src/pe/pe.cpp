@@ -24,6 +24,7 @@ class PE{
             //CACHE.print(processor_id);
         }
 
+        
         Package getNextInstruccion(bool nextInstr){
         Package temp(processor_id, 0, 0, 1);
         if(nextInstr){
@@ -86,6 +87,13 @@ public:
             // Handle the case where PE2 is not registered (throw an exception or return a default PE)
         }
         return *pe3;
+    }
+
+    void showCaches(){
+            pe1->CACHE.print(1);
+            pe2->CACHE.print(2);
+            pe3->CACHE.print(3);
+
     }
 };
 
