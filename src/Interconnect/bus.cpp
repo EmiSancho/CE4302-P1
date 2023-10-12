@@ -77,14 +77,18 @@ public:
         int result = -1;
         int max = 0;
         //if (existRequest()) {
-        //while (existRequest()) {
-        while (max < 4) {
+        // Tiempo de inicio para medir el tiempo de ejecucion
+        auto start = std::chrono::high_resolution_clock::now();
+        while (existRequest()) {
+        //while (max < 24) {
             Package packet = GetRequest();
             std::cerr << "ConsumerThread Executing"<< std::endl;
+            
+            // To avoid wrong address as string 
+            std::string address = (packet.address < 10) ? "0" + std::to_string(packet.address) : std::to_string(packet.address);
             packet.print();
-
-            // Tiempo de inicio para medir el tiempo de ejecucion
-            auto start = std::chrono::high_resolution_clock::now();
+            
+            
 
             switch(packet.protocol){
                 case 1: // MESI                                           
@@ -96,17 +100,17 @@ public:
                         if(packet.processor_id == 1){
                             std::cerr << "result 1: "<< result<< std::endl;
                             //result = mesi.readMESI(1,std::to_string(packet.address));
-                            result = mesi.readMESI(std::to_string(packet.address), pe1, pe2, pe3);  
+                            result = mesi.readMESI(address, pe1, pe2, pe3);  
                         }
                         if(packet.processor_id == 2){
                             std::cerr << "result 2: "<< result<< std::endl;
                             //result = mesi.readMESI(2, std::to_string(packet.address));
-                            result = mesi.readMESI(std::to_string(packet.address), pe2, pe1, pe3);
+                            result = mesi.readMESI(address, pe2, pe1, pe3);
                         }
                         if(packet.processor_id == 3){
                             std::cerr << "result 3: "<< result<< std::endl;
                             //result = mesi.readMESI(3, std::to_string(packet.address));
-                            result = mesi.readMESI(std::to_string(packet.address), pe3, pe1, pe2);
+                            result = mesi.readMESI(address, pe3, pe1, pe2);
                         }
                         std::cerr << "result: "<< result<< std::endl;
                         //memory.print();
@@ -116,13 +120,13 @@ public:
                     case 2: //writeMesi
                         std::cerr << "writeMESI"<< std::endl;
                         if(packet.processor_id == 1){
-                            mesi.writeMESI(std::to_string(packet.address), 7, pe1, pe2, pe3);
+                            mesi.writeMESI(address, 7, pe1, pe2, pe3);
                         }
                         if(packet.processor_id == 2){
-                            mesi.writeMESI(std::to_string(packet.address), 8, pe2, pe1, pe3);
+                            mesi.writeMESI(address, 8, pe2, pe1, pe3);
                         }
                         if(packet.processor_id == 3){
-                            mesi.writeMESI(std::to_string(packet.address), 9, pe3, pe1, pe2);
+                            mesi.writeMESI(address, 9, pe3, pe1, pe2);
                         }
                         //memory.print();
                         break;
@@ -130,13 +134,13 @@ public:
                     case 3: // Increment
                         std::cerr << "Increment"<< std::endl;
                         if(packet.processor_id == 1){
-                            mesi.incrementMESI(std::to_string(packet.address), pe1, pe2, pe3);
+                            mesi.incrementMESI(address, pe1, pe2, pe3);
                         }
                         if(packet.processor_id == 2){
-                            mesi.incrementMESI(std::to_string(packet.address), pe2, pe1, pe3);
+                            mesi.incrementMESI(address, pe2, pe1, pe3);
                         }
                         if(packet.processor_id == 3){
-                            mesi.incrementMESI(std::to_string(packet.address), pe3, pe1, pe2);
+                            mesi.incrementMESI(address, pe3, pe1, pe2);
                         }
                         //memory.print();
                         break;
@@ -154,18 +158,18 @@ public:
                             
                             if(packet.processor_id == 1){
                                 std::cerr << "result 1: "<< result<< std::endl;
-                                //result = mesi.readMESI(1,std::to_string(packet.address));
-                                result = moesi.readMOESI(std::to_string(packet.address), pe1, pe2, pe3);  
+                                //result = mesi.readMESI(1,address);
+                                result = moesi.readMOESI(address, pe1, pe2, pe3);  
                             }
                             if(packet.processor_id == 2){
                                 std::cerr << "result 2: "<< result<< std::endl;
                                 //result = mesi.readMESI(2, std::to_string(packet.address));
-                                result = moesi.readMOESI(std::to_string(packet.address), pe2, pe1, pe3);
+                                result = moesi.readMOESI(address, pe2, pe1, pe3);
                             }
                             if(packet.processor_id == 3){
                                 std::cerr << "result 3: "<< result<< std::endl;
                                 //result = mesi.readMESI(3, std::to_string(packet.address));
-                                result = moesi.readMOESI(std::to_string(packet.address), pe3, pe1, pe2);
+                                result = moesi.readMOESI(address, pe3, pe1, pe2);
                             }
                             std::cerr << "result: "<< result<< std::endl;
                             //memory.print();
@@ -175,13 +179,13 @@ public:
                         case 2: //writeMoesi
                             std::cerr << "writeMESI"<< std::endl;
                             if(packet.processor_id == 1){
-                                moesi.writeMOESI(std::to_string(packet.address), 7, pe1, pe2, pe3);
+                                moesi.writeMOESI(address, 7, pe1, pe2, pe3);
                             }
                             if(packet.processor_id == 2){
-                                moesi.writeMOESI(std::to_string(packet.address), 8, pe2, pe1, pe3);
+                                moesi.writeMOESI(address, 8, pe2, pe1, pe3);
                             }
                             if(packet.processor_id == 3){
-                                moesi.writeMOESI(std::to_string(packet.address), 9, pe3, pe1, pe2);
+                                moesi.writeMOESI(address, 9, pe3, pe1, pe2);
                             }
                             //memory.print();
                             break;
@@ -189,13 +193,13 @@ public:
                         case 3: // Increment moesi
                             std::cerr << "Increment"<< std::endl;
                             if(packet.processor_id == 1){
-                                moesi.incrementMOESI(std::to_string(packet.address), pe1, pe2, pe3);
+                                moesi.incrementMOESI(address, pe1, pe2, pe3);
                             }
                             if(packet.processor_id == 2){
-                                moesi.incrementMOESI(std::to_string(packet.address), pe2, pe1, pe3);
+                                moesi.incrementMOESI(address, pe2, pe1, pe3);
                             }
                             if(packet.processor_id == 3){
-                                moesi.incrementMOESI(std::to_string(packet.address), pe3, pe1, pe2);
+                                moesi.incrementMOESI(address, pe3, pe1, pe2);
                             }
                             //memory.print();
                             break;
@@ -213,22 +217,23 @@ public:
 
             PEManager::getInstance().showCaches();
             memory.print();
-            // Tiempo de finalizacion para medir el tiempo de ejecucion
-            auto end = std::chrono::high_resolution_clock::now();
-
-            // Calcula la duración del tiempo de ejecucion en nanosegundos
-            std::chrono::duration<double> execution_time = end - start;
-
-            // Convierte la duración a milisegundos
-            double execution_time_milliseconds = execution_time.count() * 1000;
-
-            // Se agrega al log para que se muestre en la interfaz
-            log.logMessage("Tiempo de ejecucion: " + std::to_string(execution_time_milliseconds) + " milisegundos.");
-
-            std::cout << "Tiempo de ejecucion: " << execution_time_milliseconds << " milisegundos." << std::endl;
+            
             //std::this_thread::sleep_for(std::chrono::milliseconds(200));
-        max++;
+        max++; // DELETE ME 
         }
+        // Tiempo de finalizacion para medir el tiempo de ejecucion
+        auto end = std::chrono::high_resolution_clock::now();
+
+        // Calcula la duración del tiempo de ejecucion en nanosegundos
+        std::chrono::duration<double> execution_time = end - start;
+
+        // Convierte la duración a milisegundos
+        double execution_time_milliseconds = execution_time.count() * 1000;
+
+        // Se agrega al log para que se muestre en la interfaz
+        log.logMessage("Tiempo de ejecucion: " + std::to_string(execution_time_milliseconds) + " milisegundos.");
+
+        std::cout << "Tiempo de ejecucion: " << execution_time_milliseconds << " milisegundos." << std::endl;
         //memory.print();
     }
 

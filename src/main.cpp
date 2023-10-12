@@ -5,6 +5,8 @@
 #include "logManagement.cpp"
 #include "./pe/random-code-generator.cpp"
 
+// g++ main.cpp -o main
+// ./main
 int main() {
     
     logger& log = logger::getInstance(); // Create an instance of Logger
