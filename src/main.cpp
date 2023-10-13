@@ -82,9 +82,10 @@ int main() {
     thread3.join();
 
     bus.printRequestQueue();
+    
     bus.ConsumerThread();
-
     log.writeLog();
+    
     return 0;
 }
 
