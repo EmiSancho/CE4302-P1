@@ -77,13 +77,13 @@ int main() {
         }
     });
 
-    //bus.printRequestQueue();
-    bus.ConsumerThread();
-
     thread1.join();
     thread2.join();
     thread3.join();
-    
+
+    bus.printRequestQueue();
+    bus.ConsumerThread();
+
     log.writeLog();
     return 0;
 }

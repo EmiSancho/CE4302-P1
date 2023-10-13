@@ -33,7 +33,7 @@ class PE{
                 temp.data =  static_cast<int>((std::bitset<64>(instr.substr(12, 5)).to_ulong()));
                 PC++;
             }
-            log.logMessage("PE" + std::to_string(processor_id) + " getNextInstruccion" + " | address " + std::to_string(temp.address) + " | data " + std::to_string(temp.data) +" | request " + std::to_string(temp.request) );
+            //log.logMessage("PE" + std::to_string(processor_id) + " getNextInstruccion" + " | address " + std::to_string(temp.address) + " | data " + std::to_string(temp.data) +" | request " + std::to_string(temp.request) );
             return temp;
         }
 };

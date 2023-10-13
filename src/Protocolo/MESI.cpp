@@ -180,7 +180,7 @@ public:
                 
             }
         }
-        
+        log.logCacheRead(peLocal.processor_id, peLocal.CACHE.getEntry(address).getStatus(), address, peLocal.CACHE.getEntry(address).getData());
         log.logMessage("Read Finished");
         // Tomo el dato de cache local que se ha actualizado
         return peLocal.CACHE.getEntry(address).getData();
