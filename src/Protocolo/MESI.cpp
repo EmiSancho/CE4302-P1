@@ -221,6 +221,7 @@ public:
                 return peLocal.CACHE.getEntry(address).getData();
             }
         }
+        log.logMessage("Read Finished");
         //log.logMessage("rA " + std::to_string(readAccessMem) + " | wA " + std::to_string(writeAccessMem) + " | i " + std::to_string(invalidations));
         return 0;
     }
@@ -431,12 +432,14 @@ public:
                 log.logCacheUpdate(peLocal.processor_id,address,"M");
             }
         }
+        log.logMessage("Write Finished");
         //log.logMessage("rA " + std::to_string(readAccessMem) + " | wA " + std::to_string(writeAccessMem) + " | i " + std::to_string(invalidations));
     }
 
     void incrementMESI(std::string address, PE& peLocal, PE& peExternal1, PE& peExternal2) {
         int data = readMESI(address, peLocal, peExternal1, peExternal2);
         writeMESI(address, data+1, peLocal, peExternal1, peExternal2);
+        log.logMessage("Increment Finished");
     }
 
     int returnReadAccessMemory(){
