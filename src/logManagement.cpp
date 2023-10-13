@@ -30,17 +30,47 @@ class logger{
             logMessages.push_back(tmp);
         }
 
-        void logCacheRead( int id, std::string address, int data){
-            std::string logMessage = "PE" + std::to_string(id) + " r | " + address + " | " + std::to_string(data);
+        void logCacheRead( int id, StateEnum status, std::string address, int data){
+            std::string logMessage = "";
+            switch(status){
+                case StateEnum::Modified:
+                    logMessage = "PE" + std::to_string(id) + " | r | M | " + address + " | " + std::to_string(data);
+                    break;
+                case StateEnum::Owned:
+                    logMessage = "PE" + std::to_string(id) + " | r | O | " + address + " | " + std::to_string(data);
+                    break;
+                case StateEnum::Exclusive:
+                    logMessage = "PE" + std::to_string(id) + " | r | E | " + address + " | " + std::to_string(data);
+                    break;
+                case StateEnum::Shared:
+                    logMessage = "PE" + std::to_string(id) + " | r | S | " + address + " | " + std::to_string(data);
+                    break;
+                case StateEnum::Invalid:
+                    logMessage = "PE" + std::to_string(id) + " | r | I | " + address + " | " + std::to_string(data);
+                    break;
+            }
             logMessages.push_back(logMessage);
         }
 
-        void logCacheUpdate(int id, std::string address, std::string status){
-            std::string logMessage = "PE" + std::to_string(id) + " | " + address + " | " + status;
-            logMessages.push_back(logMessage);    
-        }
-        void logCacheWrite( int id, std::string address, int data){
-            std::string logMessage = "PE" + std::to_string(id) + " w | " + address + " | " + std::to_string(data);
+        void logCacheWrite(int id, StateEnum status, std::string address, int data){
+            std::string logMessage = "";
+            switch(status){
+                case StateEnum::Modified:
+                    logMessage = "PE" + std::to_string(id) + " | w | M | " + address + " | " + std::to_string(data);
+                    break;
+                case StateEnum::Owned:
+                    logMessage = "PE" + std::to_string(id) + " | w | O | " + address + " | " + std::to_string(data);
+                    break;
+                case StateEnum::Exclusive:
+                    logMessage = "PE" + std::to_string(id) + " | w | E | " + address + " | " + std::to_string(data);
+                    break;
+                case StateEnum::Shared:
+                    logMessage = "PE" + std::to_string(id) + " | w | S | " + address + " | " + std::to_string(data);
+                    break;
+                case StateEnum::Invalid:
+                    logMessage = "PE" + std::to_string(id) + " | w | I | " + address + " | " + std::to_string(data);
+                    break;
+            }
             logMessages.push_back(logMessage);
         }
 

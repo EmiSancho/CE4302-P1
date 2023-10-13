@@ -17,12 +17,10 @@ private:
         if (peExternal1.CACHE.exists(address)){
             peExternal1.CACHE.updateValue(peExternal1.CACHE.getEntry(address).getID(), StateEnum::Invalid, address, peExternal1.CACHE.getEntry(address).getData());
             invalidations +=1;
-            log.logCacheUpdate(peExternal1.processor_id,address,"I");
         }     
         if (peExternal2.CACHE.exists(address)){
             peExternal2.CACHE.updateValue(peExternal2.CACHE.getEntry(address).getID(), StateEnum::Invalid, address, peExternal2.CACHE.getEntry(address).getData());
             invalidations +=1;
-            log.logCacheUpdate(peExternal1.processor_id,address,"I");
         }
     }
 

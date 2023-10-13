@@ -4,11 +4,11 @@
 #include <iostream>
 #include "../state_enum.cpp"
 #include "../mem/cache-entry.cpp"
-//#include "../logManagement.cpp"
+#include "../logManagement.cpp"
 
 class Cache{
 private:
-    //logger& log = logger::getInstance();
+    logger& log = logger::getInstance();
 public:
     int processor_id;
     CacheEntry e1, e2, e3, e4;
@@ -98,7 +98,7 @@ public:
             default:
                 std::cout << "Invalid entry ID." << std::endl;
         }
-        //log.logCacheUpdate(processor_id, );
+        log.logCacheWrite(entryID, status, addr, data);
     }
     // const std::string& addr
     void loadValue(const StateEnum& status, const std::string addr, int data) {
