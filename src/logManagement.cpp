@@ -69,7 +69,7 @@ class logger{
                 return;    
             }
 
-            std::ofstream logFile("../../../results/log.txt", std::ios::out | std::ios::trunc);
+            std::ofstream logFile("../results/log.txt", std::ios::out | std::ios::trunc);
             if (logFile.is_open()) {
                 for (const std::string& message : logMessages) {
                     logFile << message << "\n";
@@ -77,11 +77,9 @@ class logger{
                 logFile.close();
                 std::cout << "Log has been written" << std::endl;
             } else {
-                //std::cerr << "Unable to write log file" << std::endl;
+            std::cerr << "Unable to write log file" << std::endl;
             }
         }
-
-
 
     private:
         logger(){};

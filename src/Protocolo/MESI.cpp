@@ -8,7 +8,6 @@ private:
     logger& log = logger::getInstance();
     MainMemory& memory = MainMemory::getInstance(); //SINGLETON
 
-    std::vector <int> metrics;
     int writeAccessMem = 0;
     int invalidations = 0;
     int readAccessMem = 0;
@@ -222,6 +221,7 @@ public:
                 return peLocal.CACHE.getEntry(address).getData();
             }
         }
+        //log.logMessage("rA " + std::to_string(readAccessMem) + " | wA " + std::to_string(writeAccessMem) + " | i " + std::to_string(invalidations));
         return 0;
     }
 
@@ -431,6 +431,7 @@ public:
                 log.logCacheUpdate(peLocal.processor_id,address,"M");
             }
         }
+        //log.logMessage("rA " + std::to_string(readAccessMem) + " | wA " + std::to_string(writeAccessMem) + " | i " + std::to_string(invalidations));
     }
 
     void incrementMESI(std::string address, PE& peLocal, PE& peExternal1, PE& peExternal2) {
@@ -438,10 +439,15 @@ public:
         writeMESI(address, data+1, peLocal, peExternal1, peExternal2);
     }
 
-    std::vector<int> returnMetrics(){
-        metrics.push_back(writeAccessMem);
-        metrics.push_back(readAccessMem);
-        metrics.push_back(invalidations);
-        return metrics;
+    int returnReadAccessMemory(){
+        return readAccessMem;
+    }
+
+    int returnWriteAccessMemory(){
+        return writeAccessMem;
+    }
+
+    int returnInvalidations(){
+        return writeAccessMem;
     }
 };

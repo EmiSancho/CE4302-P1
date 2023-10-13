@@ -24,16 +24,16 @@ class PE{
             //CACHE.print(processor_id);
         }
 
-        
         Package getNextInstruccion(bool nextInstr){
-            Package temp(processor_id, 0, 0, 1);
+            Package temp(processor_id, 0, 0, 1,0);
             if(nextInstr){
                 std::string instr = INSTRUCTION_MEMORY.getInstruction(PC);
                 temp.address = static_cast<int>((std::bitset<64>(instr.substr(4, 8)).to_ulong()));
                 temp.request = static_cast<int>((std::bitset<64>(instr.substr(2, 2)).to_ulong()));
+                temp.data =  static_cast<int>((std::bitset<64>(instr.substr(12, 5)).to_ulong()));
                 PC++;
             }
-            log.logMessage("PE" + std::to_string(processor_id) + " getNextInstruccion" + " | address " + std::to_string(temp.address) + " | request " + std::to_string(temp.request) );
+            log.logMessage("PE" + std::to_string(processor_id) + " getNextInstruccion" + " | address " + std::to_string(temp.address) + " | data " + std::to_string(temp.data) +" | request " + std::to_string(temp.request) );
             return temp;
         }
 };

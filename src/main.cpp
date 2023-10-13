@@ -7,8 +7,12 @@
 
 // g++ main.cpp -o main
 // ./main
+
+
+//int main(int argc, char* argv[]) {
 int main() {
-    
+    //int protocole = std::stoi(argv[1]);
+    int protocole = 1;
     logger& log = logger::getInstance(); // Create an instance of Logger
     const int PES = 3;
     MainMemory& memory = MainMemory::getInstance(); //SINGLETON
@@ -17,6 +21,7 @@ int main() {
     std::vector<std::string> randomCodePE1 = codeGenerator.getRandomCode();
     std::vector<std::string> randomCodePE2 = codeGenerator.getRandomCode(); 
     std::vector<std::string> randomCodePE3 = codeGenerator.getRandomCode();
+    
 
 
     //Populate the instruccionMemories 
@@ -42,30 +47,30 @@ int main() {
 
     RequestManager bus;
 
-    std::thread thread1([&PE1, max, &bus]() {
+    std::thread thread1([&PE1, max, &bus,protocole]() {
         bool p1_nextInstr = true;
-        Package package(0,0,0,1);
+        Package package(0,0,0,protocole,0);
         for (int i = 0; i < max; ++i) {
             package = PE1.getNextInstruccion(p1_nextInstr);
             bus.AddRequest(package);
         }
     });
     
-    //bus.printRequestQueue();
+//     //bus.printRequestQueue();
      
 
-    std::thread thread2([&PE2, max, &bus]() {
+    std::thread thread2([&PE2, max, &bus,protocole]() {
         bool p1_nextInstr = true;
-        Package package2(0,0,0,0);
+        Package package2(0,0,0,protocole,0);
         for (int i = 0; i < max; ++i) {
             package2 = PE2.getNextInstruccion(p1_nextInstr);
             bus.AddRequest(package2);
         }
     });
 
-    std::thread thread3([&PE3, max, &bus]() {
+    std::thread thread3([&PE3, max, &bus,protocole]() {
         bool p1_nextInstr = true;
-        Package package3(0,0,0,0);
+        Package package3(0,0,0,protocole,0);
         for (int i = 0; i < max; ++i) {
             package3 = PE3.getNextInstruccion(p1_nextInstr);
             bus.AddRequest(package3);
@@ -79,34 +84,6 @@ int main() {
     thread2.join();
     thread3.join();
     
-
-    // // Join the threads to wait for them to complete
-    
-
-    // thread2.join();
-    // thread3.join();
-    
-    // int max = 0;
-    // Package package(0,0,0,0);
-    // package = PE1.getNextInstruccion(p1_nextInstr);
-    // package.print();
-    
-    // while (max < 2){
-    //     package = PE1.getNextInstruccion(p1_nextInstr);
-    //     package.print();
-    //     //PE2.executeProgram(p1_nextInstr);
-    //     max++; 
-    // }
-    
-    //Initializing busInterconnect 
-    //RequestManager bus;
-    //std::vector<std::thread> threads;
-    //bus.AddRequest(package);
-    // Thread per PE
-    // for (int i = 0; i < PES; ++i) {
-    //     threads.emplace_back(PEThread, i, std::ref(bus), 5);
-    // }
-
     log.writeLog();
     return 0;
 }

@@ -2,11 +2,9 @@
 
 #include "../../catch.hpp"
 #include "../MESI.cpp"
-#include "../../logManagement.cpp "
 #include "../../pe/random-code-generator.cpp"
 
 TEST_CASE("Mesi", "[Mesi]") {
-    logger& log = logger::getInstance();
     MainMemory& memory = MainMemory::getInstance(); //SINGLETON
     generateRandomCode codeGenerator;
 
@@ -345,8 +343,6 @@ TEST_CASE("Mesi", "[Mesi]") {
         REQUIRE(pe1.CACHE.getEntry("36").getStatus() == StateEnum::Exclusive);
         // Verificar que el estado del entry en direccion 00 del pe1 es M
         REQUIRE(pe2.CACHE.getEntry("36").getStatus() == StateEnum::Invalid);
-    } 
-
-    log.writeLog();
+    }
 
 }

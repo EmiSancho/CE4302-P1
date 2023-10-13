@@ -11,9 +11,9 @@
 class generateRandomCode {
 public:
     int INSTRUC_AMOUNT = 8; // N
-    int INSTRUC_MAX = 3;    // M Read / Write
+    int INSTRUC_MAX = 3;    // 1 Read / 2 Write / 3 Incremment 
     int REGISTER_MAX = 5;  // R * 4 max address
-    
+    int MAX_TO_WRITE = 32;
 
     generateRandomCode() {
         // Seed the random number generator with the current time
@@ -35,16 +35,25 @@ public:
             // Convert integers to binary strings
             std::string addressBinary = std::bitset<8>(randomAddress[i]).to_string();
             std::string instructionBinary = std::bitset<4>(randomInstructions[i]).to_string();
+            std::string data = "00000"; // random number to write
 
             // Concatenate binary strings
-            std::string concatenatedBinary = instructionBinary + addressBinary;
+            if (randomInstructions[i] == 2){
+                data = getRandomNumber();
+            }
+            std::string concatenatedBinary = instructionBinary + addressBinary + data;
             code.push_back(concatenatedBinary);
         }
+        
         //log.logMessage("RandomCodeGenerated ", code);
         return code; 
     }
 
 private:
+    std::string getRandomNumber(){
+        return std::bitset<5>( std::rand() % MAX_TO_WRITE + 1).to_string();
+    }
+
     logger& log = logger::getInstance(); // Create an instance of Logger
     void printVector(const std::string& name, std::vector<int> vector){
         std::cout << name << std::endl;

@@ -72,13 +72,18 @@ public:
     //void ConsumerThread(RequestManager& requestManager) {
     void ConsumerThread() {
         //std::cerr << "ConsumerThread Started"<< std::endl;
-        // 1 readMesi 2 WriteMesi 
+        // 1 readMesi 2 WriteMesi
         
         int result = -1;
         int max = 0;
+        int wA = 0;
+        int rA = 0;
+        int i = 0;
+        bool protocol = false;
         //if (existRequest()) {
         // Tiempo de inicio para medir el tiempo de ejecucion
         auto start = std::chrono::high_resolution_clock::now();
+
         while (existRequest()) {
         //while (max < 24) {
             Package packet = GetRequest();
@@ -87,11 +92,10 @@ public:
             // To avoid wrong address as string 
             std::string address = (packet.address < 10) ? "0" + std::to_string(packet.address) : std::to_string(packet.address);
             packet.print();
-            
-            
 
             switch(packet.protocol){
-                case 1: // MESI                                           
+                case 1: // MESI
+                    protocol = true;                                           
                     switch (packet.request)
                     {
                     case 1: // readMesi
@@ -120,13 +124,13 @@ public:
                     case 2: //writeMesi
                         std::cerr << "writeMESI"<< std::endl;
                         if(packet.processor_id == 1){
-                            mesi.writeMESI(address, 7, pe1, pe2, pe3);
+                            mesi.writeMESI(address, packet.data, pe1, pe2, pe3);
                         }
                         if(packet.processor_id == 2){
-                            mesi.writeMESI(address, 8, pe2, pe1, pe3);
+                            mesi.writeMESI(address, packet.data, pe2, pe1, pe3);
                         }
                         if(packet.processor_id == 3){
-                            mesi.writeMESI(address, 9, pe3, pe1, pe2);
+                            mesi.writeMESI(address, packet.data, pe3, pe1, pe2);
                         }
                         //memory.print();
                         break;
@@ -149,9 +153,10 @@ public:
                         std::cout << "Invalid request choice." << std::endl;
                         break;
                     }   
-                    break; 
+                    break;
 
                 case 2: //MOESI
+                    protocol = false;
                     switch (packet.request){
                         case 1: // readMoesi
                             std::cerr << "readMOESI"<< std::endl;
@@ -179,13 +184,13 @@ public:
                         case 2: //writeMoesi
                             std::cerr << "writeMESI"<< std::endl;
                             if(packet.processor_id == 1){
-                                moesi.writeMOESI(address, 7, pe1, pe2, pe3);
+                                moesi.writeMOESI(address,packet.data, pe1, pe2, pe3);
                             }
                             if(packet.processor_id == 2){
-                                moesi.writeMOESI(address, 8, pe2, pe1, pe3);
+                                moesi.writeMOESI(address, packet.data, pe2, pe1, pe3);
                             }
                             if(packet.processor_id == 3){
-                                moesi.writeMOESI(address, 9, pe3, pe1, pe2);
+                                moesi.writeMOESI(address, packet.data, pe3, pe1, pe2);
                             }
                             //memory.print();
                             break;
@@ -215,12 +220,26 @@ public:
                     break;
             }
 
+
             PEManager::getInstance().showCaches();
             memory.print();
             
             //std::this_thread::sleep_for(std::chrono::milliseconds(200));
         max++; // DELETE ME 
         }
+        if (protocol) {
+            rA = mesi.returnReadAccessMemory();
+            wA = mesi.returnWriteAccessMemory();
+            i = mesi.returnInvalidations();
+            log.logMessage("rA " + std::to_string(rA) + " | wA " + std::to_string(wA) + " | i " + std::to_string(i));
+        } else {
+            rA = moesi.returnReadAccessMemory();
+            wA = moesi.returnWriteAccessMemory();
+            i = moesi.returnInvalidations();
+            log.logMessage("rA " + std::to_string(rA) + " | wA " + std::to_string(wA) + " | i " + std::to_string(i));
+        }
+
+
         // Tiempo de finalizacion para medir el tiempo de ejecucion
         auto end = std::chrono::high_resolution_clock::now();
 
@@ -231,7 +250,7 @@ public:
         double execution_time_milliseconds = execution_time.count() * 1000;
 
         // Se agrega al log para que se muestre en la interfaz
-        log.logMessage("Tiempo de ejecucion: " + std::to_string(execution_time_milliseconds) + " milisegundos.");
+        log.logMessage("t " + std::to_string(execution_time_milliseconds));
 
         std::cout << "Tiempo de ejecucion: " << execution_time_milliseconds << " milisegundos." << std::endl;
         //memory.print();
