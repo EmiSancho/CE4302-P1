@@ -1,12 +1,9 @@
-#define CATCH_CONFIG_MAIN  // Esto le dice a Catch proporcionar la función main
-
-#include "../../catch.hpp"
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "../../doctest.h"
 #include "../MOESI.cpp"
-#include "../../logManagement.cpp "
 #include "../../pe/random-code-generator.cpp"
 
-TEST_CASE("Moesi", "[Moesi]") {
-    logger& log = logger::getInstance();
+TEST_CASE("Moesi Protocol") {
     MainMemory& memory = MainMemory::getInstance(); //SINGLETON
     generateRandomCode codeGenerator;
 
@@ -35,7 +32,7 @@ TEST_CASE("Moesi", "[Moesi]") {
 
     Moesi moesi;
     
-    SECTION("1. Escritura en la direccion 04 cuando la no existe ninguna cache") {
+    SUBCASE("1. Escritura en la direccion 04 cuando la no existe ninguna cache") {
         std::cout << "Caso 1 \n" << std::endl;
         // peLocal escribe en la direccion 04 con valor 55
         moesi.writeMOESI("04", 80, pe1, pe2, pe3);
@@ -44,7 +41,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe1.CACHE.e1.getStatus() == StateEnum::Modified);
     }
 
-    SECTION("2. Escritura en la direccion 04 cuando la direccion ya existe en mi cache y el estado es Modificado") {
+    SUBCASE("2. Escritura en la direccion 04 cuando la direccion ya existe en mi cache y el estado es Modificado") {
         std::cout << "Caso 2 \n" << std::endl;
         // peLocal escribe en la direccion 04 con valor 80
         moesi.writeMOESI("04", 74, pe3, pe1, pe2);
@@ -54,7 +51,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe3.CACHE.e1.getStatus() == StateEnum::Modified);
     }
 
-     SECTION("3. Escritura en la direccion 04 cuando la direccion ya existe en mi cache y el estado es Exclusivo") {
+     SUBCASE("3. Escritura en la direccion 04 cuando la direccion ya existe en mi cache y el estado es Exclusivo") {
         std::cout << "Caso 3 \n" << std::endl;
         // peLocal escribe en la direccion 04 con valor 80
         moesi.writeMOESI("04", 70, pe3, pe1, pe2);
@@ -67,7 +64,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe3.CACHE.e1.getStatus() == StateEnum::Invalid);
     }
 
-    SECTION("4. Escritura en la direccion 04 cuando la direccion existe en la cache local y el estado es Compartido") {
+    SUBCASE("4. Escritura en la direccion 04 cuando la direccion existe en la cache local y el estado es Compartido") {
        std::cout << "Caso 4 \n" << std::endl;
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("04", 78, pe3, pe1, pe2);
@@ -81,7 +78,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe2.CACHE.getEntry("04").getStatus() == StateEnum::Invalid);
     }
 
-    SECTION("5. Escritura en la direccion 04 cuando la direccion ya existe en mi cache y el estado es Invalido") {
+    SUBCASE("5. Escritura en la direccion 04 cuando la direccion ya existe en mi cache y el estado es Invalido") {
         // peLocal escribe en la direccion 04 con valor 80
         std::cout << "Caso 5 \n" << std::endl;
         moesi.writeMOESI("04", 70, pe3, pe1, pe2);
@@ -94,7 +91,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe2.CACHE.e1.getStatus() == StateEnum::Invalid);
     }
 
-    SECTION("6. Escritura en la direccion 04 cuando la direccion no existe en la cache local y si en una externa con estado Modificado") {
+    SUBCASE("6. Escritura en la direccion 04 cuando la direccion no existe en la cache local y si en una externa con estado Modificado") {
         std::cout << "Caso 6 \n" << std::endl;
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("04", 78, pe3, pe1, pe2);
@@ -109,7 +106,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe3.CACHE.e1.getStatus() == StateEnum::Invalid);
     }
     
-    SECTION("7. Escritura en la direccion 04 cuando la direccion no existe en la cache local y si en una externa con estado Exclusivo") {
+    SUBCASE("7. Escritura en la direccion 04 cuando la direccion no existe en la cache local y si en una externa con estado Exclusivo") {
         std::cout <<  "Caso 7 \n"<< std::endl;
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("04", 78, pe3, pe1, pe2);
@@ -127,7 +124,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe3.CACHE.e1.getStatus() == StateEnum::Invalid);
     }
 
-    SECTION("8. Escritura en la direccion 04 cuando la direccion no existe en la cache local y si en una externa con estado Compartido") {
+    SUBCASE("8. Escritura en la direccion 04 cuando la direccion no existe en la cache local y si en una externa con estado Compartido") {
         std::cout <<  "Caso 8 \n"<< std::endl;
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("04", 78, pe1, pe2, pe3);
@@ -145,7 +142,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe2.CACHE.e1.getStatus() == StateEnum::Invalid);
     }
 
-    SECTION("9. Escritura en la direccion 04 cuando la direccion no existe en la cache local y la cache local esta llena") {
+    SUBCASE("9. Escritura en la direccion 04 cuando la direccion no existe en la cache local y la cache local esta llena") {
         std::cout <<  "Caso 9 \n"<< std::endl;
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("00", 10, pe1, pe2, pe3);
@@ -171,7 +168,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe1.CACHE.e4.getStatus() == StateEnum::Modified);
     }
 
-    SECTION("10. Escritura en direccion 44 y no existe en la cache local, cache esta llena y direccion 44 esta en S con externo") {
+    SUBCASE("10. Escritura en direccion 44 y no existe en la cache local, cache esta llena y direccion 44 esta en S con externo") {
         std::cout << "Caso 10 \n" << std::endl;
         // pe1 se llena de datos en los 4 entrys
         moesi.writeMOESI("08", 10, pe1, pe2, pe3);
@@ -190,7 +187,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe2.CACHE.e1.getStatus() == StateEnum::Shared);
     }
 
-    SECTION("11. Lectura de la direccion 04 cuando la direccion no esta en cache local pero existe en cache externa") {
+    SUBCASE("11. Lectura de la direccion 04 cuando la direccion no esta en cache local pero existe en cache externa") {
         std::cout << "Caso 11\n" << std::endl;
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("04", 78, pe3, pe1, pe2);
@@ -201,7 +198,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe2.CACHE.e1.getStatus() == StateEnum::Shared);
     }
 
-    SECTION("12. Lectura de la direccion 60 y no existe en la cache local ni en externa") {
+    SUBCASE("12. Lectura de la direccion 60 y no existe en la cache local ni en externa") {
         std::cout << "Caso 12 \n" << std::endl;
         // Se escribe un dato en memoria en la direccion 60
         memory.write("60", 120);
@@ -215,7 +212,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe3.CACHE.getEntry("60").getData() == 120);
     }
 
-     SECTION("13. Lectura de la dirección cuando la dirección está en caché local con estado M") {
+     SUBCASE("13. Lectura de la dirección cuando la dirección está en caché local con estado M") {
         std::cout << "Caso 13 \n" << std::endl;
         // pe2 escribe en la direccion 52 con valor 78
         moesi.writeMOESI("52", 78, pe2, pe1, pe3);
@@ -227,7 +224,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe2.CACHE.getEntry("52").getData() == 78);
     }
 
-     SECTION("14. Lectura de la dirección cuando la dirección está en caché local con estado E") {
+     SUBCASE("14. Lectura de la dirección cuando la dirección está en caché local con estado E") {
         std::cout << "Caso 14 \n" << std::endl;
         // pe2 y pe1 leen la direccion 00, estan en estado S
         moesi.readMOESI("00", pe2, pe1, pe3);
@@ -244,7 +241,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe2.CACHE.getEntry("00").getData() == 38);
     }
 
-     SECTION("15. Lectura de la direccion cuando la direccion esta en cache local con estado S") {
+     SUBCASE("15. Lectura de la direccion cuando la direccion esta en cache local con estado S") {
         std::cout << "Caso 15 \n" << std::endl;
         // pe2 y pe1 leen la direccion 00, estan en estado S
         moesi.readMOESI("00", pe2, pe1, pe3);
@@ -259,7 +256,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe2.CACHE.getEntry("00").getData() == 38);
     }
 
-     SECTION("16. Lectura de la dirección cuando la dirección está en cache local con estado I") {
+     SUBCASE("16. Lectura de la dirección cuando la dirección está en cache local con estado I") {
         std::cout << "Caso 16 \n" << std::endl;
         //pe2 y pe1 leen la direccion 00, estan en estado S
         moesi.readMOESI("00", pe2, pe1, pe3);
@@ -278,7 +275,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe1.CACHE.getEntry("00").getData() == 38);
     }
 
-    SECTION("17. Escritura en direccion 00 que existe en la cache local en estado I, ninguna cache externa tiene la direccion") {
+    SUBCASE("17. Escritura en direccion 00 que existe en la cache local en estado I, ninguna cache externa tiene la direccion") {
         std::cout << "Caso 17 \n" << std::endl;
         // pe1 se llena de datos en los 4 entrys
         moesi.writeMOESI("00", 10, pe1, pe2, pe3);
@@ -297,7 +294,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe1.CACHE.getEntry("00").getStatus() == StateEnum::Modified);
     }
 
-    SECTION("18. Lectura en direccion 00 que existe en la cache local en estado I, ninguna cache externa tiene la direccion") {
+    SUBCASE("18. Lectura en direccion 00 que existe en la cache local en estado I, ninguna cache externa tiene la direccion") {
         std::cout << "Caso 18 \n" << std::endl;
         // pe1 se llena de datos en los 4 entrys
         moesi.writeMOESI("00", 10, pe1, pe2, pe3);
@@ -316,7 +313,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe1.CACHE.getEntry("00").getStatus() == StateEnum::Exclusive);
     }
 
-    SECTION("19. Incrementa el valor en direccion 00 que ya estaba en mi caché y ninguna caché lo tiene") {
+    SUBCASE("19. Incrementa el valor en direccion 00 que ya estaba en mi caché y ninguna caché lo tiene") {
         std::cout << "Caso 19 \n" << std::endl;
         // pe1 se llena de datos en los 4 entrys
         moesi.writeMOESI("00", 10, pe1, pe2, pe3);
@@ -328,7 +325,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe1.CACHE.getEntry("00").getStatus() == StateEnum::Modified);
     }
 
-    SECTION("20. Incrementa el valor en direccion 36 que ya estaba en mi caché en estado de S y en otra cache externa") {
+    SUBCASE("20. Incrementa el valor en direccion 36 que ya estaba en mi caché en estado de S y en otra cache externa") {
         std::cout << "Caso 20 \n" << std::endl;
         // pe1 y pe2 leen de la direccion 00, estan en estado S
         moesi.readMOESI("36", pe1, pe2, pe3);
@@ -343,7 +340,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe2.CACHE.getEntry("36").getStatus() == StateEnum::Invalid);
     }
 
-    SECTION("21. Escritura en la direccion 04 cuando la direccion ya existe en mi cache y el estado es Owned") {
+    SUBCASE("21. Escritura en la direccion 04 cuando la direccion ya existe en mi cache y el estado es Owned") {
         std::cout << "Caso 21 \n" << std::endl;
         //peLocal escribe en la direccion 04 con valor 80
         moesi.writeMOESI("04", 74, pe3, pe1, pe2);
@@ -355,7 +352,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe2.CACHE.e1.getStatus() == StateEnum::Invalid);
     }
 
-    SECTION("22. Escritura en la direccion 04 cuando la direccion no existe en la cache local y si en una externa con estado Owned") {
+    SUBCASE("22. Escritura en la direccion 04 cuando la direccion no existe en la cache local y si en una externa con estado Owned") {
         std::cout <<  "Caso 22 \n"<< std::endl;
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("04", 78, pe3, pe1, pe2);
@@ -373,7 +370,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe3.CACHE.e1.getStatus() == StateEnum::Invalid);
     }
 
-    SECTION("23. Lectura en la direccion 04 cuando la direccion ya existe en mi cache y el estado es Owned") {
+    SUBCASE("23. Lectura en la direccion 04 cuando la direccion ya existe en mi cache y el estado es Owned") {
         std::cout << "Caso 23 \n" << std::endl;
         //peLocal escribe en la direccion 04 con valor 80
         moesi.writeMOESI("04", 74, pe3, pe1, pe2);
@@ -385,7 +382,7 @@ TEST_CASE("Moesi", "[Moesi]") {
         REQUIRE(pe2.CACHE.e1.getStatus() == StateEnum::Shared);
     }
 
-    SECTION("24. Lectura en la direccion 04 cuando la direccion no existe en la cache local y si en una externa con estado Owned") {
+    SUBCASE("24. Lectura en la direccion 04 cuando la direccion no existe en la cache local y si en una externa con estado Owned") {
         std::cout <<  "Caso 24 \n"<< std::endl;
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("04", 78, pe3, pe1, pe2);
@@ -402,7 +399,4 @@ TEST_CASE("Moesi", "[Moesi]") {
         // Verificar que el estado del entry e1 del pe3 es invalido
         REQUIRE(pe3.CACHE.e1.getStatus() == StateEnum::Owned);
     }
-
-    log.writeLog();
-
 }
