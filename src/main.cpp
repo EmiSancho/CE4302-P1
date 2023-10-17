@@ -84,7 +84,7 @@ int main() {
     bus.printRequestQueue();
     
     bus.ConsumerThread();
-    log.writeLog();
+    log.writeLog("../results/log.txt");
     
     return 0;
 }
