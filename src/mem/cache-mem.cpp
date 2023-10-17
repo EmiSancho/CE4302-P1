@@ -8,9 +8,10 @@
 
 class Cache{
 private:
+    int processor_id;
     logger& log = logger::getInstance();
 public:
-    int processor_id;
+    
     CacheEntry e1, e2, e3, e4;
 
     Cache()
@@ -23,6 +24,14 @@ public:
         e2.print();
         e3.print();
         e4.print();
+    }
+
+    void setID(int ID){
+        processor_id = ID;
+    }
+
+    int getID(){
+        return processor_id;
     }
     
     bool hasEmptyEntry() const {
@@ -98,7 +107,7 @@ public:
             default:
                 std::cout << "Invalid entry ID." << std::endl;
         }
-        log.logCacheWrite(entryID, status, addr, data);
+        log.logCacheWrite(processor_id, status, addr, entryID, data);
     }
     // const std::string& addr
     void loadValue(const StateEnum& status, const std::string addr, int data) {

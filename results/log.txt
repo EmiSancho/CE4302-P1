@@ -1,141 +1,302 @@
+Unit Test MOESI
+Caso 1
 r | 04 | 0
-PE1 | w | E | 04 | 0
-PE1 | r | E | 04 | 0
-Read Finished
-PE1 | w | M | 04 | 1
-Write Finished
-Increment Finished
-r | 12 | 0
-PE2 | w | E | 12 | 0
-PE1 | r | E | 12 | 0
-Read Finished
-PE2 | w | M | 12 | 1
-Write Finished
-Increment Finished
-r | 16 | 0
-PE3 | w | E | 16 | 0
-PE3 | w | M | 16 | 23
-Write Finished
-PE1 | r | M | 12 | 1
-Read Finished
-PE2 | w | M | 12 | 27
-Write Finished
-PE2 | w | M | 12 | 6
-Write Finished
+PE1 | w | E | 04 | Entry1 | 0
+PE1 | w | M | 04 | Entry1 | 80
+Caso 2
+r | 04 | 0
+PE3 | w | E | 04 | Entry1 | 0
+PE3 | w | M | 04 | Entry1 | 74
+PE3 | w | M | 04 | Entry1 | 80
+Caso 3
+r | 04 | 0
+PE3 | w | E | 04 | Entry1 | 0
+PE3 | w | M | 04 | Entry1 | 70
+w | 04 | 70
+PE3 | w | O | 04 | Entry1 | 70
+r | 04 | 70
+PE2 | w | S | 04 | Entry1 | 70
+PE2 | w | M | 04 | Entry1 | 74
+w | 04 | 74
+PE3 | w | I | 04 | Entry1 | 70
+PE2 | w | M | 04 | Entry1 | 80
+PE3 | w | I | 04 | Entry1 | 70
+r | 04 | 74
+Caso 4
+r | 04 | 74
+PE3 | w | E | 04 | Entry1 | 74
+PE3 | w | M | 04 | Entry1 | 78
+w | 04 | 78
+PE3 | w | O | 04 | Entry1 | 78
+r | 04 | 78
+PE2 | w | S | 04 | Entry1 | 78
+PE3 | w | M | 04 | Entry1 | 66
+PE2 | w | I | 04 | Entry1 | 78
+Caso 5
+r | 04 | 78
+PE3 | w | E | 04 | Entry1 | 78
+PE3 | w | M | 04 | Entry1 | 70
+w | 04 | 70
+PE3 | w | O | 04 | Entry1 | 70
+r | 04 | 70
+PE2 | w | S | 04 | Entry1 | 70
+PE2 | w | M | 04 | Entry1 | 74
+w | 04 | 74
+PE3 | w | I | 04 | Entry1 | 70
+w | 04 | 74
+PE2 | w | O | 04 | Entry1 | 74
+r | 04 | 74
+PE3 | w | S | 04 | Entry1 | 74
+PE3 | w | M | 04 | Entry1 | 80
+w | 04 | 80
+PE2 | w | I | 04 | Entry1 | 74
+r | 04 | 80
+Caso 6
+r | 04 | 80
+PE3 | w | E | 04 | Entry1 | 80
+PE3 | w | M | 04 | Entry1 | 78
+w | 04 | 78
+PE3 | w | O | 04 | Entry1 | 78
+r | 04 | 78
+PE2 | w | S | 04 | Entry1 | 78
+PE2 | w | M | 04 | Entry1 | 95
+w | 04 | 95
+PE3 | w | I | 04 | Entry1 | 78
+r | 04 | 95
+Caso 7
+r | 04 | 95
+PE3 | w | E | 04 | Entry1 | 95
+PE3 | w | M | 04 | Entry1 | 78
+w | 04 | 78
+PE3 | w | O | 04 | Entry1 | 78
+r | 04 | 78
+PE2 | w | S | 04 | Entry1 | 78
+PE2 | w | M | 04 | Entry1 | 95
+w | 04 | 95
+PE3 | w | I | 04 | Entry1 | 78
+w | 04 | 95
+PE2 | w | O | 04 | Entry1 | 95
+r | 04 | 95
+PE1 | w | S | 04 | Entry1 | 95
+PE1 | w | M | 04 | Entry1 | 14
+w | 04 | 14
+PE2 | w | I | 04 | Entry1 | 95
+PE3 | w | I | 04 | Entry1 | 78
+r | 04 | 14
+Caso 8
+r | 04 | 14
+PE1 | w | E | 04 | Entry1 | 14
+PE1 | w | M | 04 | Entry1 | 78
+w | 04 | 78
+PE1 | w | O | 04 | Entry1 | 78
+r | 04 | 78
+PE2 | w | S | 04 | Entry1 | 78
+w | 04 | 78
+PE1 | w | O | 04 | Entry1 | 78
+r | 04 | 78
+PE3 | w | S | 04 | Entry1 | 78
+PE3 | w | M | 04 | Entry1 | 14
+w | 04 | 14
+PE1 | w | I | 04 | Entry1 | 78
+PE2 | w | I | 04 | Entry1 | 78
+r | 04 | 14
+Caso 9
 r | 00 | 0
-PE4 | w | E | 00 | 0
-PE4 | w | M | 00 | 15
-Write Finished
-PE4 | w | M | 00 | 7
-Write Finished
-w | 16 | 23
-PE3 | w | S | 16 | 23
-r | 16 | 23
-PE1 | w | S | 16 | 23
-r | 16 | 23
-PE2 | w | E | 16 | 23
-PE2 | r | S | 16 | 23
-Read Finished
+PE1 | w | E | 00 | Entry1 | 0
+PE1 | w | M | 00 | Entry1 | 10
+r | 04 | 14
+PE1 | w | E | 04 | Entry2 | 14
+PE1 | w | M | 04 | Entry2 | 20
 r | 08 | 0
-PE3 | w | E | 08 | 0
-PE2 | r | E | 08 | 0
-Read Finished
-PE3 | w | M | 08 | 1
-Write Finished
-Increment Finished
-w | 00 | 7
-PE4 | w | S | 00 | 7
-r | 00 | 7
-PE4 | w | S | 00 | 7
-PE4 | w | E | 00 | 7
-w | 00 | 7
-PE4 | w | I | 00 | 7
-Write Finished
-PE1 | w | E | 16 | 25
-w | 16 | 25
-PE3 | w | I | 16 | 23
-Write Finished
-PE3 | w | M | 08 | 18
-Write Finished
-PE4 | w | M | 00 | 12
-Write Finished
-PE2 | r | M | 08 | 18
-Read Finished
-PE3 | w | M | 08 | 19
-Write Finished
-Increment Finished
-w | 12 | 6
-PE2 | w | S | 12 | 6
-r | 12 | 6
-PE1 | w | E | 16 | 23
-PE2 | w | M | 08 | 19
-PE3 | w | M | 00 | 12
-PE4 | w | S | 12 | 6
-r | 12 | 6
-PE1 | w | M | 08 | 19
-PE2 | w | M | 00 | 12
-PE3 | w | S | 12 | 6
-PE4 | w | E | 12 | 6
-PE2 | r | S | 12 | 6
-Read Finished
-PE3 | w | E | 12 | 7
-w | 12 | 7
-PE2 | w | I | 12 | 6
-Write Finished
-Increment Finished
-r | 12 | 7
-PE1 | w | S | 12 | 7
-PE3 | w | S | 12 | 7
-PE3 | r | S | 12 | 7
-Read Finished
-w | 00 | 12
-PE2 | w | S | 00 | 12
-r | 00 | 12
-PE2 | w | S | 00 | 12
-PE3 | r | S | 00 | 12
-Read Finished
-PE2 | w | E | 00 | 13
-w | 00 | 13
-PE2 | w | I | 00 | 12
-Write Finished
-Increment Finished
-w | 04 | 1
-PE1 | w | S | 04 | 1
-r | 04 | 1
-PE3 | w | S | 04 | 1
-r | 04 | 1
-PE4 | w | E | 04 | 1
-PE3 | r | S | 04 | 1
-Read Finished
-PE3 | r | E | 00 | 13
-Read Finished
-PE2 | w | M | 00 | 14
-Write Finished
-Increment Finished
-w | 08 | 19
-PE1 | w | S | 08 | 19
-r | 08 | 19
-PE1 | w | M | 00 | 14
-PE2 | w | S | 04 | 1
-PE3 | w | E | 04 | 1
-PE4 | w | S | 08 | 19
-PE4 | w | E | 08 | 30
-w | 08 | 30
-PE1 | w | I | 08 | 19
-Write Finished
-r | 16 | 25
-PE1 | w | S | 04 | 1
-PE2 | w | E | 04 | 1
-PE3 | w | E | 08 | 30
-PE4 | w | E | 16 | 25
-PE3 | r | E | 16 | 25
-Read Finished
-PE4 | w | M | 16 | 26
-Write Finished
-Increment Finished
-PE3 | r | S | 04 | 1
-Read Finished
-PE3 | r | M | 16 | 26
-Read Finished
-rA 16 | wA 11 | i 11
-t 0.663000
+PE1 | w | E | 08 | Entry3 | 0
+PE1 | w | M | 08 | Entry3 | 30
+r | 12 | 0
+PE1 | w | E | 12 | Entry4 | 0
+PE1 | w | M | 12 | Entry4 | 40
+r | 16 | 0
+PE1 | w | M | 04 | Entry1 | 20
+PE1 | w | M | 08 | Entry2 | 30
+PE1 | w | M | 12 | Entry3 | 40
+PE1 | w | E | 16 | Entry4 | 0
+PE1 | w | M | 16 | Entry4 | 50
+Caso 10
+r | 08 | 0
+PE1 | w | E | 08 | Entry1 | 0
+PE1 | w | M | 08 | Entry1 | 10
+r | 20 | 0
+PE1 | w | E | 20 | Entry2 | 0
+PE1 | w | M | 20 | Entry2 | 20
+r | 28 | 0
+PE1 | w | E | 28 | Entry3 | 0
+PE1 | w | M | 28 | Entry3 | 30
+r | 04 | 14
+PE1 | w | E | 04 | Entry4 | 14
+PE1 | w | M | 04 | Entry4 | 40
+w | 08 | 10
+PE1 | w | O | 08 | Entry1 | 10
+r | 08 | 10
+PE2 | w | S | 08 | Entry1 | 10
+r | 44 | 0
+PE1 | w | M | 20 | Entry1 | 20
+PE1 | w | M | 28 | Entry2 | 30
+PE1 | w | M | 04 | Entry3 | 40
+PE1 | w | E | 44 | Entry4 | 0
+PE1 | w | M | 44 | Entry4 | 50
+Caso 11
+r | 04 | 14
+PE3 | w | E | 04 | Entry1 | 14
+PE3 | w | M | 04 | Entry1 | 78
+w | 04 | 78
+PE3 | w | O | 04 | Entry1 | 78
+r | 04 | 78
+PE2 | w | S | 04 | Entry1 | 78
+Caso 12
+w | 60 | 120
+r | 60 | 120
+PE3 | w | E | 60 | Entry1 | 120
+r | 60 | 120
+Caso 13
+r | 52 | 0
+PE2 | w | E | 52 | Entry1 | 0
+PE2 | w | M | 52 | Entry1 | 78
+Caso 14
+r | 00 | 0
+PE2 | w | E | 00 | Entry1 | 0
+r | 00 | 0
+PE1 | w | S | 00 | Entry1 | 0
+PE2 | w | S | 00 | Entry1 | 0
+PE2 | w | M | 00 | Entry1 | 38
+w | 00 | 38
+PE1 | w | I | 00 | Entry1 | 0
+Caso 15
+r | 00 | 38
+PE2 | w | E | 00 | Entry1 | 38
+r | 00 | 38
+PE1 | w | S | 00 | Entry1 | 38
+PE2 | w | S | 00 | Entry1 | 38
+Caso 16
+r | 00 | 38
+PE2 | w | E | 00 | Entry1 | 38
+r | 00 | 38
+PE1 | w | S | 00 | Entry1 | 38
+PE2 | w | S | 00 | Entry1 | 38
+PE2 | w | M | 00 | Entry1 | 38
+w | 00 | 38
+PE1 | w | I | 00 | Entry1 | 38
+w | 00 | 38
+PE2 | w | O | 00 | Entry1 | 38
+r | 00 | 38
+PE1 | w | S | 00 | Entry1 | 38
+Caso 17
+r | 00 | 38
+PE1 | w | E | 00 | Entry1 | 38
+PE1 | w | M | 00 | Entry1 | 10
+w | 00 | 10
+PE1 | w | O | 00 | Entry1 | 10
+r | 00 | 10
+PE2 | w | S | 00 | Entry1 | 10
+PE2 | w | M | 00 | Entry1 | 20
+w | 00 | 20
+PE1 | w | I | 00 | Entry1 | 10
+r | 04 | 78
+PE2 | w | E | 04 | Entry2 | 78
+PE2 | w | M | 04 | Entry2 | 30
+r | 08 | 10
+PE2 | w | E | 08 | Entry3 | 10
+PE2 | w | M | 08 | Entry3 | 40
+r | 12 | 0
+PE2 | w | E | 12 | Entry4 | 0
+PE2 | w | M | 12 | Entry4 | 50
+r | 16 | 0
+PE2 | w | M | 04 | Entry1 | 30
+PE2 | w | M | 08 | Entry2 | 40
+PE2 | w | M | 12 | Entry3 | 50
+PE2 | w | E | 16 | Entry4 | 0
+PE2 | w | M | 16 | Entry4 | 60
+PE1 | w | M | 00 | Entry1 | 70
+Caso 18
+r | 00 | 20
+PE1 | w | E | 00 | Entry1 | 20
+PE1 | w | M | 00 | Entry1 | 10
+w | 00 | 10
+PE1 | w | O | 00 | Entry1 | 10
+r | 00 | 10
+PE2 | w | S | 00 | Entry1 | 10
+PE2 | w | M | 00 | Entry1 | 20
+w | 00 | 20
+PE1 | w | I | 00 | Entry1 | 10
+r | 04 | 78
+PE2 | w | E | 04 | Entry2 | 78
+PE2 | w | M | 04 | Entry2 | 30
+r | 08 | 10
+PE2 | w | E | 08 | Entry3 | 10
+PE2 | w | M | 08 | Entry3 | 40
+r | 12 | 0
+PE2 | w | E | 12 | Entry4 | 0
+PE2 | w | M | 12 | Entry4 | 50
+r | 16 | 0
+PE2 | w | M | 04 | Entry1 | 30
+PE2 | w | M | 08 | Entry2 | 40
+PE2 | w | M | 12 | Entry3 | 50
+PE2 | w | E | 16 | Entry4 | 0
+PE2 | w | M | 16 | Entry4 | 60
+r | 00 | 20
+PE1 | w | E | 00 | Entry1 | 20
+Caso 19
+r | 00 | 20
+PE1 | w | E | 00 | Entry1 | 20
+PE1 | w | M | 00 | Entry1 | 10
+PE1 | w | M | 00 | Entry1 | 11
+Caso 20
+r | 36 | 0
+PE1 | w | E | 36 | Entry1 | 0
+r | 36 | 0
+PE2 | w | S | 36 | Entry1 | 0
+PE1 | w | S | 36 | Entry1 | 0
+PE1 | w | M | 36 | Entry1 | 1
+w | 36 | 1
+PE2 | w | I | 36 | Entry1 | 0
+Caso 21
+r | 04 | 78
+PE3 | w | E | 04 | Entry1 | 78
+PE3 | w | M | 04 | Entry1 | 74
+w | 04 | 74
+PE3 | w | O | 04 | Entry1 | 74
+r | 04 | 74
+PE2 | w | S | 04 | Entry1 | 74
+PE3 | w | M | 04 | Entry1 | 78
+PE2 | w | I | 04 | Entry1 | 74
+Caso 22
+r | 04 | 74
+PE3 | w | E | 04 | Entry1 | 74
+PE3 | w | M | 04 | Entry1 | 78
+w | 04 | 78
+PE3 | w | O | 04 | Entry1 | 78
+r | 04 | 78
+PE2 | w | S | 04 | Entry1 | 78
+r | 04 | 78
+PE1 | w | S | 04 | Entry1 | 78
+PE1 | w | M | 04 | Entry1 | 14
+w | 04 | 14
+PE2 | w | I | 04 | Entry1 | 78
+PE3 | w | I | 04 | Entry1 | 78
+r | 04 | 14
+Caso 23
+r | 04 | 14
+PE3 | w | E | 04 | Entry1 | 14
+PE3 | w | M | 04 | Entry1 | 74
+w | 04 | 74
+PE3 | w | O | 04 | Entry1 | 74
+r | 04 | 74
+PE2 | w | S | 04 | Entry1 | 74
+Caso 24
+r | 04 | 74
+PE3 | w | E | 04 | Entry1 | 74
+PE3 | w | M | 04 | Entry1 | 78
+w | 04 | 78
+PE3 | w | O | 04 | Entry1 | 78
+r | 04 | 78
+PE2 | w | S | 04 | Entry1 | 78
+r | 04 | 78
+PE1 | w | S | 04 | Entry1 | 78
+r | 04 | 78

@@ -1,10 +1,6 @@
-
-//#include "utils.hpp"
 #ifndef LOGMANAGEMENT_H
 #define LOGMANAGEMENT_H
 
-
-//#include "utils.hpp"
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -30,45 +26,45 @@ class logger{
             logMessages.push_back(tmp);
         }
 
-        void logCacheRead( int id, StateEnum status, std::string address, int data){
+        void logCacheRead(int idPE, StateEnum status, std::string address, int idEntry, int data){
             std::string logMessage = "";
             switch(status){
                 case StateEnum::Modified:
-                    logMessage = "PE" + std::to_string(id) + " | r | M | " + address + " | " + std::to_string(data);
+                    logMessage = "PE" + std::to_string(idPE) + " | r | M | " + address + " | " + "Entry" + std::to_string(idEntry) + " | " + std::to_string(data);
                     break;
                 case StateEnum::Owned:
-                    logMessage = "PE" + std::to_string(id) + " | r | O | " + address + " | " + std::to_string(data);
+                    logMessage = "PE" + std::to_string(idPE) + " | r | O | " + address + " | " + "Entry" + std::to_string(idEntry) + " | " + std::to_string(data);
                     break;
                 case StateEnum::Exclusive:
-                    logMessage = "PE" + std::to_string(id) + " | r | E | " + address + " | " + std::to_string(data);
+                    logMessage = "PE" + std::to_string(idPE) + " | r | E | " + address + " | " + "Entry" + std::to_string(idEntry) + " | " + std::to_string(data);
                     break;
                 case StateEnum::Shared:
-                    logMessage = "PE" + std::to_string(id) + " | r | S | " + address + " | " + std::to_string(data);
+                    logMessage = "PE" + std::to_string(idPE) + " | r | S | " + address + " | " + "Entry" + std::to_string(idEntry) + " | " + std::to_string(data);
                     break;
                 case StateEnum::Invalid:
-                    logMessage = "PE" + std::to_string(id) + " | r | I | " + address + " | " + std::to_string(data);
+                    logMessage = "PE" + std::to_string(idPE) + " | r | I | " + address + " | " + "Entry" + std::to_string(idEntry) + " | " + std::to_string(data);
                     break;
             }
             logMessages.push_back(logMessage);
         }
 
-        void logCacheWrite(int id, StateEnum status, std::string address, int data){
+        void logCacheWrite(int idPE, StateEnum status, std::string address, int idEntry, int data){
             std::string logMessage = "";
             switch(status){
                 case StateEnum::Modified:
-                    logMessage = "PE" + std::to_string(id) + " | w | M | " + address + " | " + std::to_string(data);
+                    logMessage = "PE" + std::to_string(idPE) + " | w | M | " + address + " | " + "Entry" + std::to_string(idEntry) + " | " + std::to_string(data);
                     break;
                 case StateEnum::Owned:
-                    logMessage = "PE" + std::to_string(id) + " | w | O | " + address + " | " + std::to_string(data);
+                    logMessage = "PE" + std::to_string(idPE) + " | w | O | " + address + " | " + "Entry" + std::to_string(idEntry) + " | " + std::to_string(data);
                     break;
                 case StateEnum::Exclusive:
-                    logMessage = "PE" + std::to_string(id) + " | w | E | " + address + " | " + std::to_string(data);
+                    logMessage = "PE" + std::to_string(idPE) + " | w | E | " + address + " | " + "Entry" + std::to_string(idEntry) + " | " + std::to_string(data);
                     break;
                 case StateEnum::Shared:
-                    logMessage = "PE" + std::to_string(id) + " | w | S | " + address + " | " + std::to_string(data);
+                    logMessage = "PE" + std::to_string(idPE) + " | w | S | " + address + " | " + "Entry" + std::to_string(idEntry) + " | " + std::to_string(data);
                     break;
                 case StateEnum::Invalid:
-                    logMessage = "PE" + std::to_string(id) + " | w | I | " + address + " | " + std::to_string(data);
+                    logMessage = "PE" + std::to_string(idPE) + " | w | I | " + address + " | " + "Entry" + std::to_string(idEntry) + " | " + std::to_string(data);
                     break;
             }
             logMessages.push_back(logMessage);
@@ -93,13 +89,13 @@ class logger{
 
 
         // antes de cada updateValue y loadValues
-        void writeLog(){
+        void writeLog(std::string path){
             if (logMessages.empty()){
                 std::cout << "Empty log" << std::endl;
                 return;    
             }
 
-            std::ofstream logFile("../results/log.txt", std::ios::out | std::ios::trunc);
+            std::ofstream logFile(path, std::ios::out | std::ios::trunc);
             if (logFile.is_open()) {
                 for (const std::string& message : logMessages) {
                     logFile << message << "\n";

@@ -6,6 +6,7 @@
 TEST_CASE("Moesi Protocol") {
     MainMemory& memory = MainMemory::getInstance(); //SINGLETON
     generateRandomCode codeGenerator;
+    logger& log = logger::getInstance();
 
     // Generate random code
     std::vector<std::string> randomCodePE1 = codeGenerator.getRandomCode();
@@ -31,9 +32,11 @@ TEST_CASE("Moesi Protocol") {
     PE pe3(3, instMemPE3); peManager.registerPE3(&pe3);
 
     Moesi moesi;
-    
+        
     SUBCASE("1. Escritura en la direccion 04 cuando la no existe ninguna cache") {
+        log.logMessage("Unit Test MOESI");
         std::cout << "Caso 1 \n" << std::endl;
+        log.logMessage("Caso 1");
         // peLocal escribe en la direccion 04 con valor 55
         moesi.writeMOESI("04", 80, pe1, pe2, pe3);
         // Verificar que el dato en e1 es 80 y que el estado de la cache es M
@@ -43,6 +46,7 @@ TEST_CASE("Moesi Protocol") {
 
     SUBCASE("2. Escritura en la direccion 04 cuando la direccion ya existe en mi cache y el estado es Modificado") {
         std::cout << "Caso 2 \n" << std::endl;
+        log.logMessage("Caso 2");
         // peLocal escribe en la direccion 04 con valor 80
         moesi.writeMOESI("04", 74, pe3, pe1, pe2);
         moesi.writeMOESI("04", 80, pe3, pe1, pe2);
@@ -53,6 +57,7 @@ TEST_CASE("Moesi Protocol") {
 
      SUBCASE("3. Escritura en la direccion 04 cuando la direccion ya existe en mi cache y el estado es Exclusivo") {
         std::cout << "Caso 3 \n" << std::endl;
+        log.logMessage("Caso 3");
         // peLocal escribe en la direccion 04 con valor 80
         moesi.writeMOESI("04", 70, pe3, pe1, pe2);
         moesi.writeMOESI("04", 74, pe2, pe1, pe3);
@@ -66,6 +71,7 @@ TEST_CASE("Moesi Protocol") {
 
     SUBCASE("4. Escritura en la direccion 04 cuando la direccion existe en la cache local y el estado es Compartido") {
        std::cout << "Caso 4 \n" << std::endl;
+       log.logMessage("Caso 4");
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("04", 78, pe3, pe1, pe2);
         moesi.readMOESI("04", pe2, pe1, pe3);
@@ -81,6 +87,7 @@ TEST_CASE("Moesi Protocol") {
     SUBCASE("5. Escritura en la direccion 04 cuando la direccion ya existe en mi cache y el estado es Invalido") {
         // peLocal escribe en la direccion 04 con valor 80
         std::cout << "Caso 5 \n" << std::endl;
+        log.logMessage("Caso 5");
         moesi.writeMOESI("04", 70, pe3, pe1, pe2);
         moesi.writeMOESI("04", 74, pe2, pe1, pe3);
         moesi.writeMOESI("04", 80, pe3, pe1, pe2);
@@ -93,6 +100,7 @@ TEST_CASE("Moesi Protocol") {
 
     SUBCASE("6. Escritura en la direccion 04 cuando la direccion no existe en la cache local y si en una externa con estado Modificado") {
         std::cout << "Caso 6 \n" << std::endl;
+        log.logMessage("Caso 6");
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("04", 78, pe3, pe1, pe2);
         moesi.writeMOESI("04",95, pe2, pe1, pe3);
@@ -108,6 +116,7 @@ TEST_CASE("Moesi Protocol") {
     
     SUBCASE("7. Escritura en la direccion 04 cuando la direccion no existe en la cache local y si en una externa con estado Exclusivo") {
         std::cout <<  "Caso 7 \n"<< std::endl;
+        log.logMessage("Caso 7");
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("04", 78, pe3, pe1, pe2);
         moesi.writeMOESI("04",95, pe2, pe1, pe3);
@@ -126,6 +135,7 @@ TEST_CASE("Moesi Protocol") {
 
     SUBCASE("8. Escritura en la direccion 04 cuando la direccion no existe en la cache local y si en una externa con estado Compartido") {
         std::cout <<  "Caso 8 \n"<< std::endl;
+        log.logMessage("Caso 8");
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("04", 78, pe1, pe2, pe3);
         moesi.readMOESI("04", pe2, pe1, pe3);
@@ -144,6 +154,7 @@ TEST_CASE("Moesi Protocol") {
 
     SUBCASE("9. Escritura en la direccion 04 cuando la direccion no existe en la cache local y la cache local esta llena") {
         std::cout <<  "Caso 9 \n"<< std::endl;
+        log.logMessage("Caso 9");
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("00", 10, pe1, pe2, pe3);
         moesi.writeMOESI("04", 20, pe1, pe2, pe3);
@@ -170,6 +181,7 @@ TEST_CASE("Moesi Protocol") {
 
     SUBCASE("10. Escritura en direccion 44 y no existe en la cache local, cache esta llena y direccion 44 esta en S con externo") {
         std::cout << "Caso 10 \n" << std::endl;
+        log.logMessage("Caso 10");
         // pe1 se llena de datos en los 4 entrys
         moesi.writeMOESI("08", 10, pe1, pe2, pe3);
         moesi.writeMOESI("20", 20, pe1, pe2, pe3);
@@ -189,6 +201,7 @@ TEST_CASE("Moesi Protocol") {
 
     SUBCASE("11. Lectura de la direccion 04 cuando la direccion no esta en cache local pero existe en cache externa") {
         std::cout << "Caso 11\n" << std::endl;
+        log.logMessage("Caso 11");
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("04", 78, pe3, pe1, pe2);
         moesi.readMOESI("04", pe2, pe1, pe3);
@@ -200,6 +213,7 @@ TEST_CASE("Moesi Protocol") {
 
     SUBCASE("12. Lectura de la direccion 60 y no existe en la cache local ni en externa") {
         std::cout << "Caso 12 \n" << std::endl;
+        log.logMessage("Caso 12");
         // Se escribe un dato en memoria en la direccion 60
         memory.write("60", 120);
         // pe3 lee la direccion 60
@@ -214,6 +228,7 @@ TEST_CASE("Moesi Protocol") {
 
      SUBCASE("13. Lectura de la dirección cuando la dirección está en caché local con estado M") {
         std::cout << "Caso 13 \n" << std::endl;
+        log.logMessage("Caso 13");
         // pe2 escribe en la direccion 52 con valor 78
         moesi.writeMOESI("52", 78, pe2, pe1, pe3);
         // pe2 lee la direccion 52
@@ -226,6 +241,7 @@ TEST_CASE("Moesi Protocol") {
 
      SUBCASE("14. Lectura de la dirección cuando la dirección está en caché local con estado E") {
         std::cout << "Caso 14 \n" << std::endl;
+        log.logMessage("Caso 14");
         // pe2 y pe1 leen la direccion 00, estan en estado S
         moesi.readMOESI("00", pe2, pe1, pe3);
         moesi.readMOESI("00", pe1, pe2, pe3);
@@ -243,6 +259,7 @@ TEST_CASE("Moesi Protocol") {
 
      SUBCASE("15. Lectura de la direccion cuando la direccion esta en cache local con estado S") {
         std::cout << "Caso 15 \n" << std::endl;
+        log.logMessage("Caso 15");
         // pe2 y pe1 leen la direccion 00, estan en estado S
         moesi.readMOESI("00", pe2, pe1, pe3);
         moesi.readMOESI("00", pe1, pe2, pe3);
@@ -258,6 +275,7 @@ TEST_CASE("Moesi Protocol") {
 
      SUBCASE("16. Lectura de la dirección cuando la dirección está en cache local con estado I") {
         std::cout << "Caso 16 \n" << std::endl;
+        log.logMessage("Caso 16");
         //pe2 y pe1 leen la direccion 00, estan en estado S
         moesi.readMOESI("00", pe2, pe1, pe3);
         moesi.readMOESI("00", pe1, pe2, pe3);
@@ -277,6 +295,7 @@ TEST_CASE("Moesi Protocol") {
 
     SUBCASE("17. Escritura en direccion 00 que existe en la cache local en estado I, ninguna cache externa tiene la direccion") {
         std::cout << "Caso 17 \n" << std::endl;
+        log.logMessage("Caso 17");
         // pe1 se llena de datos en los 4 entrys
         moesi.writeMOESI("00", 10, pe1, pe2, pe3);
         // Invalida la direccion 10 de pe1
@@ -296,6 +315,7 @@ TEST_CASE("Moesi Protocol") {
 
     SUBCASE("18. Lectura en direccion 00 que existe en la cache local en estado I, ninguna cache externa tiene la direccion") {
         std::cout << "Caso 18 \n" << std::endl;
+        log.logMessage("Caso 18");
         // pe1 se llena de datos en los 4 entrys
         moesi.writeMOESI("00", 10, pe1, pe2, pe3);
         // Invalida la direccion 10 de pe1
@@ -315,6 +335,7 @@ TEST_CASE("Moesi Protocol") {
 
     SUBCASE("19. Incrementa el valor en direccion 00 que ya estaba en mi caché y ninguna caché lo tiene") {
         std::cout << "Caso 19 \n" << std::endl;
+        log.logMessage("Caso 19");
         // pe1 se llena de datos en los 4 entrys
         moesi.writeMOESI("00", 10, pe1, pe2, pe3);
         // Invalida la direccion 10 de pe1
@@ -327,6 +348,7 @@ TEST_CASE("Moesi Protocol") {
 
     SUBCASE("20. Incrementa el valor en direccion 36 que ya estaba en mi caché en estado de S y en otra cache externa") {
         std::cout << "Caso 20 \n" << std::endl;
+        log.logMessage("Caso 20");
         // pe1 y pe2 leen de la direccion 00, estan en estado S
         moesi.readMOESI("36", pe1, pe2, pe3);
         moesi.readMOESI("36", pe2, pe1, pe3);
@@ -342,6 +364,7 @@ TEST_CASE("Moesi Protocol") {
 
     SUBCASE("21. Escritura en la direccion 04 cuando la direccion ya existe en mi cache y el estado es Owned") {
         std::cout << "Caso 21 \n" << std::endl;
+        log.logMessage("Caso 21");
         //peLocal escribe en la direccion 04 con valor 80
         moesi.writeMOESI("04", 74, pe3, pe1, pe2);
         moesi.readMOESI("04", pe2, pe1, pe3);
@@ -354,6 +377,7 @@ TEST_CASE("Moesi Protocol") {
 
     SUBCASE("22. Escritura en la direccion 04 cuando la direccion no existe en la cache local y si en una externa con estado Owned") {
         std::cout <<  "Caso 22 \n"<< std::endl;
+        log.logMessage("Caso 22");
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("04", 78, pe3, pe1, pe2);
         moesi.readMOESI("04", pe2, pe1, pe3);
@@ -372,6 +396,7 @@ TEST_CASE("Moesi Protocol") {
 
     SUBCASE("23. Lectura en la direccion 04 cuando la direccion ya existe en mi cache y el estado es Owned") {
         std::cout << "Caso 23 \n" << std::endl;
+        log.logMessage("Caso 23");
         //peLocal escribe en la direccion 04 con valor 80
         moesi.writeMOESI("04", 74, pe3, pe1, pe2);
         moesi.readMOESI("04", pe2, pe1, pe3);
@@ -384,6 +409,7 @@ TEST_CASE("Moesi Protocol") {
 
     SUBCASE("24. Lectura en la direccion 04 cuando la direccion no existe en la cache local y si en una externa con estado Owned") {
         std::cout <<  "Caso 24 \n"<< std::endl;
+        log.logMessage("Caso 24");
         // peLocal escribe en la direccion 04 con valor 78
         moesi.writeMOESI("04", 78, pe3, pe1, pe2);
         moesi.readMOESI("04", pe2, pe1, pe3);
@@ -399,4 +425,6 @@ TEST_CASE("Moesi Protocol") {
         // Verificar que el estado del entry e1 del pe3 es invalido
         REQUIRE(pe3.CACHE.e1.getStatus() == StateEnum::Owned);
     }
+
+    log.writeLog("../../../results/log.txt");
 }

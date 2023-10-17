@@ -20,8 +20,7 @@ class PE{
         PE(int processor_id, instrucctionMemory& instructionMemory){
             this->processor_id = processor_id;
             INSTRUCTION_MEMORY = instructionMemory;
-            // log.logMessage("PE" + std::to_string(processor_id) + " started");
-            //CACHE.print(processor_id);
+            CACHE.setID(processor_id);
         }
 
         Package getNextInstruccion(bool nextInstr){
