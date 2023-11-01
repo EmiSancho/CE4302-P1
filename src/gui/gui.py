@@ -20,14 +20,8 @@ def main():
     #Instancia el controlador
     main_controller = MainController(canvas)
 
-    combo = ttk.Combobox(
-            state="readonly",
-            values=["MESI", "MOESI"]
-    )
-    combo.place(x=1200, y=50)
-
     def start_button_click():        
-        main_controller.start_button(combo.get())
+        main_controller.start_button()
 
     # Crear un botón "Start"
     start_button = tk.Button(canvas, text="Start", command=start_button_click, width=6, height=1, font=(12), bg="white")

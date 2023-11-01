@@ -6,7 +6,7 @@ class Memory(Figure):
         self.x1 = x1
         self.y1 = y1
         self.memory_cell_positions = list(range(0, 16))
-        self.entries = ["a0", "a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8", "a9", "a10", "a11", "a12", "a13", "a14", "a15"]
+        self.entries = ['address: 0, data: 0', 'address: 1, data: 0', 'address: 2, data: 0', 'address: 3, data: 0', 'address: 4, data: 0', 'address: 5, data: 0', 'address: 6, data: 0', 'address: 7, data: 0', 'address: 8, data: 0', 'address: 9, data: 0', 'address: 10, data: 0', 'address: 11, data: 0', 'address: 12, data: 0', 'address: 13, data: 0', 'address: 14, data: 0', 'address: 15, data: 0']
         self.columns = 2  
         self.column1_entries = self.entries[:8]
         self.column2_entries = self.entries[8:]
@@ -43,4 +43,15 @@ class Memory(Figure):
         self.canvas.create_rectangle(cell[0], cell[1], cell[2], cell[3], fill=color)
         center_x = (cell[0] + cell[2]) / 2
         center_y = (cell[1] + cell[3]) / 2
+        self.canvas.create_text(center_x, center_y, text=self.entries[cellNum], font=self.cell_font)
+    
+    def paint_cell_with_data(self, cellNum, color, data):
+        cellNum = int(cellNum) - 1
+        cell = self.memory_cell_positions[cellNum]
+        self.canvas.create_rectangle(cell[0], cell[1], cell[2], cell[3], fill=color)
+        center_x = (cell[0] + cell[2]) / 2
+        center_y = (cell[1] + cell[3]) / 2
+        entrie = self.entries[cellNum]
+        new_entrie = entrie.replace(', data: 0', ', data: ')
+        self.entries[cellNum] = new_entrie + data
         self.canvas.create_text(center_x, center_y, text=self.entries[cellNum], font=self.cell_font)
